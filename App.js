@@ -1,59 +1,23 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Picker, Alert } from 'react-native';
-import { Button } from 'react-native-elements';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import Home from './components/Home';
+import Form from './components/Form';
 
 
-const players = [
-  'Dan Roche', 'Nick Brown', 'Zack Lacey',
-  'Alec DiFederico', 'Ryan Brown', 'Jonathan Sullivan',
-  'Mike Iula', 'Dan Sadek', 'Markus Letaif'
-];
+const Stack = createStackNavigator();
 
-export default class App extends Component {
-  state = {
-    selectedPlayer: players[0]
-  };
-
-  render() {
-    return (
-
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to the WBL Stats App!</Text>
-        <Text style={styles.instructions}>To get started, choose who you are.</Text>
-        <Picker 
-          style={styles.picker} 
-          selectedValue={this.state.selectedPlayer}
-          onValueChange={(value, index) => this.setState({selectedPlayer: value})}
-        >
-          {players.map((value, index) => {
-            return <Picker.Item key={index} label={value.toString()} value={value} />
-          })}
-        </Picker>
-        <View style={{position: 'absolute', bottom: 20, width:'60%'}}>
-          <Button
-            title="Continue"
-            onPress={() => Alert.alert(this.state.selectedPlayer)}
-          />
-        </View>
-      </View>
-    );
-  }
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen name='Form' component={Form} options={{ title: 'Add stats' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  picker: {
-    height: 100,
-    width: '80%'
-  }
-});
+export default App;
+
