@@ -32,6 +32,8 @@ export default class Home extends Component {
         </Picker>
         <View style={{position: 'absolute', bottom: 20, width:'60%'}}>
           <Button
+            buttonStyle={{ height: 50 }}
+            titleStyle={{ fontWeight: 'bold'}}
             title="Continue"
             onPress={() => this.props.navigation.navigate('Form', {player: this.state.selectedPlayer})}
           />
