@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Picker } from 'react-native';
 import { Button } from 'react-native-elements';
 
+import Container from '../components/Container'
+
 
 const players = [
   'Dan Roche', 'Nick Brown', 'Zack Lacey',
@@ -16,8 +18,7 @@ export default class Home extends Component {
 
   render() {
     return (
-
-      <View style={styles.container}>
+      <Container>
         <Text style={styles.welcome}>Welcome to the WBL Stats App!</Text>
         <Text style={styles.instructions}>To get started, choose who you are.</Text>
         <Picker 
@@ -35,18 +36,12 @@ export default class Home extends Component {
             onPress={() => this.props.navigation.navigate('Form', {player: this.state.selectedPlayer})}
           />
         </View>
-      </View>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   welcome: {
     fontSize: 20,
     textAlign: 'center',

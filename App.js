@@ -2,8 +2,8 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Home from './components/Home';
-import Form from './components/Form';
+import Home from './pages/Home';
+import Form from './pages/Form';
 
 
 const Stack = createStackNavigator();
