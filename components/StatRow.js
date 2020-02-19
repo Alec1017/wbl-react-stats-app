@@ -1,31 +1,78 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Switch, Picker } from 'react-native';
 import { Button } from 'react-native-elements';
+
+const players = [
+  'Dan Roche', 'Nick Brown', 'Zack Lacey',
+  'Alec DiFederico', 'Ryan Brown', 'Jonathan Sullivan',
+  'Mike Iula', 'Dan Sadek', 'Markus Letaif'
+];
 
 
 export default function StatRow(props) {
-  return (
-    <View style={styles.statRow}>
-      <View style={styles.statTitle}>
-        <Text style={styles.statTitleText}>{props.title}</Text>
-      </View>
-      <View style={styles.statButtons}>
-        <Button 
-          buttonStyle={styles.buttonLeft} 
-          titleStyle={{ fontWeight: 'bold', fontSize: 30 }}
-          onPress={() => { if (props.state > 0) props.action(props.state - 1) }} title="-">
-        </Button>
-        <View style={styles.statValueContainer}>
-          <Text style={styles.statValue}>{props.state}</Text>
+  let statComponent;
+  if (props.type == 'switch') {
+    statComponent = (
+      <View style={styles.statRow}>
+        <View style={styles.statTitle}>
+          <Text style={styles.statTitleText}>{props.title}</Text>
         </View>
-        <Button 
-          buttonStyle={styles.buttonRight}
-          titleStyle={{ fontWeight: 'bold', fontSize: 30}}
-          onPress={() => props.action(props.state + 1)} title="+">
-        </Button>
+        <View style={styles.statButtons}>
+          <View style={styles.switchContainer}>
+            <Switch
+              value={props.state}
+              onValueChange={() => props.action(!props.state)}
+            />
+          </View>
+        </View>
       </View>
-    </View>
-  )
+    )
+  } else if (props.type == 'picker') {
+    statComponent = (
+      <View style={styles.statRow}>
+        <View style={styles.statTitle}>
+          <Text style={styles.statTitleText}>{props.title}</Text>
+        </View>
+        <View style={styles.statButtons}>
+          <Picker 
+            style={styles.picker}
+            itemStyle={styles.pickerItem}
+            selectedValue={props.state}
+            onValueChange={value => props.action(value)}
+          >
+            {players.map((value, index) => {
+              return <Picker.Item key={index} label={value.toString()} value={value} />
+            })}
+          </Picker>
+        </View>
+      </View>
+    )
+  } else {
+    statComponent = (
+      <View style={styles.statRow}>
+        <View style={styles.statTitle}>
+          <Text style={styles.statTitleText}>{props.title}</Text>
+        </View>
+        <View style={styles.statButtons}>
+          <Button 
+            buttonStyle={styles.buttonLeft} 
+            titleStyle={{ fontWeight: 'bold', fontSize: 30 }}
+            onPress={() => { if (props.state > 0) props.action(props.state - 1) }} title="-">
+          </Button>
+          <View style={styles.statValueContainer}>
+            <Text style={styles.statValue}>{props.state}</Text>
+          </View>
+          <Button 
+            buttonStyle={styles.buttonRight}
+            titleStyle={{ fontWeight: 'bold', fontSize: 30}}
+            onPress={() => props.action(props.state + 1)} title="+">
+          </Button>
+        </View>
+      </View>
+    )
+  }
+
+  return statComponent
 }
 
 
@@ -67,5 +114,17 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 30,
     fontWeight: 'bold'
+  },
+  switchContainer: {
+    justifyContent: 'center',
+    height: 60
+  },
+  picker: {
+    height: 60,
+    width: '80%',
+    paddingRight: 20
+  },
+  pickerItem: {
+    height: 60
   }
 });

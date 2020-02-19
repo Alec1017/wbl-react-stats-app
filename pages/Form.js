@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
+import { showMessage } from 'react-native-flash-message';
 
 import Container from '../components/Container';
 import StatRow from '../components/StatRow';
+import { db } from '../Firebase';
+
+const players = [
+  'Dan Roche', 'Nick Brown', 'Zack Lacey',
+  'Alec DiFederico', 'Ryan Brown', 'Jonathan Sullivan',
+  'Mike Iula', 'Dan Sadek', 'Markus Letaif'
+];
+
+const games = db.collection('games');
 
 
 export default function Form(props) {
-  const [selectedPlayer, setSelectedPlayer] = useState(props.route.params.player);
+  const [player, setPlayer] = useState(props.route.params.player);
   const [singles, setSingles] = useState(0);
   const [doubles, setDoubles] = useState(0);
   const [triples, setTriples] = useState(0);
@@ -28,11 +38,64 @@ export default function Form(props) {
   const [win, setWin] = useState(0);
   const [loss, setLoss] = useState(0);
 
+  const [isCaptain, setIsCaptain] = useState(false);
+  const [isGameWon, setIsGameWon] = useState(false);
+  const [winnerScore, setWinnerScore] = useState(0);
+  const [loserScore, setLoserScore] = useState(0);
+  const [opponent, setOpponent] = useState(players[0]);
 
+
+  async function addGame() {
+    await games.add({
+      player,
+      date: new Date().toDateString(),
+      singles,
+      doubles,
+      triples,
+      homeRuns,
+      hitByPitch,
+      baseOnBalls,
+      runsBattedIn,
+      strikeouts,
+      stolenBases,
+      outs,
+      inningsPitched,
+      earnedRuns,
+      runs,
+      pitchingStrikeouts,
+      pitchingBaseOnBalls,
+      saves,
+      win,
+      loss,
+      isCaptain,
+      isGameWon,
+      winnerScore,
+      loserScore,
+      opponent
+    });
+
+    showMessage({
+      message: "\n\nYour stats have been submitted!",
+      type: "success",
+      style: {height: '20%', width: '70%'},
+      titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'}
+    });
+  }
+
+  function submitConfirmation() {
+    Alert.alert(
+      'Are you sure you are ready to submit?',
+      '',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'OK', onPress: () => addGame()}
+      ]
+    )
+  }
 
   return (
     <Container containerType="scroll">
-        <Text style={styles.welcome}> Hey {selectedPlayer}! Enter your stats</Text>
+        <Text style={styles.welcome}> Hey {player}! Enter your stats</Text>
 
         <Text style={styles.categoryText}>Hitting</Text>
         
@@ -57,14 +120,31 @@ export default function Form(props) {
         <StatRow title="SV" state={saves} action={setSaves} />
         <StatRow title="W" state={win} action={setWin} />
         <StatRow title="L" state={loss} action={setLoss} />
+
+        <Text style={styles.categoryText}>Game Info</Text>
+    
+        <StatRow title="Captain?" type="switch" state={isCaptain} action={setIsCaptain} />
+        {isCaptain &&
+          <StatRow title="Did you win?" type="switch" state={isGameWon} action={setIsGameWon} />
+        }
+
+        {isCaptain &&
+          <StatRow title="Opponent" type="picker" state={opponent} action={setOpponent} />
+        }
         
+        {isCaptain &&
+          <StatRow title="Win Score" state={winnerScore} action={setWinnerScore} />
+        }
+        {isCaptain &&
+          <StatRow title="Loss Score" state={loserScore} action={setLoserScore} />
+        }
 
         <View style={styles.button}>
           <Button
             buttonStyle={{ height: 50}}
             titleStyle={{ fontWeight: 'bold'}}
             title="Submit"
-            onPress={() => Alert.alert('Singles: ' + singles.toString()  + '\nStrikeouts: ' + strikeouts.toString() )}
+            onPress={() => submitConfirmation()}
           />
         </View>
     </Container>

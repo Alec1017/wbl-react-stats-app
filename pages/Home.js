@@ -13,7 +13,7 @@ const players = [
 
 export default class Home extends Component {
   state = {
-    selectedPlayer: players[0]
+    player: players[0]
   };
 
   render() {
@@ -23,8 +23,8 @@ export default class Home extends Component {
         <Text style={styles.instructions}>To get started, choose who you are.</Text>
         <Picker 
           style={styles.picker} 
-          selectedValue={this.state.selectedPlayer}
-          onValueChange={value => this.setState({selectedPlayer: value})}
+          selectedValue={this.state.player}
+          onValueChange={value => this.setState({player: value})}
         >
           {players.map((value, index) => {
             return <Picker.Item key={index} label={value.toString()} value={value} />
@@ -35,7 +35,7 @@ export default class Home extends Component {
             buttonStyle={{ height: 50 }}
             titleStyle={{ fontWeight: 'bold'}}
             title="Continue"
-            onPress={() => this.props.navigation.navigate('Form', {player: this.state.selectedPlayer})}
+            onPress={() => this.props.navigation.navigate('Form', {player: this.state.player})}
           />
         </View>
       </Container>
