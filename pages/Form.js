@@ -6,6 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 import Container from '../components/Container';
 import StatRow from '../components/StatRow';
 import { db } from '../Firebase';
+import { set } from 'react-native-reanimated';
 
 const players = [
   'Dan Roche', 'Nick Brown', 'Zack Lacey',
@@ -17,7 +18,6 @@ const games = db.collection('games');
 
 
 export default function Form(props) {
-  const [player, setPlayer] = useState(props.route.params.player);
   const [singles, setSingles] = useState(0);
   const [doubles, setDoubles] = useState(0);
   const [triples, setTriples] = useState(0);
@@ -38,6 +38,8 @@ export default function Form(props) {
   const [win, setWin] = useState(0);
   const [loss, setLoss] = useState(0);
 
+
+  const [player, setPlayer] = useState(props.route.params.player);
   const [isCaptain, setIsCaptain] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
   const [winnerScore, setWinnerScore] = useState(0);
@@ -79,6 +81,7 @@ export default function Form(props) {
     });
 
     setIsLoading(false);
+    resetState();
 
     showMessage({
       message: "\n\nYour stats have been submitted!",
@@ -97,6 +100,34 @@ export default function Form(props) {
         {text: 'OK', onPress: () => addGame()}
       ]
     )
+  }
+
+  function resetState() {
+    setSingles(0);
+    setDoubles(0);
+    setTriples(0);
+    setHomeRuns(0);
+    setHitByPitch(0);
+    setBaseOnBalls(0);
+    setRunsBattedIn(0);
+    setStrikeouts(0);
+    setStolenBases(0);
+    setOuts(0);
+
+    setInningsPitched(0);
+    setEarnedRuns(0);
+    setRuns(0);
+    setPitchingStrikeouts(0);
+    setPitchingBaseOnBalls(0);
+    setSaves(0);
+    setWin(0);
+    setLoss(0);
+    
+    setIsCaptain(false);
+    setIsGameWon(false);
+    setWinnerScore(0);
+    setLoserScore(0);
+    setOpponent(players[0]);
   }
 
   return (
