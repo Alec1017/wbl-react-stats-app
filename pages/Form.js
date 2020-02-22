@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
+import { Button, Overlay } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 
 import Container from '../components/Container';
@@ -44,8 +44,12 @@ export default function Form(props) {
   const [loserScore, setLoserScore] = useState(0);
   const [opponent, setOpponent] = useState(players[0]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
 
   async function addGame() {
+    setIsLoading(true);
+    
     await games.add({
       player,
       date: new Date().toDateString(),
@@ -73,6 +77,8 @@ export default function Form(props) {
       loserScore,
       opponent
     });
+
+    setIsLoading(false);
 
     showMessage({
       message: "\n\nYour stats have been submitted!",
@@ -147,6 +153,17 @@ export default function Form(props) {
             onPress={() => submitConfirmation()}
           />
         </View>
+
+        <Overlay 
+          isVisible={isLoading}
+          width="100%"
+          height="100%"
+          overlayBackgroundColor="rgba(0,0,0,0.1)"
+        >
+          <View style={{ flex: 1, justifyContent: 'center'}}>
+            <ActivityIndicator size="large" color="#ffffff" />
+          </View>
+        </Overlay>
     </Container>
   )
 }
