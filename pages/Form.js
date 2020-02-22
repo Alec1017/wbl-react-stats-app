@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Alert, ActivityIndicator, Vibration } from 'react-native';
 import { Button, Overlay } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 
 import Container from '../components/Container';
 import StatRow from '../components/StatRow';
 import { db } from '../Firebase';
-import { set } from 'react-native-reanimated';
 
 const players = [
   'Dan Roche', 'Nick Brown', 'Zack Lacey',
@@ -82,6 +81,8 @@ export default function Form(props) {
 
     setIsLoading(false);
     resetState();
+
+    Vibration.vibrate(500);
 
     showMessage({
       message: "\n\nYour stats have been submitted!",
