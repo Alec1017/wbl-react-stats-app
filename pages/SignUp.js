@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
-import { Button, Input } from 'react-native-elements';
+import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
+import { Button, Input, Overlay } from 'react-native-elements';
 
 import Container from '../components/Container';
 import { db, auth } from '../Firebase';
@@ -11,8 +11,11 @@ export default function SignUp(props) {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSignUp() {
+    setIsLoading(true);
+
     try {
       const response = await auth.createUserWithEmailAndPassword(email, password);
 
@@ -23,6 +26,8 @@ export default function SignUp(props) {
           lastName: lastName,
           email: email
         }
+
+        setIsLoading(false);
   
         db.collection('users')
           .doc(response.user.uid)
@@ -89,6 +94,17 @@ export default function SignUp(props) {
           onPress={() => handleSignUp()}
         />
       </View>
+
+      <Overlay 
+          isVisible={isLoading}
+          width="100%"
+          height="100%"
+          overlayBackgroundColor="rgba(0,0,0,0.1)"
+        >
+          <View style={{ flex: 1, justifyContent: 'center'}}>
+            <ActivityIndicator size="large" color="#ffffff" />
+          </View>
+        </Overlay>
     </Container>
   );
 }

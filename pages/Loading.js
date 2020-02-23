@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
-import { Button, Input, Overlay } from 'react-native-elements';
+import React, { useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 
 import Container from '../components/Container'
 import { db, auth } from '../Firebase';
 
 
 export default function Login(props) {
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     auth.onAuthStateChanged(async user => {
@@ -16,8 +14,6 @@ export default function Login(props) {
           .collection('users')
           .doc(user.uid)
           .get()
-
-        setIsLoading(false);
         
         if (currentUser != null) {
           props.navigation.navigate('Form', currentUser.data());

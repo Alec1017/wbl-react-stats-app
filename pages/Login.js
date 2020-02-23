@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
 import { Button, Input, Overlay } from 'react-native-elements';
 
@@ -12,6 +12,8 @@ export default function Login(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleLogin() {
+    setIsLoading(true);
+
     try {
       const response = await auth.signInWithEmailAndPassword(email, password);
 
@@ -20,6 +22,8 @@ export default function Login(props) {
           .collection('users')
           .doc(response.user.uid)
           .get()
+
+        setIsLoading(false);
   
         props.navigation.navigate('Form', user.data());
       }
@@ -68,7 +72,7 @@ export default function Login(props) {
           isVisible={isLoading}
           width="100%"
           height="100%"
-          overlayBackgroundColor="rgba(0,0,0, 1)"
+          overlayBackgroundColor="rgba(0,0,0,0.1)"
         >
           <View style={{ flex: 1, justifyContent: 'center'}}>
             <ActivityIndicator size="large" color="#ffffff" />

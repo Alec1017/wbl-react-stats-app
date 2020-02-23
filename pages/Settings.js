@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, View, Alert } from 'react-native';
-import { Button, Input } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 
 import Container from '../components/Container';
-import { db, auth } from '../Firebase';
+import { auth } from '../Firebase';
 
 
 export default function Settings(props) {
