@@ -2,12 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, Switch, Picker } from 'react-native';
 import { Button } from 'react-native-elements';
 
-const players = [
-  'Dan Roche', 'Nick Brown', 'Zack Lacey',
-  'Alec DiFederico', 'Ryan Brown', 'Jonathan Sullivan',
-  'Mike Iula', 'Dan Sadek', 'Markus Letaif'
-];
-
 
 export default function StatRow(props) {
   let statComponent;
@@ -40,7 +34,7 @@ export default function StatRow(props) {
             selectedValue={props.state}
             onValueChange={value => props.action(value)}
           >
-            {players.map((value, index) => {
+            {props.opponents.map((value, index) => {
               return <Picker.Item key={index} label={value.toString()} value={value} />
             })}
           </Picker>
