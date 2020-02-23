@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Alert, ActivityIndicator, Vibration } from 'react-native';
+import * as Haptics from 'expo-haptics';
+import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
 import { Button, Overlay } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 
@@ -7,11 +8,6 @@ import Container from '../components/Container';
 import StatRow from '../components/StatRow';
 import { db } from '../Firebase';
 
-const players = [
-  'Dan Roche', 'Nick Brown', 'Zack Lacey',
-  'Alec DiFederico', 'Ryan Brown', 'Jonathan Sullivan',
-  'Mike Iula', 'Dan Sadek', 'Markus Letaif'
-];
 
 const games = db.collection('games');
 
@@ -43,7 +39,7 @@ export default function Form(props) {
   const [isGameWon, setIsGameWon] = useState(false);
   const [winnerScore, setWinnerScore] = useState(0);
   const [loserScore, setLoserScore] = useState(0);
-  const [opponent, setOpponent] = useState(players[0]);
+  const [opponent, setOpponent] = useState(props.route.params.opponents[0]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -82,14 +78,17 @@ export default function Form(props) {
     setIsLoading(false);
     resetState();
 
-    Vibration.vibrate(500);
-
     showMessage({
-      message: "\n\nYour stats have been submitted!",
+      message: "\nSuccess!",
+      description: "Your stats have been submitted",
       type: "success",
       style: {height: '20%', width: '70%'},
-      titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'}
+      titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
+      textStyle: {textAlign: 'center'},
+      duration: 2000
     });
+
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   }
 
   function submitConfirmation() {
@@ -128,7 +127,7 @@ export default function Form(props) {
     setIsGameWon(false);
     setWinnerScore(0);
     setLoserScore(0);
-    setOpponent(players[0]);
+    setOpponent(props.route.params.opponents[0]);
   }
 
   return (
@@ -167,7 +166,7 @@ export default function Form(props) {
         }
 
         {isCaptain &&
-          <StatRow title="Opponent" type="picker" state={opponent} action={setOpponent} />
+          <StatRow title="Opponent" type="picker" opponents={props.route.params.opponents} state={opponent} action={setOpponent} />
         }
         
         {isCaptain &&

@@ -3,18 +3,27 @@ import { StyleSheet, Text, View, Picker } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import Container from '../components/Container'
+import { db } from '../Firebase';
 
 
-const players = [
-  'Dan Roche', 'Nick Brown', 'Zack Lacey',
-  'Alec DiFederico', 'Ryan Brown', 'Jonathan Sullivan',
-  'Mike Iula', 'Dan Sadek', 'Markus Letaif'
-];
+const users = db.collection('users');
 
 export default class Home extends Component {
   state = {
-    player: players[0]
+    selectedPlayer: '',
+    players: []
   };
+
+  componentDidMount() {
+    users.get().then(snapshot => {
+      let players = [];
+      snapshot.forEach(doc => {
+        let player = doc.data().firstName + ' ' + doc.data().lastName;
+        players.push(player);
+      });
+      this.setState({players: players});
+    });
+  }
 
   render() {
     return (
@@ -23,10 +32,10 @@ export default class Home extends Component {
         <Text style={styles.instructions}>To get started, choose who you are.</Text>
         <Picker 
           style={styles.picker} 
-          selectedValue={this.state.player}
-          onValueChange={value => this.setState({player: value})}
+          selectedValue={this.state.selectedPlayer}
+          onValueChange={value => this.setState({selectedPlayer: value})}
         >
-          {players.map((value, index) => {
+          {this.state.players.map((value, index) => {
             return <Picker.Item key={index} label={value.toString()} value={value} />
           })}
         </Picker>
@@ -35,7 +44,13 @@ export default class Home extends Component {
             buttonStyle={{ height: 50 }}
             titleStyle={{ fontWeight: 'bold'}}
             title="Continue"
-            onPress={() => this.props.navigation.navigate('Form', {player: this.state.player})}
+            onPress={() => {
+              let values = {
+                player: this.state.selectedPlayer, 
+                opponents: this.state.players.filter(p => p != this.state.selectedPlayer)
+              };
+              this.props.navigation.navigate('Form', values);
+            }}
           />
         </View>
       </Container>
