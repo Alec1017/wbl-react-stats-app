@@ -60,7 +60,7 @@ export default function Form(props) {
   async function addGame() {
     setIsLoading(true);
     
-    await db.collection.get().add({
+    await db.collection('users').add({
       player,
       uid,
       date: new Date().toDateString(),
@@ -146,7 +146,10 @@ export default function Form(props) {
 
   return (
     <Container containerType="scroll">
-        <Text style={styles.welcome}>{player}, Enter your stats</Text>
+        <View style={{alignSelf: 'flex-end', marginRight: 20, marginTop: 10}}>
+          <Button type="clear" title="Settings" onPress={() => props.navigation.navigate('Settings')} />
+        </View>
+        <Text style={styles.welcome}>Hey {props.route.params.firstName}, Enter your stats</Text>
 
         <Text style={styles.categoryText}>Hitting</Text>
         
@@ -218,7 +221,8 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 30,
     textAlign: 'center',
-    marginTop: 30,
+    marginTop: 10,
+    marginHorizontal: 10,
     fontWeight: 'bold'
   },
   categoryText: {

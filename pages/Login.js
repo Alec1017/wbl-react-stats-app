@@ -9,24 +9,7 @@ import { db, auth } from '../Firebase';
 export default function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    auth.onAuthStateChanged(async user => {
-      if (user) {
-        const currentUser = await db
-          .collection('users')
-          .doc(user.uid)
-          .get()
-
-        setIsLoading(false);
-        
-        if (currentUser != null) {
-          props.navigation.navigate('Form', currentUser.data());
-        } 
-      }
-    })
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleLogin() {
     try {
