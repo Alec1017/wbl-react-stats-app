@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
 import { Button, Overlay } from 'react-native-elements';
@@ -7,9 +7,6 @@ import { showMessage } from 'react-native-flash-message';
 import Container from '../components/Container';
 import StatRow from '../components/StatRow';
 import { db } from '../Firebase';
-
-
-const games = db.collection('games');
 
 
 export default function Form(props) {
@@ -34,21 +31,38 @@ export default function Form(props) {
   const [loss, setLoss] = useState(0);
 
 
-  const [player, setPlayer] = useState(props.route.params.player);
+  const [player, setPlayer] = useState(props.route.params.firstName + ' ' + props.route.params.lastName);
+  const [uid, setUID] = useState(props.route.params.uid);
   const [isCaptain, setIsCaptain] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
   const [winnerScore, setWinnerScore] = useState(0);
   const [loserScore, setLoserScore] = useState(0);
-  const [opponent, setOpponent] = useState(props.route.params.opponents[0]);
+  const [selectedOpponent, setSelectedOpponent] = useState('');
+  const [opponents, setOpponents] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    db.collection('users').get().then(snapshot => {
+      let opponents = [];
+      snapshot.forEach(doc => {
+        let opponent = doc.data().firstName + ' ' + doc.data().lastName;
+
+        if (doc.data().uid != player.uid) {
+          opponents.push(opponent);
+        }
+      });
+      setSelectedOpponent(opponents[0]);
+      setOpponents(opponents);
+    });
+  }, []);
 
   async function addGame() {
     setIsLoading(true);
     
-    await games.add({
+    await db.collection.get().add({
       player,
+      uid,
       date: new Date().toDateString(),
       singles,
       doubles,
@@ -72,7 +86,7 @@ export default function Form(props) {
       isGameWon,
       winnerScore,
       loserScore,
-      opponent
+      selectedOpponent
     });
 
     setIsLoading(false);
@@ -127,12 +141,12 @@ export default function Form(props) {
     setIsGameWon(false);
     setWinnerScore(0);
     setLoserScore(0);
-    setOpponent(props.route.params.opponents[0]);
+    setSelectedOpponent(opponents[0]);
   }
 
   return (
     <Container containerType="scroll">
-        <Text style={styles.welcome}> Hey {player}! Enter your stats</Text>
+        <Text style={styles.welcome}>{player}, Enter your stats</Text>
 
         <Text style={styles.categoryText}>Hitting</Text>
         
@@ -166,7 +180,7 @@ export default function Form(props) {
         }
 
         {isCaptain &&
-          <StatRow title="Opponent" type="picker" opponents={props.route.params.opponents} state={opponent} action={setOpponent} />
+          <StatRow title="Opponent" type="picker" opponents={opponents} state={selectedOpponent} action={setSelectedOpponent} />
         }
         
         {isCaptain &&
@@ -202,9 +216,10 @@ export default function Form(props) {
 
 const styles = StyleSheet.create({
   welcome: {
-    fontSize: 20,
+    fontSize: 30,
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: 30,
+    fontWeight: 'bold'
   },
   categoryText: {
     textTransform: 'uppercase',

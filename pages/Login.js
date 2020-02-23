@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Picker } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Input } from 'react-native-elements';
 
 import Container from '../components/Container'
-import { db } from '../Firebase';
+import { db, auth } from '../Firebase';
 
 
 const users = db.collection('users');
 
-export default class Home extends Component {
+export default class Login extends Component {
   state = {
     selectedPlayer: '',
-    players: []
+    players: [],
+    email: '',
+    password: ''
   };
 
   componentDidMount() {
@@ -28,9 +30,8 @@ export default class Home extends Component {
   render() {
     return (
       <Container>
-        <Text style={styles.welcome}>Welcome to the WBL Stats App!</Text>
-        <Text style={styles.instructions}>To get started, choose who you are.</Text>
-        <Picker 
+        <Text style={styles.welcome}>WBL Stats Sheet</Text>
+        {/* <Picker 
           style={styles.picker} 
           selectedValue={this.state.selectedPlayer}
           onValueChange={value => this.setState({selectedPlayer: value})}
@@ -38,12 +39,36 @@ export default class Home extends Component {
           {this.state.players.map((value, index) => {
             return <Picker.Item key={index} label={value.toString()} value={value} />
           })}
-        </Picker>
-        <View style={{position: 'absolute', bottom: 20, width:'60%'}}>
+        </Picker> */}
+
+
+        <View style={{ width: '80%', marginTop: 30}}> 
+          <Input
+            label='Email Address'
+            placeholder='email@address.com'
+            onChangeText={email => this.setState({ email })}
+            leftIcon={{ type: 'font-awesome', name: 'envelope', size: 20 }}
+            keyboardType='email-address'
+            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
+          />
+        </View>
+
+        <View style={{ width: '80%', marginTop: 30}}> 
+          <Input
+            label='Password'
+            placeholder='password'
+            onChangeText={password => this.setState({ password })}
+            leftIcon={{ type: 'font-awesome', name: 'lock', size: 24 }}
+            secureTextEntry={true}
+            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
+          />
+        </View>
+        
+        <View style={{width:'80%', marginTop: 30}}>
           <Button
             buttonStyle={{ height: 50 }}
             titleStyle={{ fontWeight: 'bold'}}
-            title="Continue"
+            title="Login"
             onPress={() => {
               let values = {
                 player: this.state.selectedPlayer, 
@@ -53,6 +78,7 @@ export default class Home extends Component {
             }}
           />
         </View>
+        <Button type="clear" title="No account yet? Sign up" onPress={() => this.props.navigation.navigate('SignUp')} />
       </Container>
     );
   }
@@ -60,9 +86,10 @@ export default class Home extends Component {
 
 const styles = StyleSheet.create({
   welcome: {
-    fontSize: 20,
+    fontSize: 30,
     textAlign: 'center',
     margin: 10,
+    fontWeight: 'bold'
   },
   picker: {
     height: 100,

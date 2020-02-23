@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 691,
-  "expoServerNgrokUrl": "https://pw-egn.anonymous.wblstatsapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.pw-egn.anonymous.wblstatsapp.exp.direct",
-  "ngrokPid": 715,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
