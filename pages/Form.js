@@ -30,6 +30,7 @@ export default function Form(props) {
   const [win, setWin] = useState(0);
   const [loss, setLoss] = useState(0);
 
+  const [error, setError] = useState(0);
 
   const [player, setPlayer] = useState(props.route.params.firstName + ' ' + props.route.params.lastName);
   const [uid, setUID] = useState(props.route.params.uid);
@@ -82,6 +83,7 @@ export default function Form(props) {
       saves,
       win,
       loss,
+      error,
       isCaptain,
       isGameWon,
       winnerScore,
@@ -136,6 +138,8 @@ export default function Form(props) {
     setSaves(0);
     setWin(0);
     setLoss(0);
+
+    setError(0);
     
     setIsCaptain(false);
     setIsGameWon(false);
@@ -174,6 +178,11 @@ export default function Form(props) {
         <StatRow title="SV" state={saves} action={setSaves} />
         <StatRow title="W" state={win} action={setWin} />
         <StatRow title="L" state={loss} action={setLoss} />
+
+        <Text style={styles.categoryText}>Fielding</Text>
+
+        <StatRow title="Error" state={error} action={setError} />
+
 
         <Text style={styles.categoryText}>Game Info</Text>
     
