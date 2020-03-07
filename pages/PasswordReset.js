@@ -33,7 +33,8 @@ export default function PasswordReset(props) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       props.navigation.navigate('Login');
     } catch (e) {
-      setIsLoading(false)
+      setIsLoading(false);
+      
       showMessage({
         message: "\nError",
         description: e.toString(),
