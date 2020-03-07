@@ -6,27 +6,49 @@ import { showMessage } from 'react-native-flash-message';
 
 import Container from '../components/Container';
 import { auth } from '../Firebase';
+import { BACKEND_API } from 'react-native-dotenv';
 
 
 export default function Settings(props) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(props.route.params.isAdmin);
 
   async function updateStats() {
-    //setIsLoading(true);
-    console.log('test');
+    setIsLoading(true);
 
     try {
-      let response = await fetch('http://10.0.0.54:5000/api/update_sheet');
+      let response = await fetch(BACKEND_API);
       let data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
+      
+      let messageType = data.completed ? 'success' : 'danger';
+      let messageTitle = data.completed ? 'Success!' : 'Error'
+      let messageContent = data.completed ? 'Stat sheet updated' : 'Something went wrong. Try again later'
+      let feedbackType = data.completed ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error;
 
-  
-    console.log('test2');
+      showMessage({
+        message: `\n${messageTitle}`,
+        description: messageContent,
+        type: messageType,
+        style: {height: '20%', width: '70%'},
+        titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
+        textStyle: {textAlign: 'center'},
+        duration: 2000
+      });
+
+      Haptics.notificationAsync(feedbackType);
+    } catch (error) {
+      showMessage({
+        message: "\nError",
+        description: "Something went wrong. Try again later",
+        type: "error",
+        style: {height: '20%', width: '70%'},
+        titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
+        textStyle: {textAlign: 'center'},
+        duration: 2000
+      });
+    }
     
-    //setIsLoading(false);
+    setIsLoading(false);
   }
 
   function logoutConfirmation() {
@@ -74,14 +96,16 @@ export default function Settings(props) {
         />
       </View>
 
-      <View style={{width:'80%', marginTop: 30}}>
-        <Button
-          buttonStyle={{ height: 50, backgroundColor: '#00C851' }}
-          titleStyle={{ fontWeight: 'bold'}}
-          title="Update Stat Sheet"
-          onPress={() => updateStats()}
-        />
-      </View>
+      {isAdmin &&
+        <View style={{width:'80%', marginTop: 30}}>
+          <Button
+            buttonStyle={{ height: 50, backgroundColor: '#00C851' }}
+            titleStyle={{ fontWeight: 'bold'}}
+            title="Update Stat Sheet"
+            onPress={() => updateStats()}
+          />
+        </View>
+      }
 
       <Overlay 
           isVisible={isLoading}

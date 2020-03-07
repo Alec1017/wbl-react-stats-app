@@ -24,7 +24,8 @@ export default function SignUp(props) {
           uid: response.user.uid,
           firstName: firstName,
           lastName: lastName,
-          email: email
+          email: email,
+          isAdmin: false
         }
 
         setIsLoading(false);

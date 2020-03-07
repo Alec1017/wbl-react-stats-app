@@ -61,7 +61,7 @@ export default function Form(props) {
   async function addGame() {
     setIsLoading(true);
     
-    await db.collection('users').add({
+    await db.collection('games').add({
       player,
       uid,
       date: new Date().toDateString(),
@@ -88,7 +88,8 @@ export default function Form(props) {
       isGameWon,
       winnerScore,
       loserScore,
-      selectedOpponent
+      selectedOpponent,
+      isAggregated: false
     });
 
     setIsLoading(false);
@@ -151,7 +152,7 @@ export default function Form(props) {
   return (
     <Container containerType="scroll">
         <View style={{alignSelf: 'flex-end', marginRight: 20, marginTop: 10}}>
-          <Button type="clear" title="Settings" onPress={() => props.navigation.navigate('Settings')} />
+          <Button type="clear" title="Settings" onPress={() => props.navigation.navigate('Settings', {isAdmin: props.route.params.isAdmin})} />
         </View>
         <Text style={styles.welcome}>Hey {props.route.params.firstName}, Enter your stats</Text>
 
