@@ -40,7 +40,7 @@ export default function Settings(props) {
       showMessage({
         message: "\nError",
         description: "Something went wrong. Try again later",
-        type: "error",
+        type: "danger",
         style: {height: '20%', width: '70%'},
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
         textStyle: {textAlign: 'center'},

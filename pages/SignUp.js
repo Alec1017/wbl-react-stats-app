@@ -43,7 +43,11 @@ export default function SignUp(props) {
   
   return (
     <Container>
-      <Text style={styles.welcome}>WBL Stats Sheet</Text>
+       <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: 10}}>
+        <Button type="clear" title="Back" onPress={() => props.navigation.goBack()} />
+      </View>
+      
+      <Text style={styles.welcome}>Sign Up</Text>
 
       <View style={{ width: '80%', marginTop: 30}}> 
         <Input
@@ -115,7 +119,7 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 30,
     textAlign: 'center',
-    marginTop: 30,
+    marginTop: 10,
     fontWeight: 'bold'
   }
 });

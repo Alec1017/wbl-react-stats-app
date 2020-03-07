@@ -1,37 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
 import { Button, Input, Overlay } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 
-import Container from '../components/Container'
-import { db, auth } from '../Firebase';
+import Container from '../components/Container';
+import { auth } from '../Firebase';
 
 
-export default function Login(props) {
+export default function PasswordReset(props) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-
-  async function handleLogin() {
+  async function handlePasswordReset() {
     setIsLoading(true);
 
     try {
-      const response = await auth.signInWithEmailAndPassword(email, password);
-      
-      if (response.user.uid) {
-        const user = await db
-          .collection('users')
-          .doc(response.user.uid)
-          .get()
+      const response = await auth.sendPasswordResetEmail(email);
 
-        setIsLoading(false);
-  
-        props.navigation.navigate('Form', user.data());
-      }
-      
-    } catch (e) {
       setIsLoading(false);
+
+      showMessage({
+        message: "\nReset email sent!",
+        description: "Check your email for a reset link",
+        type: "success",
+        style: {height: '20%', width: '70%'},
+        titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
+        textStyle: {textAlign: 'center'},
+        duration: 2000
+      });
+
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      props.navigation.navigate('Login');
+    } catch (e) {
+      setIsLoading(false)
       showMessage({
         message: "\nError",
         description: e.toString(),
@@ -41,13 +43,20 @@ export default function Login(props) {
         textStyle: {textAlign: 'center'},
         duration: 2000
       });
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Danger);
     }
   }
-
+  
   return (
     <Container>
-      <Text style={styles.welcome}>WBL Stats Sheet</Text>
+       <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: 10}}>
+        <Button type="clear" title="Back" onPress={() => props.navigation.goBack()} />
+      </View>
       
+      <View style={{width: '80%'}}>
+        <Text style={styles.welcome}>Forgot Password?</Text>
+      </View>
+
       <View style={{ width: '80%', marginTop: 30}}> 
         <Input
           label='Email Address'
@@ -58,28 +67,15 @@ export default function Login(props) {
           leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
         />
       </View>
-
-      <View style={{ width: '80%', marginTop: 30}}> 
-        <Input
-          label='Password'
-          placeholder='password'
-          onChangeText={password => setPassword(password)}
-          leftIcon={{ type: 'font-awesome', name: 'lock', size: 24 }}
-          secureTextEntry={true}
-          leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
-        />
-      </View>
       
       <View style={{width:'80%', marginTop: 30}}>
         <Button
           buttonStyle={{ height: 50 }}
           titleStyle={{ fontWeight: 'bold'}}
-          title="Login"
-          onPress={() => handleLogin()}
+          title="Send Reset Email"
+          onPress={() => handlePasswordReset()}
         />
       </View>
-      <Button type="clear" title="No account yet? Sign up" onPress={() => props.navigation.navigate('SignUp')} />
-      <Button type="clear" title="Forgot password?" onPress={() => props.navigation.navigate('PasswordReset')} />
 
       <Overlay 
           isVisible={isLoading}
@@ -95,15 +91,13 @@ export default function Login(props) {
   );
 }
 
+
 const styles = StyleSheet.create({
   welcome: {
     fontSize: 30,
-    textAlign: 'center',
-    margin: 10,
+    textAlign: 'left',
+    alignSelf: 'flex-start',
+    marginTop: 10,
     fontWeight: 'bold'
-  },
-  picker: {
-    height: 100,
-    width: '80%'
   }
 });

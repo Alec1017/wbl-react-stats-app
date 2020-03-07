@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp'
 import Login from './pages/Login';
 import Form from './pages/Form';
 import Settings from './pages/Settings';
+import PasswordReset from './pages/PasswordReset';
 
 
 const Stack = createStackNavigator();
@@ -19,6 +20,7 @@ function App() {
         <Stack.Screen name='Loading' component={Loading} />
         <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="PasswordReset" component={PasswordReset} />
         <Stack.Screen name='Form' component={Form} options={{ title: 'Add stats' }} />
         <Stack.Screen name='Settings' component={Settings} />
       </Stack.Navigator>
