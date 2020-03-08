@@ -25,7 +25,8 @@ export default function SignUp(props) {
           firstName: firstName,
           lastName: lastName,
           email: email,
-          isAdmin: false
+          isAdmin: false,
+          subscribed: true
         }
 
         setIsLoading(false);

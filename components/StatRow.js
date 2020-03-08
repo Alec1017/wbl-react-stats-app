@@ -46,7 +46,7 @@ export default function StatRow(props) {
     if (props.numberType == 'fractions') {
       let numberValue = props.state;
       let remainder = '';
-      let fraction = ''
+      let fraction = '';
       if (props.state % 3 != 0) {
         numberValue = Math.floor(props.state / 3);
         numberValue = numberValue == 0 ? '' : numberValue;
@@ -58,7 +58,10 @@ export default function StatRow(props) {
 
       numberTicker = (
         <View style={styles.statValueContainer}>
-          <Text style={styles.statValue}>{numberValue}</Text><Text style={styles.statFraction}>{fraction}</Text>
+          {numberValue !== '' && 
+          <Text style={styles.statValue}>{numberValue}</Text>}
+          {fraction !== '' &&
+          <Text style={styles.statFraction}>{fraction}</Text>}
         </View>
       );
     } else {

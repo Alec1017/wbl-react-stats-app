@@ -152,7 +152,7 @@ export default function Form(props) {
   return (
     <Container containerType="scroll">
         <View style={{alignSelf: 'flex-end', marginRight: 20, marginTop: 10}}>
-          <Button type="clear" title="Settings" onPress={() => props.navigation.navigate('Settings', {isAdmin: props.route.params.isAdmin})} />
+          <Button type="clear" title="Settings" onPress={() => props.navigation.navigate('Settings', {isAdmin: props.route.params.isAdmin, isSubscribed: props.route.params.subscribed, uid: props.route.params.uid})} />
         </View>
         <Text style={styles.welcome}>Hey {props.route.params.firstName}, Enter your stats</Text>
 
@@ -171,7 +171,7 @@ export default function Form(props) {
 
         <Text style={styles.categoryText}>Pitching</Text>
 
-        <StatRow title="IP" state={inningsPitched} action={setInningsPitched} />
+        <StatRow title="IP" numberType="fractions" state={inningsPitched} action={setInningsPitched} />
         <StatRow title="ER" state={earnedRuns} action={setEarnedRuns} />
         <StatRow title="R" state={runs} action={setRuns} />
         <StatRow title="K" state={pitchingStrikeouts} action={setPitchingStrikeouts} />

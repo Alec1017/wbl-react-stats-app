@@ -5,16 +5,38 @@ import { Button, Overlay } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 
 import Container from '../components/Container';
-import { auth } from '../Firebase';
+import { auth, db } from '../Firebase';
 import { BACKEND_API } from 'react-native-dotenv';
+import { useEffect } from 'react';
 
 
 export default function Settings(props) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEmailLoading, setIsEmailLoading] = useState(false);
+  const [isStatsLoading, setIsStatsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(props.route.params.isAdmin);
+  const [isSubscribed, setIsSubscribed] = useState(props.route.params.isSubscribed);
+  const [subscribedText, setSubscribedText] = useState('Unsubscribe from emails')
+
+  useEffect(() => {
+    console.log(props.route.params.uid);
+    if (!isSubscribed) {
+      setSubscribedText('Subscribe to emails');
+    } else {
+      setSubscribedText('Unsubscribe from emails');
+    }
+  })
+
+  async function toggleEmailSubscription() {
+    setIsEmailLoading(true);
+    await db.collection('users').doc(props.route.params.uid).update({
+      subscribed: !isSubscribed
+    });
+    setIsSubscribed(!isSubscribed);
+    setIsEmailLoading(false);
+  }
 
   async function updateStats() {
-    setIsLoading(true);
+    setIsStatsLoading(true);
 
     try {
       let response = await fetch(BACKEND_API);
@@ -48,7 +70,7 @@ export default function Settings(props) {
       });
     }
     
-    setIsLoading(false);
+    setIsStatsLoading(false);
   }
 
   function logoutConfirmation() {
@@ -96,9 +118,20 @@ export default function Settings(props) {
         />
       </View>
 
+      <View style={{width:'80%', marginTop: 30}}>
+        <Button
+          buttonStyle={{ height: 50 }}
+          titleStyle={{ fontWeight: 'bold'}}
+          title={subscribedText}
+          onPress={() => toggleEmailSubscription()}
+          loading={isEmailLoading}
+        />
+      </View>
+
       {isAdmin &&
         <View style={{width:'80%', marginTop: 30}}>
           <Button
+            loading={isStatsLoading}
             buttonStyle={{ height: 50, backgroundColor: '#00C851' }}
             titleStyle={{ fontWeight: 'bold'}}
             title="Update Stat Sheet"
@@ -107,7 +140,7 @@ export default function Settings(props) {
         </View>
       }
 
-      <Overlay 
+      {/* <Overlay 
           isVisible={isLoading}
           width="100%"
           height="100%"
@@ -116,7 +149,7 @@ export default function Settings(props) {
           <View style={{ flex: 1, justifyContent: 'center'}}>
             <ActivityIndicator size="large" color="#ffffff" />
           </View>
-      </Overlay>
+      </Overlay> */}
     </Container>
   );
 }
