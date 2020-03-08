@@ -42,6 +42,35 @@ export default function StatRow(props) {
       </View>
     )
   } else {
+    let numberTicker;
+    if (props.numberType == 'fractions') {
+      let numberValue = props.state;
+      let remainder = '';
+      let fraction = ''
+      if (props.state % 3 != 0) {
+        numberValue = Math.floor(props.state / 3);
+        numberValue = numberValue == 0 ? '' : numberValue;
+        remainder = props.state % 3;
+        fraction = `${remainder}/3`
+      } else {
+        numberValue = props.state / 3;
+      }
+
+      numberTicker = (
+        <View style={styles.statValueContainer}>
+          <Text style={styles.statValue}>{numberValue}</Text><Text style={styles.statFraction}>{fraction}</Text>
+        </View>
+      );
+    } else {
+      numberTicker = (
+        <View style={styles.statValueContainer}>
+          <Text style={styles.statValue}>{props.state}</Text>
+        </View>
+      );
+    }
+
+
+
     statComponent = (
       <View style={styles.statRow}>
         <View style={styles.statTitle}>
@@ -53,9 +82,7 @@ export default function StatRow(props) {
             titleStyle={{ fontWeight: 'bold', fontSize: 30 }}
             onPress={() => { if (props.state > 0) props.action(props.state - 1) }} title="-">
           </Button>
-          <View style={styles.statValueContainer}>
-            <Text style={styles.statValue}>{props.state}</Text>
-          </View>
+          {numberTicker}
           <Button 
             buttonStyle={styles.buttonRight}
             titleStyle={{ fontWeight: 'bold', fontSize: 30}}
@@ -107,6 +134,10 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 30,
+    fontWeight: 'bold'
+  },
+  statFraction: {
+    fontSize: 20, 
     fontWeight: 'bold'
   },
   switchContainer: {
