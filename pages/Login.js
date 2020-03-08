@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button, Input, Overlay } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 
@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 30,
     textAlign: 'center',
-    margin: 10,
+    marginTop: 30,
+    marginBottom: 10,
     fontWeight: 'bold'
   },
   picker: {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as Haptics from 'expo-haptics';
-import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
-import { Button, Overlay } from 'react-native-elements';
+import { StyleSheet, Text, View, Alert } from 'react-native';
+import { Button } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 
 import Container from '../components/Container';
@@ -18,7 +18,6 @@ export default function Settings(props) {
   const [subscribedText, setSubscribedText] = useState('Unsubscribe from emails')
 
   useEffect(() => {
-    console.log(props.route.params.uid);
     if (!isSubscribed) {
       setSubscribedText('Subscribe to emails');
     } else {
@@ -139,17 +138,6 @@ export default function Settings(props) {
           />
         </View>
       }
-
-      {/* <Overlay 
-          isVisible={isLoading}
-          width="100%"
-          height="100%"
-          overlayBackgroundColor="rgba(0,0,0,0.1)"
-        >
-          <View style={{ flex: 1, justifyContent: 'center'}}>
-            <ActivityIndicator size="large" color="#ffffff" />
-          </View>
-      </Overlay> */}
     </Container>
   );
 }

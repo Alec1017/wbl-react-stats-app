@@ -44,7 +44,6 @@ export default function PasswordReset(props) {
         textStyle: {textAlign: 'center'},
         duration: 2000
       });
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Danger);
     }
   }
   

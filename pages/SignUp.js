@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
 import { Button, Input, Overlay } from 'react-native-elements';
+import { showMessage } from 'react-native-flash-message';
 
 import Container from '../components/Container';
 import { db, auth } from '../Firebase';
@@ -38,7 +39,16 @@ export default function SignUp(props) {
         props.navigation.navigate('Form', user);
       }
     } catch (e) {
-      Alert.alert(e.toString());
+      setIsLoading(false);
+      showMessage({
+        message: "\nError",
+        description: e.toString(),
+        type: "danger",
+        style: {height: '20%', width: '70%'},
+        titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
+        textStyle: {textAlign: 'center'},
+        duration: 2000
+      });
     }
   }
   
