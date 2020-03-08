@@ -38,7 +38,7 @@ export default function Settings(props) {
     setIsStatsLoading(true);
 
     try {
-      let response = await fetch(BACKEND_API);
+      let response = await fetch(BACKEND_API + `/${props.route.params.uid}`);
       let data = await response.json();
       
       let messageType = data.completed ? 'success' : 'danger';
