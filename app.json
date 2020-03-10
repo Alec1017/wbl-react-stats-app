@@ -3,6 +3,7 @@
   "displayName": "WblStatsApp",
   "expo": {
     "name": "WblStatsApp",
+    "icon": "./assets/sheet-icon.png",
     "slug": "expo-template-bare",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
@@ -12,6 +13,9 @@
       "ios",
       "android",
       "web"
-    ]
+    ],
+    "ios": {
+      "bundleIdentifier": "con.alecdifederico.wblstatsapp"
+    }
   }
 }
