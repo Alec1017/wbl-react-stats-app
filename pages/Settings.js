@@ -3,6 +3,7 @@ import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Container from '../components/Container';
 import { auth, db } from '../Firebase';
@@ -102,7 +103,7 @@ export default function Settings(props) {
 
   return (
     <Container>
-      <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: 10}}>
+      <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%')}}>
         <Button type="clear" title="Back" onPress={() => props.navigation.goBack()} />
       </View>
 

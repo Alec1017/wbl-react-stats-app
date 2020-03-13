@@ -3,6 +3,7 @@ import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
 import { Button, Overlay } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Container from '../components/Container';
 import StatRow from '../components/StatRow';
@@ -151,7 +152,7 @@ export default function Form(props) {
 
   return (
     <Container containerType="scroll">
-        <View style={{alignSelf: 'flex-end', marginRight: 20, marginTop: 10}}>
+        <View style={{alignSelf: 'flex-end', marginRight: 20, marginTop: hp('3%')}}>
           <Button type="clear" title="Settings" onPress={() => props.navigation.navigate('Settings', {isAdmin: props.route.params.isAdmin, isSubscribed: props.route.params.subscribed, uid: props.route.params.uid})} />
         </View>
         <Text style={styles.welcome}>Hey {props.route.params.firstName}, Enter your stats</Text>

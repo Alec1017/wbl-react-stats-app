@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
 import { Button, Input, Overlay } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Container from '../components/Container';
 import { db, auth } from '../Firebase';
@@ -54,7 +55,7 @@ export default function SignUp(props) {
   
   return (
     <Container>
-       <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: 10}}>
+       <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%')}}>
         <Button type="clear" title="Back" onPress={() => props.navigation.goBack()} />
       </View>
       
