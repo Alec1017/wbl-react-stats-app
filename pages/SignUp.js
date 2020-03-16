@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button, Input, Overlay } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Container from '../components/Container';
 import { db, auth } from '../Firebase';
@@ -61,56 +62,59 @@ export default function SignUp(props) {
       
       <Text style={styles.welcome}>Sign Up</Text>
 
-      <View style={{ width: '80%', marginTop: 30}}> 
-        <Input
-          label='First Name'
-          placeholder='John'
-          onChangeText={firstName => setFirstName(firstName)}
-          leftIcon={{ type: 'font-awesome', name: 'user-circle', size: 20 }}
-          leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
-        />
-      </View>
 
-      <View style={{ width: '80%', marginTop: 30}}> 
-        <Input
-          label='Last Name'
-          placeholder='Smith'
-          onChangeText={lastName => setLastName(lastName)}
-          leftIcon={{ type: 'font-awesome', name: 'user-circle', size: 20 }}
-          leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
-        />
-      </View>
-
-      <View style={{ width: '80%', marginTop: 30}}> 
-        <Input
-          label='Email Address'
-          placeholder='email@address.com'
-          onChangeText={email => setEmail(email)}
-          leftIcon={{ type: 'font-awesome', name: 'envelope', size: 20 }}
-          keyboardType='email-address'
-          leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
-        />
-      </View>
-
-      <View style={{ width: '80%', marginTop: 30}}> 
-        <Input
-          label='Password'
-          placeholder='password'
-          onChangeText={password => setPassword(password)}
-          leftIcon={{ type: 'font-awesome', name: 'lock', size: 24 }}
-          secureTextEntry={true}
-          leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
-        />
-      </View>
+      <KeyboardAwareScrollView style={{ width: '80%'}}>
+        <View style={{marginTop: 30}}> 
+          <Input
+            label='First Name'
+            placeholder='John'
+            onChangeText={firstName => setFirstName(firstName)}
+            leftIcon={{ type: 'font-awesome', name: 'user-circle', size: 20 }}
+            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
+          />
+        </View>
       
-      <View style={{width:'80%', marginTop: 30}}>
-        <Button
-          buttonStyle={{ height: 50 }}
-          titleStyle={{ fontWeight: 'bold'}}
-          title="Sign Up"
-          onPress={() => handleSignUp()}
-        />
-      </View>
+        <View style={{marginTop: 30}}> 
+          <Input
+            label='Last Name'
+            placeholder='Smith'
+            onChangeText={lastName => setLastName(lastName)}
+            leftIcon={{ type: 'font-awesome', name: 'user-circle', size: 20 }}
+            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
+          />
+        </View>
+ 
+        <View style={{marginTop: 30}}> 
+          <Input
+            label='Email Address'
+            placeholder='email@address.com'
+            onChangeText={email => setEmail(email)}
+            leftIcon={{ type: 'font-awesome', name: 'envelope', size: 20 }}
+            keyboardType='email-address'
+            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
+          />
+        </View>
+ 
+        <View style={{marginTop: 30}}> 
+          <Input
+            label='Password'
+            placeholder='password'
+            onChangeText={password => setPassword(password)}
+            leftIcon={{ type: 'font-awesome', name: 'lock', size: 24 }}
+            secureTextEntry={true}
+            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
+          />
+        </View>
+
+        <View style={{marginTop: 30}}>
+          <Button
+            buttonStyle={{ height: 50 }}
+            titleStyle={{ fontWeight: 'bold'}}
+            title="Sign Up"
+            onPress={() => handleSignUp()}
+          />
+        </View>
+      </KeyboardAwareScrollView>
 
       <Overlay 
           isVisible={isLoading}

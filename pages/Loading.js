@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, Image } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import Container from '../components/Container'
 import { db, auth } from '../Firebase';
@@ -26,8 +27,12 @@ export default function Login(props) {
 
   return (
     <Container>
-      <View style={{backgroundColor: 'black', height: '100%', width: '100%', flex: 1, justifyContent: 'center'}}>
-        <ActivityIndicator size="large" color="#ffffff" />
+      <View style={{backgroundColor: '#7CA1B4', height: '100%', width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Image
+          style={{ width: wp('60%') }}
+          source={require('../assets/wbl-logo.png')}
+          resizeMode='contain'
+        />
       </View>
     </Container>
   );
