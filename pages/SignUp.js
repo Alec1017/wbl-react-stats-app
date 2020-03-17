@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import { Button, Input, Overlay } from 'react-native-elements';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button, Input, } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -20,9 +20,20 @@ export default function SignUp(props) {
     setIsLoading(true);
 
     try {
-      const response = await auth.createUserWithEmailAndPassword(email, password);
+      if (firstName == '') {
+        throw "First name can't be empty"
+      }
 
-      if (response.user.uid) {
+      if (lastName == '') {
+        throw "Last name can't be emtpy"
+      }
+
+      let response = null;
+      if(firstName != '' && lastName != '') {
+        response = await auth.createUserWithEmailAndPassword(email, password);
+      }
+
+      if (response && response.user.uid) {
         const user = {
           uid: response.user.uid,
           firstName: firstName,
@@ -37,14 +48,22 @@ export default function SignUp(props) {
         db.collection('users')
           .doc(response.user.uid)
           .set(user)
-  
+        
         props.navigation.navigate('Form', user);
       }
     } catch (e) {
       setIsLoading(false);
+
+      let errorMessage = e.toString();
+      if (errorMessage.split(" ")[0] == 'Error:') {
+        errorMessage = errorMessage.split(" ");
+        errorMessage.shift();
+        errorMessage = errorMessage.join(' ');
+      }
+
       showMessage({
         message: "\nError",
-        description: e.toString(),
+        description: errorMessage,
         type: "danger",
         style: {height: '20%', width: '70%'},
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
@@ -61,7 +80,6 @@ export default function SignUp(props) {
       </View>
       
       <Text style={styles.welcome}>Sign Up</Text>
-
 
       <KeyboardAwareScrollView style={{ width: '80%'}}>
         <View style={{marginTop: 30}}> 
@@ -108,6 +126,7 @@ export default function SignUp(props) {
 
         <View style={{marginTop: 30}}>
           <Button
+            loading={isLoading}
             buttonStyle={{ height: 50 }}
             titleStyle={{ fontWeight: 'bold'}}
             title="Sign Up"
@@ -115,17 +134,6 @@ export default function SignUp(props) {
           />
         </View>
       </KeyboardAwareScrollView>
-
-      <Overlay 
-          isVisible={isLoading}
-          width="100%"
-          height="100%"
-          overlayBackgroundColor="rgba(0,0,0,0.1)"
-        >
-          <View style={{ flex: 1, justifyContent: 'center'}}>
-            <ActivityIndicator size="large" color="#ffffff" />
-          </View>
-        </Overlay>
     </Container>
   );
 }

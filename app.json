@@ -15,7 +15,10 @@
       "web"
     ],
     "ios": {
-      "bundleIdentifier": "con.alecdifederico.wblstatsapp"
-    }
+      "bundleIdentifier": "com.alecdifederico.wblstatsapp"
+    },
+    "assetBundlePatterns": [
+      "assets/*"
+    ]
   }
 }

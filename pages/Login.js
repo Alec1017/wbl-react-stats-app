@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import { Button, Input, Overlay } from 'react-native-elements';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button, Input } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 
 import Container from '../components/Container'
@@ -32,9 +32,17 @@ export default function Login(props) {
       
     } catch (e) {
       setIsLoading(false);
+
+      let errorMessage = e.toString();
+      if (errorMessage.split(" ")[0] == 'Error:') {
+        errorMessage = errorMessage.split(" ");
+        errorMessage.shift();
+        errorMessage = errorMessage.join(' ');
+      }
+
       showMessage({
         message: "\nError",
-        description: e.toString(),
+        description: errorMessage,
         type: "danger",
         style: {height: '20%', width: '70%'},
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
@@ -72,25 +80,16 @@ export default function Login(props) {
       
       <View style={{width:'80%', marginTop: 30}}>
         <Button
+          loading={isLoading}
           buttonStyle={{ height: 50 }}
           titleStyle={{ fontWeight: 'bold'}}
           title="Login"
           onPress={() => handleLogin()}
         />
       </View>
+
       <Button type="clear" title="No account yet? Sign up" onPress={() => props.navigation.navigate('SignUp')} />
       <Button type="clear" title="Forgot password?" onPress={() => props.navigation.navigate('PasswordReset')} />
-
-      <Overlay 
-          isVisible={isLoading}
-          width="100%"
-          height="100%"
-          overlayBackgroundColor="rgba(0,0,0,0.1)"
-        >
-          <View style={{ flex: 1, justifyContent: 'center'}}>
-            <ActivityIndicator size="large" color="#ffffff" />
-          </View>
-        </Overlay>
     </Container>
   );
 }

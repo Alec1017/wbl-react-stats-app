@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { Asset } from 'expo-asset';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import FlashMessage from 'react-native-flash-message';
@@ -15,6 +15,16 @@ import PasswordReset from './pages/PasswordReset';
 const Stack = createStackNavigator();
 
 function App() {
+  async function cacheImages() {
+    const loadingImage = Asset.fromModule(require('./assets/wbl-logo.png')).downloadAsync();
+
+    await Promise.all([loadingImage])
+  }
+  
+  useEffect(() => {
+    cacheImages();
+  }, [])
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false, gestureEnabled: false}}>
