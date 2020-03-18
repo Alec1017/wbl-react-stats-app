@@ -72,8 +72,6 @@ export default function StatRow(props) {
       );
     }
 
-
-
     statComponent = (
       <View style={styles.statRow}>
         <View style={styles.statTitle}>

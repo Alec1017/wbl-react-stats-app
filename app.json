@@ -15,10 +15,15 @@
       "web"
     ],
     "ios": {
-      "bundleIdentifier": "com.alecdifederico.wblstatsapp"
+      "bundleIdentifier": "con.alecdifederico.wblstatsapp"
     },
     "assetBundlePatterns": [
       "assets/*"
-    ]
+    ],
+    "splash": {
+      "image": "./assets/wbl-logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#7CA1B4"
+    }
   }
 }
