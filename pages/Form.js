@@ -20,6 +20,7 @@ export default function Form(props) {
   const [runsBattedIn, setRunsBattedIn] = useState(0);
   const [strikeouts, setStrikeouts] = useState(0);
   const [stolenBases, setStolenBases] = useState(0);
+  const [caughtStealing, setCaughtStealing] = useState(0);
   const [outs, setOuts] = useState(0);
 
   const [inningsPitched, setInningsPitched] = useState(0);
@@ -28,6 +29,7 @@ export default function Form(props) {
   const [pitchingStrikeouts, setPitchingStrikeouts] = useState(0);
   const [pitchingBaseOnBalls, setPitchingBaseOnBalls] = useState(0);
   const [saves, setSaves] = useState(0);
+  const [blownSaves, setBlownSaves] = useState(0);
   const [win, setWin] = useState(0);
   const [loss, setLoss] = useState(0);
 
@@ -75,6 +77,7 @@ export default function Form(props) {
       runsBattedIn,
       strikeouts,
       stolenBases,
+      caughtStealing,
       outs,
       inningsPitched,
       earnedRuns,
@@ -82,6 +85,7 @@ export default function Form(props) {
       pitchingStrikeouts,
       pitchingBaseOnBalls,
       saves,
+      blownSaves,
       win,
       loss,
       error,
@@ -130,6 +134,7 @@ export default function Form(props) {
     setRunsBattedIn(0);
     setStrikeouts(0);
     setStolenBases(0);
+    setCaughtStealing(0);
     setOuts(0);
 
     setInningsPitched(0);
@@ -138,6 +143,7 @@ export default function Form(props) {
     setPitchingStrikeouts(0);
     setPitchingBaseOnBalls(0);
     setSaves(0);
+    setBlownSaves(0);
     setWin(0);
     setLoss(0);
 
@@ -169,6 +175,7 @@ export default function Form(props) {
         <StatRow title="BB" state={baseOnBalls} action={setBaseOnBalls} />
         <StatRow title="RBI" state={runsBattedIn} action={setRunsBattedIn} />
         <StatRow title="SB" state={stolenBases} action={setStolenBases} />
+        <StatRow title="CS" state={caughtStealing} action={setCaughtStealing} />
 
         <Text style={styles.categoryText}>Pitching</Text>
 
@@ -178,6 +185,7 @@ export default function Form(props) {
         <StatRow title="K" state={pitchingStrikeouts} action={setPitchingStrikeouts} />
         <StatRow title="BB" state={pitchingBaseOnBalls} action={setPitchingBaseOnBalls} />
         <StatRow title="SV" state={saves} action={setSaves} />
+        <StatRow title="BS" state={blownSaves} action={setBlownSaves} />
         <StatRow title="W" state={win} action={setWin} />
         <StatRow title="L" state={loss} action={setLoss} />
 
