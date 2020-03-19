@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
-import { Button, Overlay } from 'react-native-elements';
+import { Button, Overlay, Icon } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
 import Container from '../components/Container';
 import StatRow from '../components/StatRow';
@@ -45,6 +46,7 @@ export default function Form(props) {
   const [opponents, setOpponents] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [title, setTitle] = useState(`Hey ${props.route.params.firstName}, Enter your stats`)
 
   useEffect(() => {
     db.collection('users').get().then(snapshot => {
@@ -156,13 +158,26 @@ export default function Form(props) {
     setSelectedOpponent(opponents[0]);
   }
 
-  return (
-    <Container containerType="scroll">
-        <View style={{alignSelf: 'flex-end', marginRight: 20, marginTop: hp('3%')}}>
-          <Button type="clear" title="Settings" onPress={() => props.navigation.navigate('Settings', {isAdmin: props.route.params.isAdmin, isSubscribed: props.route.params.subscribed, uid: props.route.params.uid})} />
+  function renderNavBar() {
+    return (
+      <View style={{marginTop: hp('4%'), flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{alignSelf: 'center', marginLeft: wp('5%')}}>
+          <Text style={{fontWeight: 'bold', color: '#ffffff', fontSize: 25}}>Enter your stats</Text>
         </View>
-        <Text style={styles.welcome}>Hey {props.route.params.firstName}, Enter your stats</Text>
+        <View style={{alignSelf: 'flex-end', marginRight: wp('3%'), alignItems: 'center'}}>
+          <Button 
+            type="clear" 
+            icon={<Icon name="settings" size={35} color="#ffffff" />} 
+            onPress={() => props.navigation.navigate('Settings', {isAdmin: props.route.params.isAdmin, isSubscribed: props.route.params.subscribed, uid: props.route.params.uid})} 
+          />
+        </View>
+      </View>
+    )
+  }
 
+  function renderContent() {
+    return (
+      <Container containerType="scroll">
         <Text style={styles.categoryText}>Hitting</Text>
         
         <StatRow title="1B" state={singles} action={setSingles} />
@@ -232,14 +247,28 @@ export default function Form(props) {
           </View>
         </Overlay>
     </Container>
+    );
+  }
+
+  return (
+    <ReactNativeParallaxHeader
+      title={`Hey ${props.route.params.firstName},\nEnter your stats`}
+      headerMaxHeight={hp('25%')}
+      headerMinHeight={hp('12%')}
+      alwaysShowTitle={false}
+      alwaysShowNavBar={false}
+      renderNavBar={renderNavBar}
+      renderContent={renderContent}
+      titleStyle={styles.title}
+    /> 
   )
 }
 
 
 const styles = StyleSheet.create({
-  welcome: {
+  title: {
     fontSize: 30,
-    textAlign: 'center',
+    textAlign: 'left',
     marginTop: 10,
     marginHorizontal: 10,
     fontWeight: 'bold'
@@ -249,11 +278,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     alignSelf: 'flex-start',
-    marginHorizontal: 10,
+    marginLeft: wp('5%'),
     marginTop: 30
   },
   button: {
-    width:'60%', 
+    width:'90%', 
     marginTop: 40, 
     marginBottom: 20
   }

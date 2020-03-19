@@ -101,12 +101,12 @@ export default function StatRow(props) {
 const styles = StyleSheet.create({
   statRow: {
     flexDirection: 'row',
-    width: '100%',
-    paddingHorizontal: 30,
+    width: '90%',
+    paddingLeft: 15,
     paddingVertical: 10,
     justifyContent: 'space-between',
     borderBottomColor: 'rgb(212, 212, 212)',
-    borderBottomWidth: 2 
+    borderBottomWidth: 1
   },
   statTitle: {
     justifyContent: 'center'
