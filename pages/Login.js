@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
-import { TextInput } from 'react-native-paper';
+import { TextInput, Button } from 'react-native-paper';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Container from '../components/Container'
 import { db, auth } from '../Firebase';
@@ -55,9 +55,9 @@ export default function Login(props) {
 
   return (
     <Container>
-      <Text style={styles.welcome}>WBL Stats Sheet</Text>
-      
-      <View style={{ width: '80%', marginTop: 30}}> 
+      <Text style={styles.title}>Sign In</Text>
+
+      <View style={{ width: '80%' }}>
         <TextInput 
           label='Email Address'
           placeholder='email@address.com'
@@ -65,11 +65,10 @@ export default function Login(props) {
           keyboardType='email-address'
           selectionColor='rgb(6, 53, 132)'
           underlineColor='#7CA1B4'
+          style={{ marginTop: 30 }}
           theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
         />
-      </View>
 
-      <View style={{ width: '80%', marginTop: 30}}> 
         <TextInput 
           label='Password'
           placeholder='password'
@@ -77,32 +76,49 @@ export default function Login(props) {
           secureTextEntry={true}
           selectionColor='rgb(6, 53, 132)'
           underlineColor='#7CA1B4'
+          style={{ marginTop: 20 }}
           theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
         />
-      </View>
-      
-      <View style={{width:'80%', marginTop: 30}}>
+
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <Button 
+            uppercase={false} 
+            color='#007bff'
+            labelStyle={{ marginRight: 0}}
+            onPress={() => props.navigation.navigate('PasswordReset')}>Forgot password?</Button>
+        </View>
+
         <Button
           loading={isLoading}
-          buttonStyle={{ height: 50 }}
-          titleStyle={{ fontWeight: 'bold'}}
-          title="Login"
+          mode='contained'
+          color='#007bff'
           onPress={() => handleLogin()}
-        />
-      </View>
+          style={{ marginTop: 15 }}
+          contentStyle={{ height: 50 }}
+          labelStyle={{ fontWeight: 'bold'}}
+        >
+          {isLoading ? 'Loading' : 'Login'}
+        </Button>
 
-      <Button type="clear" title="No account yet? Sign up" onPress={() => props.navigation.navigate('SignUp')} />
-      <Button type="clear" title="Forgot password?" onPress={() => props.navigation.navigate('PasswordReset')} />
+        <Button 
+          uppercase={false} 
+          color='#007bff' 
+          style={{ marginTop: 10 }}
+          onPress={() => props.navigation.navigate('SignUp')}
+        >
+          No account yet? Sign Up
+        </Button>
+   
+      </View>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  welcome: {
+  title: {
     fontSize: 30,
     textAlign: 'center',
-    marginTop: 30,
-    marginBottom: 10,
+    marginTop: hp('12%'),
     fontWeight: 'bold'
   },
   picker: {

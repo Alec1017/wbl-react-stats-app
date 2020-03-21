@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button, Input, } from 'react-native-elements';
+import { Icon, Button as ButtonElement } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { TextInput, Button } from 'react-native-paper';
 
 import Container from '../components/Container';
 import { db, auth } from '../Firebase';
@@ -75,64 +76,67 @@ export default function SignUp(props) {
   
   return (
     <Container>
-       <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%')}}>
-        <Button type="clear" title="Back" onPress={() => props.navigation.goBack()} />
+      <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%'), position: 'absolute', top: 0}}>
+        <ButtonElement type="clear" icon={<Icon name="arrow-left" type="font-awesome" color="#007bff" />}   onPress={() => props.navigation.goBack()} />
       </View>
       
-      <Text style={styles.welcome}>Sign Up</Text>
+      <Text style={styles.title}>Sign Up</Text>
 
       <KeyboardAwareScrollView style={{ width: '80%'}}>
-        <View style={{marginTop: 30}}> 
-          <Input
-            label='First Name'
-            placeholder='John'
-            onChangeText={firstName => setFirstName(firstName)}
-            leftIcon={{ type: 'font-awesome', name: 'user-circle', size: 20 }}
-            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
-          />
-        </View>
-      
-        <View style={{marginTop: 30}}> 
-          <Input
-            label='Last Name'
-            placeholder='Smith'
-            onChangeText={lastName => setLastName(lastName)}
-            leftIcon={{ type: 'font-awesome', name: 'user-circle', size: 20 }}
-            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
-          />
-        </View>
- 
-        <View style={{marginTop: 30}}> 
-          <Input
-            label='Email Address'
-            placeholder='email@address.com'
-            onChangeText={email => setEmail(email)}
-            leftIcon={{ type: 'font-awesome', name: 'envelope', size: 20 }}
-            keyboardType='email-address'
-            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
-          />
-        </View>
- 
-        <View style={{marginTop: 30}}> 
-          <Input
-            label='Password'
-            placeholder='password'
-            onChangeText={password => setPassword(password)}
-            leftIcon={{ type: 'font-awesome', name: 'lock', size: 24 }}
-            secureTextEntry={true}
-            leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
-          />
-        </View>
+        <TextInput 
+          label='First Name'
+          placeholder='John'
+          onChangeText={firstName => setFirstName(firstName)}
+          selectionColor='rgb(6, 53, 132)'
+          underlineColor='#7CA1B4'
+          style={{ marginTop: 30 }}
+          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+        />
 
-        <View style={{marginTop: 30}}>
-          <Button
-            loading={isLoading}
-            buttonStyle={{ height: 50 }}
-            titleStyle={{ fontWeight: 'bold'}}
-            title="Sign Up"
-            onPress={() => handleSignUp()}
-          />
-        </View>
+        <TextInput 
+          label='Last Name'
+          placeholder='Smith'
+          onChangeText={lastName => setLastName(lastName)}
+          selectionColor='rgb(6, 53, 132)'
+          underlineColor='#7CA1B4'
+          style={{ marginTop: 20 }}
+          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+        />
+
+        <TextInput 
+          label='Email Address'
+          placeholder='email@address.com'
+          onChangeText={email => setEmail(email)}
+          keyboardType='email-address'
+          selectionColor='rgb(6, 53, 132)'
+          underlineColor='#7CA1B4'
+          style={{ marginTop: 20 }}
+          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+        />
+
+        <TextInput 
+          label='Password'
+          placeholder='password'
+          onChangeText={password => setPassword(password)}
+          secureTextEntry={true}
+          selectionColor='rgb(6, 53, 132)'
+          underlineColor='#7CA1B4'
+          style={{ marginTop: 20 }}
+          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+        />
+
+        <Button
+          loading={isLoading}
+          mode='contained'
+          color='#007bff'
+          onPress={() => handleSignUp()}
+          style={{ marginTop: 20 }}
+          contentStyle={{ height: 50 }}
+          labelStyle={{ fontWeight: 'bold'}}
+        >
+          Sign up
+        </Button>
+ 
       </KeyboardAwareScrollView>
     </Container>
   );
@@ -140,10 +144,17 @@ export default function SignUp(props) {
 
 
 const styles = StyleSheet.create({
-  welcome: {
+  title: {
     fontSize: 30,
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: hp('12%'),
     fontWeight: 'bold'
-  }
+  },
+  top: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    paddingTop: hp('4%'),
+  },
 });
