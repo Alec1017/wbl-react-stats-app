@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button, Input } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
+import { TextInput } from 'react-native-paper';
 
 import Container from '../components/Container'
 import { db, auth } from '../Firebase';
@@ -57,24 +58,26 @@ export default function Login(props) {
       <Text style={styles.welcome}>WBL Stats Sheet</Text>
       
       <View style={{ width: '80%', marginTop: 30}}> 
-        <Input
+        <TextInput 
           label='Email Address'
           placeholder='email@address.com'
           onChangeText={email => setEmail(email)}
-          leftIcon={{ type: 'font-awesome', name: 'envelope', size: 20 }}
           keyboardType='email-address'
-          leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
+          selectionColor='rgb(6, 53, 132)'
+          underlineColor='#7CA1B4'
+          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
         />
       </View>
 
       <View style={{ width: '80%', marginTop: 30}}> 
-        <Input
+        <TextInput 
           label='Password'
           placeholder='password'
           onChangeText={password => setPassword(password)}
-          leftIcon={{ type: 'font-awesome', name: 'lock', size: 24 }}
           secureTextEntry={true}
-          leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
+          selectionColor='rgb(6, 53, 132)'
+          underlineColor='#7CA1B4'
+          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
         />
       </View>
       
