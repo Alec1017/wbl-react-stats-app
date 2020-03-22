@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, View, Alert } from 'react-native';
-import { Button } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { IconButton, Button } from 'react-native-paper';
 
 import Container from '../components/Container';
 import { auth, db } from '../Firebase';
 import { BACKEND_API } from 'react-native-dotenv';
-import { useEffect } from 'react';
 
 
 export default function Settings(props) {
@@ -103,52 +102,60 @@ export default function Settings(props) {
 
   return (
     <Container>
-      <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%')}}>
-        <Button type="clear" title="Back" onPress={() => props.navigation.goBack()} />
+      <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%'), position: 'absolute', top: 0}}>
+        <IconButton icon="arrow-left" color="#007bff" size={35} onPress={() => props.navigation.goBack()} />
       </View>
 
-      <Text style={styles.welcome}>Settings</Text>
-      
-      <View style={{width:'80%', marginTop: 30}}>
+      <Text style={styles.title}>Settings</Text>
+
+      <View style={{ width:'80%' }}>
         <Button
-          buttonStyle={{ height: 50, backgroundColor: '#ff4444' }}
-          titleStyle={{ fontWeight: 'bold'}}
-          title="Log out"
+          mode='contained'
+          color='#ff4444'
           onPress={() => logoutConfirmation()}
-        />
-      </View>
+          style={{ marginTop: 30 }}
+          contentStyle={{ height: 50 }}
+          labelStyle={{ fontWeight: 'bold'}}
+        >
+          Log Out
+        </Button>
 
-      <View style={{width:'80%', marginTop: 30}}>
         <Button
-          buttonStyle={{ height: 50 }}
-          titleStyle={{ fontWeight: 'bold'}}
-          title={subscribedText}
-          onPress={() => toggleEmailSubscription()}
+          mode='contained'
+          color='#007bff'
           loading={isEmailLoading}
-        />
-      </View>
+          onPress={() => toggleEmailSubscription()}
+          style={{ marginTop: 20 }}
+          contentStyle={{ height: 50 }}
+          labelStyle={{ fontWeight: 'bold'}}
+        >
+          {isEmailLoading ? '' : subscribedText}
+        </Button>
 
-      {isAdmin &&
-        <View style={{width:'80%', marginTop: 30}}>
+        {isAdmin &&
           <Button
+            mode='contained'
+            color='#00C851'
             loading={isStatsLoading}
-            buttonStyle={{ height: 50, backgroundColor: '#00C851' }}
-            titleStyle={{ fontWeight: 'bold'}}
-            title="Update Stat Sheet"
             onPress={() => updateStats()}
-          />
-        </View>
-      }
+            style={{ marginTop: 20 }}
+            contentStyle={{ height: 50 }}
+            labelStyle={{ fontWeight: 'bold'}}
+          >
+            {isStatsLoading ? 'Loading' : 'Update Stat Sheet'}
+          </Button>
+        }
+      </View>
     </Container>
   );
 }
 
 
 const styles = StyleSheet.create({
-  welcome: {
+  title: {
     fontSize: 30,
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: hp('12%'),
     fontWeight: 'bold'
   }
 });

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import * as Haptics from 'expo-haptics';
-import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
-import { Button, Input, Overlay } from 'react-native-elements';
+import { StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { TextInput, IconButton, Button } from 'react-native-paper';
 
 import Container from '../components/Container';
 import { auth } from '../Firebase';
@@ -50,55 +50,46 @@ export default function PasswordReset(props) {
   
   return (
     <Container>
-       <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%')}}>
-        <Button type="clear" title="Back" onPress={() => props.navigation.goBack()} />
-      </View>
-      
-      <View style={{width: '80%'}}>
-        <Text style={styles.welcome}>Forgot Password?</Text>
+      <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%'), position: 'absolute', top: 0}}>
+        <IconButton icon="arrow-left" color="#007bff" size={35} onPress={() => props.navigation.goBack()} />
       </View>
 
-      <View style={{ width: '80%', marginTop: 30}}> 
-        <Input
+      <Text style={styles.title}>Password</Text>
+      
+      <View style={{width: '80%'}}>
+        <TextInput 
           label='Email Address'
           placeholder='email@address.com'
           onChangeText={email => setEmail(email)}
-          leftIcon={{ type: 'font-awesome', name: 'envelope', size: 20 }}
           keyboardType='email-address'
-          leftIconContainerStyle={{ marginRight: 15, marginLeft: 0, paddingLeft: 0}}
+          selectionColor='rgb(6, 53, 132)'
+          underlineColor='#7CA1B4'
+          style={{ marginTop: 30 }}
+          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
         />
-      </View>
-      
-      <View style={{width:'80%', marginTop: 30}}>
-        <Button
-          buttonStyle={{ height: 50 }}
-          titleStyle={{ fontWeight: 'bold'}}
-          title="Send Reset Email"
-          onPress={() => handlePasswordReset()}
-        />
-      </View>
 
-      <Overlay 
-          isVisible={isLoading}
-          width="100%"
-          height="100%"
-          overlayBackgroundColor="rgba(0,0,0,0.1)"
+        <Button
+          loading={isLoading}
+          mode='contained'
+          color='#007bff'
+          onPress={() => handlePasswordReset()}
+          style={{ marginTop: 20 }}
+          contentStyle={{ height: 50 }}
+          labelStyle={{ fontWeight: 'bold'}}
         >
-          <View style={{ flex: 1, justifyContent: 'center'}}>
-            <ActivityIndicator size="large" color="#ffffff" />
-          </View>
-        </Overlay>
+          {isLoading ? 'Loading' : 'Send Reset Email'}
+        </Button>
+      </View>
     </Container>
   );
 }
 
 
 const styles = StyleSheet.create({
-  welcome: {
+  title: {
     fontSize: 30,
-    textAlign: 'left',
-    alignSelf: 'flex-start',
-    marginTop: 10,
+    textAlign: 'center',
+    marginTop: hp('12%'),
     fontWeight: 'bold'
   }
 });

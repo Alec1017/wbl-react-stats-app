@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as Haptics from 'expo-haptics';
-import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
-import { Button, Overlay, Icon } from 'react-native-elements';
+import { StyleSheet, Text, View, Alert } from 'react-native';
+import { Button, IconButton } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
@@ -46,7 +46,6 @@ export default function Form(props) {
   const [opponents, setOpponents] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [title, setTitle] = useState(`Hey ${props.route.params.firstName}, Enter your stats`)
 
   useEffect(() => {
     db.collection('users').get().then(snapshot => {
@@ -165,11 +164,7 @@ export default function Form(props) {
           <Text style={{fontWeight: 'bold', color: '#ffffff', fontSize: 25}}>Enter your stats</Text>
         </View>
         <View style={{alignSelf: 'flex-end', marginRight: wp('3%'), alignItems: 'center'}}>
-          <Button 
-            type="clear" 
-            icon={<Icon name="settings" size={35} color="#ffffff" />} 
-            onPress={() => props.navigation.navigate('Settings', {isAdmin: props.route.params.isAdmin, isSubscribed: props.route.params.subscribed, uid: props.route.params.uid})} 
-          />
+          <IconButton icon="settings" color="#ffffff" size={35} onPress={() => props.navigation.navigate('Settings', {isAdmin: props.route.params.isAdmin, isSubscribed: props.route.params.subscribed, uid: props.route.params.uid})} />
         </View>
       </View>
     )
@@ -227,25 +222,19 @@ export default function Form(props) {
           <StatRow title="Loss Score" state={loserScore} action={setLoserScore} />
         }
 
-        <View style={styles.button}>
+        <View style={{width: '90%'}}>
           <Button
-            buttonStyle={{ height: 50}}
-            titleStyle={{ fontWeight: 'bold'}}
-            title="Submit"
+            loading={isLoading}
+            mode='contained'
+            color='#007bff'
             onPress={() => submitConfirmation()}
-          />
+            style={{ marginTop: 40, marginBottom: 20 }}
+            contentStyle={{ height: 50 }}
+            labelStyle={{ fontWeight: 'bold'}}
+          >
+            {isLoading ? 'Loading' : 'Submit'}
+          </Button>
         </View>
-
-        <Overlay 
-          isVisible={isLoading}
-          width="100%"
-          height="100%"
-          overlayBackgroundColor="rgba(0,0,0,0.1)"
-        >
-          <View style={{ flex: 1, justifyContent: 'center'}}>
-            <ActivityIndicator size="large" color="#ffffff" />
-          </View>
-        </Overlay>
     </Container>
     );
   }

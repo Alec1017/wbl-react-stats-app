@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Icon, Button as ButtonElement } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, IconButton, Button } from 'react-native-paper';
 
 import Container from '../components/Container';
 import { db, auth } from '../Firebase';
@@ -77,7 +76,7 @@ export default function SignUp(props) {
   return (
     <Container>
       <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%'), position: 'absolute', top: 0}}>
-        <ButtonElement type="clear" icon={<Icon name="arrow-left" type="font-awesome" color="#007bff" />}   onPress={() => props.navigation.goBack()} />
+        <IconButton icon="arrow-left" color="#007bff" size={35} onPress={() => props.navigation.goBack()} />
       </View>
       
       <Text style={styles.title}>Sign Up</Text>
@@ -149,12 +148,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: hp('12%'),
     fontWeight: 'bold'
-  },
-  top: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    paddingTop: hp('4%'),
-  },
+  }
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Switch, Picker } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button } from 'react-native-paper';
 
 
 export default function StatRow(props) {
@@ -79,15 +79,23 @@ export default function StatRow(props) {
         </View>
         <View style={styles.statButtons}>
           <Button 
-            buttonStyle={styles.buttonLeft} 
-            titleStyle={{ fontWeight: 'bold', fontSize: 30 }}
-            onPress={() => { if (props.state > 0) props.action(props.state - 1) }} title="-">
+            mode="contained"
+            color="#007bff"
+            contentStyle={styles.buttonLeft} 
+            labelStyle={{ fontWeight: 'bold', fontSize: 30 }}
+            onPress={() => { if (props.state > 0) props.action(props.state - 1) }}
+          >
+            -
           </Button>
           {numberTicker}
           <Button 
-            buttonStyle={styles.buttonRight}
-            titleStyle={{ fontWeight: 'bold', fontSize: 30}}
-            onPress={() => props.action(props.state + 1)} title="+">
+            mode="contained"
+            color="rgb(6, 53, 132)"
+            contentStyle={styles.buttonRight}
+            labelStyle={{ fontWeight: 'bold', fontSize: 30 }}
+            onPress={() => props.action(props.state + 1)}
+          >
+            +
           </Button>
         </View>
       </View>
@@ -120,12 +128,13 @@ const styles = StyleSheet.create({
   },
   buttonLeft: {
     width: 60,
-    height: 60
+    height: 60,
+    alignSelf: 'center'
   },
   buttonRight: {
     width: 60,
     height: 60,
-    backgroundColor: 'rgb(6, 53, 132)'
+    alignSelf: 'center'
   },
   statValueContainer: {
     paddingHorizontal: 20,
