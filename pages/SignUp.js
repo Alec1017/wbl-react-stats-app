@@ -133,7 +133,7 @@ export default function SignUp(props) {
           contentStyle={{ height: 50 }}
           labelStyle={{ fontWeight: 'bold'}}
         >
-          Sign up
+          {isLoading ? 'Loading' : 'Sign Up'}
         </Button>
  
       </KeyboardAwareScrollView>
