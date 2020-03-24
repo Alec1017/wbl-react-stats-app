@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as Haptics from 'expo-haptics';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, ActionSheetIOS } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { IconButton, Button } from 'react-native-paper';
@@ -73,13 +73,19 @@ export default function Settings(props) {
   }
 
   function logoutConfirmation() {
-    Alert.alert(
-      'Are you sure you want to log out?',
-      '',
-      [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'OK', onPress: () => handleLogout()}
-      ]
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        title: 'Are you sure?',
+        message: 'You will be logged out of your account. Do you want to log out?',
+        options: ['Cancel', 'Log out'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 1) {
+          handleLogout();
+        }
+      },
     )
   }
 
