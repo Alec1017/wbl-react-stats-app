@@ -16,6 +16,7 @@
     "expo": "~36.0.0",
     "expo-haptics": "^8.0.0",
     "firebase": "^7.8.2",
+    "lottie-react-native": "^3.3.2",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "~0.61.4",

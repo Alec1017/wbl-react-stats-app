@@ -5,6 +5,7 @@ import { Button, IconButton } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
+import LottieView from 'lottie-react-native';
 
 import Container from '../components/Container';
 import StatRow from '../components/StatRow';
@@ -98,16 +99,29 @@ export default function Form(props) {
       isAggregated: false
     });
 
+
     setIsLoading(false);
     resetState();
 
+    const animation = (
+      <LottieView
+        autoPlay
+        loop={false}
+        style={{
+          width: 70,
+          height: 70
+        }}
+        source={require('../assets/checkmark.json')}
+      />
+    );
+
     showMessage({
-      message: "\nSuccess!",
-      description: "Your stats have been submitted",
+      message: "\nStats submitted",
+      description: animation,
       type: "success",
       style: {height: '20%', width: '70%'},
       titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
-      textStyle: {textAlign: 'center'},
+      textStyle: {alignSelf: 'center', justifyContent: 'center'},
       duration: 2000
     });
 
@@ -235,6 +249,15 @@ export default function Form(props) {
             {isLoading ? 'Loading' : 'Submit'}
           </Button>
         </View>
+
+        {/* <Modal isVisible={isModalVisible}>
+          <View style={{flex: 1, height: '20%', width: '70%'}}>
+            <Text>Hello!</Text>
+            <Button title="Hide modal" onPress={() => setIsModalVisible(false)} />
+          </View>
+        </Modal> */}
+
+
     </Container>
     );
   }
