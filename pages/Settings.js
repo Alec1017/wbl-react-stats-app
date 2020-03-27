@@ -91,7 +91,12 @@ export default function Settings(props) {
 
   function handleLogout() {
     auth.signOut();
-    props.navigation.navigate('Login');
+    props.navigation.reset({
+      index: 0,
+      routes: [
+        { name: 'Login'}
+      ]
+    });
 
     showMessage({
       message: "\nLog out success",
@@ -108,10 +113,6 @@ export default function Settings(props) {
 
   return (
     <Container>
-      <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%'), position: 'absolute', top: 0}}>
-        <IconButton icon="arrow-left" color="#007bff" size={35} onPress={() => props.navigation.goBack()} />
-      </View>
-
       <Text style={styles.title}>Settings</Text>
 
       <View style={{ width:'80%' }}>

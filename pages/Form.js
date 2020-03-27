@@ -12,6 +12,7 @@ import { db } from '../Firebase';
 
 
 export default function Form(props) {
+  console.log(props);
   const [singles, setSingles] = useState(0);
   const [doubles, setDoubles] = useState(0);
   const [triples, setTriples] = useState(0);
@@ -159,13 +160,8 @@ export default function Form(props) {
 
   function renderNavBar() {
     return (
-      <View style={{marginTop: hp('4%'), flexDirection: 'row', justifyContent: 'space-between'}}>
-        <View style={{alignSelf: 'center', marginLeft: wp('5%')}}>
-          <Text style={{fontWeight: 'bold', color: '#ffffff', fontSize: 25}}>Enter your stats</Text>
-        </View>
-        <View style={{alignSelf: 'flex-end', marginRight: wp('3%'), alignItems: 'center'}}>
-          <IconButton icon="settings" color="#ffffff" size={35} onPress={() => props.navigation.navigate('Settings', {isAdmin: props.route.params.isAdmin, isSubscribed: props.route.params.subscribed, uid: props.route.params.uid})} />
-        </View>
+      <View style={{marginTop: hp('4.5%'), alignSelf: 'center'}}>
+          <Text style={{fontWeight: 'bold', color: '#ffffff', fontSize: 21}}>Enter your stats</Text>
       </View>
     )
   }
@@ -239,16 +235,22 @@ export default function Form(props) {
     );
   }
 
+  const headerTitle = (
+    <View>
+      <Text style={styles.title}>Hey {props.route.params.firstName},</Text>
+      <Text style={styles.title}>Enter your stats</Text>
+    </View>
+  )
+
   return (
     <ReactNativeParallaxHeader
-      title={`Hey ${props.route.params.firstName},\nEnter your stats`}
-      headerMaxHeight={hp('25%')}
-      headerMinHeight={hp('12%')}
+      title={headerTitle}
+      headerMaxHeight={hp('23%')}
+      headerMinHeight={hp('10%')}
       alwaysShowTitle={false}
       alwaysShowNavBar={false}
       renderNavBar={renderNavBar}
       renderContent={renderContent}
-      titleStyle={styles.title}
     /> 
   )
 }
@@ -256,10 +258,9 @@ export default function Form(props) {
 
 const styles = StyleSheet.create({
   title: {
+    color: '#ffffff',
     fontSize: 30,
     textAlign: 'left',
-    marginTop: 10,
-    marginHorizontal: 10,
     fontWeight: 'bold'
   },
   categoryText: {

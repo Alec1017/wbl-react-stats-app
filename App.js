@@ -3,6 +3,7 @@ import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import FlashMessage from 'react-native-flash-message';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import { db, auth } from './Firebase';
 
@@ -14,6 +15,16 @@ import PasswordReset from './pages/PasswordReset';
 
 
 const Stack = createStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
+
+function TabNavigation(props) {
+  return (
+    <Tab.Navigator initialRouteName='Form'>
+      <Tab.Screen name='Form' component={Form} initialParams={props.route.params} />
+      <Tab.Screen name='Settings' component={Settings} initialParams={props.route.params} />
+    </Tab.Navigator>
+  );
+};
 
 function App() {
   const [initialRoute, setInitialRoute] = useState('Login');
@@ -53,8 +64,7 @@ function App() {
           <Stack.Screen name='Login' component={Login} initialParams={userData} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="PasswordReset" component={PasswordReset} />
-          <Stack.Screen name='Form' component={Form} initialParams={userData} />
-          <Stack.Screen name='Settings' component={Settings} />
+          <Stack.Screen name='Form' component={TabNavigation} initialParams={userData} />
         </Stack.Navigator>
         <FlashMessage position="center" />
       </NavigationContainer>
