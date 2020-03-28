@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import FlashMessage from 'react-native-flash-message';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { db, auth } from './Firebase';
 
@@ -19,9 +21,33 @@ const Tab = createMaterialBottomTabNavigator();
 
 function TabNavigation(props) {
   return (
-    <Tab.Navigator initialRouteName='Form'>
-      <Tab.Screen name='Form' component={Form} initialParams={props.route.params} />
-      <Tab.Screen name='Settings' component={Settings} initialParams={props.route.params} />
+    <Tab.Navigator 
+      initialRouteName='Form' 
+      activeColor="#007bff" 
+      inactiveColor="rgb(130, 130, 130)" 
+      barStyle={{ backgroundColor: '#F5FCFF', borderTopWidth: 1, borderTopColor: 'rgb(212, 212, 212)', height: hp('8%') }}
+    >
+      <Tab.Screen 
+        name='Form' 
+        component={Form} 
+        initialParams={props.route.params} 
+        options={{
+          tabBarLabel: 'Sheet',
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="form" size={22} color={color} />
+          ),
+        }} 
+      />
+      <Tab.Screen 
+        name='Settings' 
+        component={Settings} 
+        initialParams={props.route.params} 
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="md-settings" size={25} color={color} />
+          ),
+        }} 
+      />
     </Tab.Navigator>
   );
 };
