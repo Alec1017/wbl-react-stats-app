@@ -43,7 +43,6 @@ function TabNavigation(props) {
         component={Form} 
         initialParams={props.route.params} 
         options={{
-          
           tabBarLabel: 'Sheet',
           tabBarIcon: ({ color }) => (
             <AntDesign name="form" size={22} color={color} />
