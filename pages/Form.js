@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, View, Alert } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
@@ -13,7 +13,6 @@ import { db } from '../Firebase';
 
 
 export default function Form(props) {
-  console.log(props);
   const [singles, setSingles] = useState(0);
   const [doubles, setDoubles] = useState(0);
   const [triples, setTriples] = useState(0);
@@ -245,15 +244,6 @@ export default function Form(props) {
             {isLoading ? 'Loading' : 'Submit'}
           </Button>
         </View>
-
-        {/* <Modal isVisible={isModalVisible}>
-          <View style={{flex: 1, height: '20%', width: '70%'}}>
-            <Text>Hello!</Text>
-            <Button title="Hide modal" onPress={() => setIsModalVisible(false)} />
-          </View>
-        </Modal> */}
-
-
     </Container>
     );
   }
