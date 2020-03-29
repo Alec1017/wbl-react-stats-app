@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { LineChart } from 'react-native-chart-kit';
+import { ActivityIndicator } from 'react-native-paper';
+import LottieView from 'lottie-react-native';
 
 
 import Container from '../components/Container';
@@ -47,14 +49,34 @@ export default function Analytics({ route }) {
       }
 
       setAverages(cumulation);
-      setCurrentAverage(Number(averages[averages.length - 1]).toFixed(3));
+      setCurrentAverage(Number(cumulation[cumulation.length - 1]).toFixed(3));
     }
 
     getGames();
   }, []);
+
+  if (averages.length < 5) {
+    return (
+      <Container type='scroll'>
+        <Text style={styles.title}>Analytics</Text>
+        <LottieView
+          autoPlay
+          loop={false}
+          style={{
+            width: wp('80%')
+          }}
+          speed={2}
+          source={require('../assets/graph.json')}
+        />
+        <View style={{width: wp('80%')}}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Play at least 5 games to see analytics</Text>
+        </View>
+      </Container>
+    )
+  }
   
 
-  if (averages.length > 0) {
+  if (averages.length > 0 && currentAverage !== '') {
     return (
       <Container type='scroll'>
         <Text style={styles.title}>Analytics</Text>
@@ -108,6 +130,7 @@ export default function Analytics({ route }) {
     return (
       <Container type='scroll'>
         <Text style={styles.title}>Analytics</Text>
+        <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
       </Container>
     );
   }
