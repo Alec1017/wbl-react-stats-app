@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^2.0.0-rc.2",
     "@react-native-community/masked-view": "^0.1.6",
     "@react-native-firebase/app": "^6.3.4",
     "@react-native-firebase/auth": "^6.3.4",
@@ -37,9 +38,9 @@
     "react-native-safe-area-context": "^0.7.2",
     "react-native-screens": "^2.0.0-beta.2",
     "react-native-sticky-parallax-header": "0.0.61",
+    "react-native-svg": "9.13.3",
     "react-native-unimodules": "~0.7.0",
-    "react-native-web": "~0.11.7",
-    "react-native-svg": "9.13.3"
+    "react-native-web": "~0.11.7"
   },
   "devDependencies": {
     "@babel/core": "~7.6.0",
