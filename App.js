@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import FlashMessage from 'react-native-flash-message';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
+import { Ionicons, AntDesign, Entypo } from '@expo/vector-icons';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { db, auth } from './Firebase';
@@ -14,6 +14,7 @@ import Login from './pages/Login';
 import Form from './pages/Form';
 import Settings from './pages/Settings';
 import PasswordReset from './pages/PasswordReset';
+import Analytics from './pages/Analytics';
 
 
 const Stack = createStackNavigator();
@@ -27,6 +28,16 @@ function TabNavigation(props) {
       inactiveColor="rgb(130, 130, 130)" 
       barStyle={{ backgroundColor: '#F5FCFF', borderTopWidth: 1, borderTopColor: 'rgb(212, 212, 212)', height: hp('8%') }}
     >
+      <Tab.Screen 
+        name='Analytics' 
+        component={Analytics} 
+        initialParams={props.route.params} 
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Entypo name="bar-graph" size={22} color={color} />
+          ),
+        }} 
+      />
       <Tab.Screen 
         name='Form' 
         component={Form} 
