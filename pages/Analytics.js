@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ActivityIndicator } from 'react-native-paper';
+import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
 
 import Container from '../components/Container';
@@ -94,58 +95,73 @@ export default function Analytics({ route }) {
 
     getGames();
   }, []);
-  
-  if(!isLoading) {
-    if (battingAverages.length > gamesThreshold && currentBattingAverage !== '') {
-      return (
-        <Container containerType='scroll'>
-          <Text style={styles.title}>Analytics</Text>
-    
-          <View style={{marginTop: 30}}>
-            <Text style={{fontSize: 20, fontWeight: 'bold' }}>Batting AVG: {currentBattingAverage}</Text>
-            <AnalyticsChart averages={battingAverages} leagueAverage={leagueBattingAverage} gameFrequency={2} />
-          </View>
 
-          <View style={{marginTop: 30}}>
-            <Text style={{fontSize: 20, fontWeight: 'bold' }}>ERA: {currentERA}</Text>
-            <AnalyticsChart averages={ERAs} leagueAverage={leagueERA} gameFrequency={2} />
-          </View>
-        </Container>
-      );
+  function renderContent() {
+    if(!isLoading) {
+      if (battingAverages.length > gamesThreshold && currentBattingAverage !== '') {
+        return (
+          <Container containerType='scroll'>
+            <View style={{marginTop: 30}}>
+              <Text style={{fontSize: 20, fontWeight: 'bold' }}>Batting AVG: {currentBattingAverage}</Text>
+              <AnalyticsChart averages={battingAverages} leagueAverage={leagueBattingAverage} gameFrequency={2} />
+            </View>
+  
+            <View style={{marginTop: 30}}>
+              <Text style={{fontSize: 20, fontWeight: 'bold' }}>ERA: {currentERA}</Text>
+              <AnalyticsChart averages={ERAs} leagueAverage={leagueERA} gameFrequency={2} />
+            </View>
+          </Container>
+        );
+      } else {
+        return (
+          <Container type='scroll'>
+            <Image
+              style={{
+                marginTop: 30,
+                height: hp('30%'),
+                width: wp('80%')
+              }}
+              resizeMode="contain"
+              source={require('../assets/chart.png')}
+            />
+            <View style={{width: wp('80%')}}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Play at least {gamesThreshold} games to see analytics</Text>
+            </View>
+          </Container>
+        );
+      }
     } else {
       return (
         <Container type='scroll'>
-          <Text style={styles.title}>Analytics</Text>
-          <Image
-            style={{
-              marginTop: 30,
-              height: hp('30%'),
-              width: wp('80%')
-            }}
-            resizeMode="contain"
-            source={require('../assets/chart.png')}
-          />
-          <View style={{width: wp('80%')}}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Play at least {gamesThreshold} games to see analytics</Text>
-          </View>
+          <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
         </Container>
       );
     }
-  } else {
-    return (
-      <Container type='scroll'>
-        <Text style={styles.title}>Analytics</Text>
-        <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
-      </Container>
-    );
   }
+
+  const headerTitle = (
+    <View>
+      <Text style={styles.title}>Analytics</Text>
+    </View>
+  );
+
+  return (
+    <ReactNativeParallaxHeader
+      title={headerTitle}
+      headerMaxHeight={hp('23%')}
+      headerMinHeight={hp('10%')}
+      alwaysShowTitle={true}
+      alwaysShowNavBar={false}
+      renderContent={renderContent}
+    /> 
+  );
 }
 
 const styles = StyleSheet.create({
   title: {
+    color: '#ffffff',
     fontSize: 30,
-    textAlign: 'center',
-    marginTop: hp('12%'),
+    textAlign: 'left',
     fontWeight: 'bold'
   }
 });
