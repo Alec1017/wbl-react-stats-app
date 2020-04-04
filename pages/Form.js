@@ -253,7 +253,7 @@ export default function Form(props) {
       <Text style={styles.title}>Hey {props.route.params.firstName},</Text>
       <Text style={styles.title}>Enter your stats</Text>
     </View>
-  )
+  );
 
   return (
     <ReactNativeParallaxHeader
@@ -265,7 +265,7 @@ export default function Form(props) {
       renderNavBar={renderNavBar}
       renderContent={renderContent}
     /> 
-  )
+  );
 }
 
 

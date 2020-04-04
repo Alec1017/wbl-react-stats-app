@@ -25,76 +25,76 @@ export default function Analytics({ route }) {
 
 
   useEffect(() => {
-    async function getGames() {
-      const games = await db.collection('games').get()
-        .then(snapshot => {
-          let games = [];
-
-          snapshot.forEach(doc => { 
-            let game = doc.data();
-            games.push(game);
-          });
-          return games;
-        });
-
-      let cumulation = [];
-      let cumulationERA = [];
-      let total = {
-        hits: 0,
-        leagueHits: 0,
-        atBats: 0,
-        leagueAtBats: 0,
-        earnedRuns: 0,
-        leagueEarnedRuns: 0,
-        inningsPitched: 0,
-        leagueInningsPitched: 0
-      };
-
-      for (const game of games) {
-        const hits = game.singles + game.doubles + game.triples + game.homeRuns;
-        const atBats = hits + game.outs + game.strikeouts;
-        const earnedRuns = game.earnedRuns;
-        const inningsPitched = game.inningsPitched;
-
-        // if (game.uid == route.params.uid) {
-        if (game.uid == 'RpsfglyXyebDRxfO40ud3PU4iIC2') {
-          total.hits += hits;
-          total.atBats += atBats;
-          total.earnedRuns += earnedRuns;
-          total.inningsPitched += inningsPitched;
-
-          if (atBats > 0) {
-            cumulation.push(total.hits / total.atBats);
-          }
-
-          if (inningsPitched > 0) {
-            cumulationERA.push((total.earnedRuns * 3) / total.inningsPitched);
-          }
-        }
-
-        total.leagueHits += hits;
-        total.leagueAtBats += atBats;
-        total.leagueEarnedRuns += earnedRuns;
-        total.leagueInningsPitched += inningsPitched;
-      }
-
-      if (total.leagueAtBats > 0) {
-        setLeagueBattingAverage(total.leagueHits / total.leagueAtBats);
-      }
-
-      if (total.leagueInningsPitched > 0) {
-        setLeagueERA((total.leagueEarnedRuns * 3) / total.leagueInningsPitched);
-      }
-
-      setBattingAverages(cumulation);
-      setERAs(cumulationERA);
-      setCurrentBattingAverage(Number(cumulation[cumulation.length - 1]).toFixed(3));
-      setCurrentERA(Number(cumulationERA[cumulationERA.length - 1]).toFixed(2));
-      setIsLoading(false);
-    }
-
     getGames();
   }, []);
+
+  async function getGames() {
+    const games = await db.collection('games').get()
+      .then(snapshot => {
+        let games = [];
+
+        snapshot.forEach(doc => { 
+          let game = doc.data();
+          games.push(game);
+        });
+        return games;
+      });
+
+    let cumulation = [];
+    let cumulationERA = [];
+    let total = {
+      hits: 0,
+      leagueHits: 0,
+      atBats: 0,
+      leagueAtBats: 0,
+      earnedRuns: 0,
+      leagueEarnedRuns: 0,
+      inningsPitched: 0,
+      leagueInningsPitched: 0
+    };
+
+    for (const game of games) {
+      const hits = game.singles + game.doubles + game.triples + game.homeRuns;
+      const atBats = hits + game.outs + game.strikeouts;
+      const earnedRuns = game.earnedRuns;
+      const inningsPitched = game.inningsPitched;
+
+      // if (game.uid == route.params.uid) {
+      if (game.uid == 'RpsfglyXyebDRxfO40ud3PU4iIC2') {
+        total.hits += hits;
+        total.atBats += atBats;
+        total.earnedRuns += earnedRuns;
+        total.inningsPitched += inningsPitched;
+
+        if (atBats > 0) {
+          cumulation.push(total.hits / total.atBats);
+        }
+
+        if (inningsPitched > 0) {
+          cumulationERA.push((total.earnedRuns * 3) / total.inningsPitched);
+        }
+      }
+
+      total.leagueHits += hits;
+      total.leagueAtBats += atBats;
+      total.leagueEarnedRuns += earnedRuns;
+      total.leagueInningsPitched += inningsPitched;
+    }
+
+    if (total.leagueAtBats > 0) {
+      setLeagueBattingAverage(total.leagueHits / total.leagueAtBats);
+    }
+
+    if (total.leagueInningsPitched > 0) {
+      setLeagueERA((total.leagueEarnedRuns * 3) / total.leagueInningsPitched);
+    }
+
+    setBattingAverages(cumulation);
+    setERAs(cumulationERA);
+    setCurrentBattingAverage(Number(cumulation[cumulation.length - 1]).toFixed(3));
+    setCurrentERA(Number(cumulationERA[cumulationERA.length - 1]).toFixed(2));
+    setIsLoading(false);
+  }
 
   function renderContent() {
     if(!isLoading) {
