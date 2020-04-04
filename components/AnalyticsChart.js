@@ -27,6 +27,7 @@ export default function AnalyticsChart(props) {
       withInnerLines={false}
       withShadow={false}
       fromZero={true}
+      setMax={props.setMax}
       chartConfig={{
         backgroundColor: "#007bff",
         backgroundGradientFrom: "#007bff",
