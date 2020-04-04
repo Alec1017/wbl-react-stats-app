@@ -106,12 +106,12 @@ export default function Analytics({ route }) {
           <Container containerType='scroll'>
             <View style={{marginTop: 30}}>
               <Text style={{fontSize: 20, fontWeight: 'bold' }}>Batting AVG: {currentBattingAverage}</Text>
-              <AnalyticsChart averages={battingAverages} leagueAverage={leagueBattingAverage} gameFrequency={2} setMax={1} />
+              <AnalyticsChart averages={battingAverages} leagueAverage={leagueBattingAverage} gameFrequency={5} setMax={1} />
             </View>
   
             <View style={{marginTop: 30}}>
               <Text style={{fontSize: 20, fontWeight: 'bold' }}>ERA: {currentERA}</Text>
-              <AnalyticsChart averages={ERAs} leagueAverage={leagueERA} gameFrequency={2} setMax={calcStatMax(2, leagueERA, Math.max(...ERAs))} />
+              <AnalyticsChart averages={ERAs} leagueAverage={leagueERA} gameFrequency={5} setMax={calcStatMax(2, leagueERA, Math.max(...ERAs))} />
             </View>
           </Container>
         );
