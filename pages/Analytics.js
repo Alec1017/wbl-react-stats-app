@@ -20,7 +20,7 @@ export default function Analytics({ route }) {
   const [leagueBattingAverage, setLeagueBattingAverage] = useState(0);
   const [leagueERA, setLeagueERA] = useState(0);
 
-  const [gamesThreshold, setGamesThreshold] = useState(3);
+  const [gamesThreshold, setGamesThreshold] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
 
 
@@ -59,8 +59,7 @@ export default function Analytics({ route }) {
       const earnedRuns = game.earnedRuns;
       const inningsPitched = game.inningsPitched;
 
-      // if (game.uid == route.params.uid) {
-      if (game.uid == 'RpsfglyXyebDRxfO40ud3PU4iIC2') {
+      if (game.uid == route.params.uid) {
         total.hits += hits;
         total.atBats += atBats;
         total.earnedRuns += earnedRuns;
