@@ -117,26 +117,30 @@ export default function Analytics({ route }) {
         );
       } else {
         return (
-          <Container type='scroll'>
-            <Image
-              style={{
-                marginTop: 30,
-                height: hp('30%'),
-                width: wp('80%')
-              }}
-              resizeMode="contain"
-              source={require('../assets/chart.png')}
-            />
-            <View style={{width: wp('80%')}}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Play at least {gamesThreshold} games to see analytics</Text>
+          <Container>
+            <View style={{height: hp('80%')}}>
+              <Image
+                style={{
+                  marginTop: 30,
+                  height: hp('30%'),
+                  width: wp('80%')
+                }}
+                resizeMode="contain"
+                source={require('../assets/chart.png')}
+              />
+              <View style={{width: wp('80%')}}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Play at least {gamesThreshold} games to see analytics</Text>
+              </View>
             </View>
           </Container>
         );
       }
     } else {
       return (
-        <Container type='scroll'>
-          <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
+        <Container>
+          <View style={{height: hp('80%')}}>
+            <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
+          </View>
         </Container>
       );
     }
