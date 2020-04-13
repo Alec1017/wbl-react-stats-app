@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { TextInput, IconButton, Button } from 'react-native-paper';
+import { TextInput, IconButton, Button, ToggleButton } from 'react-native-paper';
 
 import Container from '../components/Container';
 import { db, auth } from '../Firebase';
@@ -15,6 +15,7 @@ export default function SignUp(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [division, setDivision] = useState(0)
 
   async function handleSignUp() {
     setIsLoading(true);
@@ -26,6 +27,10 @@ export default function SignUp(props) {
 
       if (lastName == '') {
         throw "Last name can't be emtpy"
+      }
+
+      if (typeof division !== 'number') {
+        throw "Please select a division"
       }
 
       let response = null;
@@ -40,7 +45,8 @@ export default function SignUp(props) {
           lastName: lastName,
           email: email,
           isAdmin: false,
-          subscribed: true
+          subscribed: true,
+          division: division
         }
 
         setIsLoading(false);
@@ -124,6 +130,33 @@ export default function SignUp(props) {
           theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
         />
 
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20}}>
+          <Text style={styles.divisionText}>Your Division</Text>
+          <Text>{division}</Text>
+
+          <ToggleButton.Row
+            onValueChange={value => setDivision(value)}
+          >
+            <ToggleButton
+              icon="numeric-1-circle-outline"
+              status={1 == division ? 'checked' : 'unchecked'}
+              value={1}
+            />
+
+            <ToggleButton
+              icon="numeric-2-circle-outline"
+              status={2 == division ? 'checked' : 'unchecked'}
+              value={2}
+            />
+
+            <ToggleButton
+              icon="numeric-3-circle-outline"
+              status={3 == division ? 'checked' : 'unchecked'}
+              value={3}
+            />
+          </ToggleButton.Row>
+        </View>
+
         <Button
           loading={isLoading}
           mode='contained'
@@ -148,5 +181,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: hp('12%'),
     fontWeight: 'bold'
-  }
+  },
+  divisionText: {
+    fontSize: 20,
+    alignSelf: 'center',
+  },
 });
