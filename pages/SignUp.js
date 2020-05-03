@@ -132,7 +132,6 @@ export default function SignUp(props) {
 
         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20}}>
           <Text style={styles.divisionText}>Your Division</Text>
-          <Text>{division}</Text>
 
           <ToggleButton.Row
             onValueChange={value => setDivision(value)}
@@ -147,12 +146,6 @@ export default function SignUp(props) {
               icon="numeric-2-circle-outline"
               status={2 == division ? 'checked' : 'unchecked'}
               value={2}
-            />
-
-            <ToggleButton
-              icon="numeric-3-circle-outline"
-              status={3 == division ? 'checked' : 'unchecked'}
-              value={3}
             />
           </ToggleButton.Row>
         </View>

@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import FlashMessage from 'react-native-flash-message';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { Ionicons, AntDesign, Entypo } from '@expo/vector-icons';
+import { Ionicons, AntDesign, Entypo, FontAwesome } from '@expo/vector-icons';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { db, auth } from './Firebase';
@@ -15,6 +15,7 @@ import Form from './pages/Form';
 import Settings from './pages/Settings';
 import PasswordReset from './pages/PasswordReset';
 import Analytics from './pages/Analytics';
+import Standings from './pages/Standings';
 
 
 const Stack = createStackNavigator();
@@ -46,6 +47,16 @@ function TabNavigation(props) {
           tabBarLabel: 'Sheet',
           tabBarIcon: ({ color }) => (
             <AntDesign name="form" size={22} color={color} />
+          ),
+        }} 
+      />
+      <Tab.Screen 
+        name='Standings' 
+        component={Standings} 
+        initialParams={props.route.params} 
+        options={{
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="table" size={22} color={color} />
           ),
         }} 
       />
