@@ -3,7 +3,7 @@ import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, View, ActionSheetIOS } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { IconButton, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
 import Container from '../components/Container';
@@ -14,8 +14,8 @@ import { BACKEND_API } from 'react-native-dotenv';
 export default function Settings(props) {
   const [isEmailLoading, setIsEmailLoading] = useState(false);
   const [isStatsLoading, setIsStatsLoading] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(props.route.params.isAdmin);
-  const [isSubscribed, setIsSubscribed] = useState(props.route.params.isSubscribed);
+  const [isAdmin, setIsAdmin] = useState(props.route.params.userData.isAdmin);
+  const [isSubscribed, setIsSubscribed] = useState(props.route.params.userData.isSubscribed);
   const [subscribedText, setSubscribedText] = useState('Unsubscribe from emails')
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function Settings(props) {
 
   async function toggleEmailSubscription() {
     setIsEmailLoading(true);
-    await db.collection('users').doc(props.route.params.uid).update({
+    await db.collection('users').doc(props.route.params.userData.uid).update({
       subscribed: !isSubscribed
     });
     setIsSubscribed(!isSubscribed);
@@ -39,7 +39,7 @@ export default function Settings(props) {
     setIsStatsLoading(true);
 
     try {
-      let response = await fetch(BACKEND_API + `/${props.route.params.uid}`);
+      let response = await fetch(BACKEND_API + `/${props.route.params.userData.uid}`);
       let data = await response.json();
       
       let messageType = data.completed ? 'success' : 'danger';

@@ -37,8 +37,8 @@ export default function Form(props) {
 
   const [error, setError] = useState(0);
 
-  const [player, setPlayer] = useState(props.route.params.firstName + ' ' + props.route.params.lastName);
-  const [uid, setUID] = useState(props.route.params.uid);
+  const [player, setPlayer] = useState(props.route.params.userData.firstName + ' ' + props.route.params.userData.lastName);
+  const [uid, setUID] = useState(props.route.params.userData.uid);
   const [isCaptain, setIsCaptain] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
   const [winnerScore, setWinnerScore] = useState(0);
@@ -49,18 +49,15 @@ export default function Form(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    db.collection('users').get().then(snapshot => {
-      let opponents = [];
-      snapshot.forEach(doc => {
-        let opponent = doc.data().firstName + ' ' + doc.data().lastName;
+    let opponents = [];
+    props.route.params.users.forEach(user => {
+      if (user.uid != props.route.params.userData.uid) {
+        opponents.push(user.firstName + ' ' + user.lastName);
+      }
+    })
 
-        if (doc.data().uid != player.uid) {
-          opponents.push(opponent);
-        }
-      });
-      setSelectedOpponent(opponents[0]);
-      setOpponents(opponents);
-    });
+    setSelectedOpponent(opponents[0]);
+    setOpponents(opponents);
   }, []);
 
   async function addGame() {
@@ -250,7 +247,7 @@ export default function Form(props) {
 
   const headerTitle = (
     <View>
-      <Text style={styles.title}>Hey {props.route.params.firstName},</Text>
+      <Text style={styles.title}>Hey {props.route.params.userData.firstName},</Text>
       <Text style={styles.title}>Enter your stats</Text>
     </View>
   );

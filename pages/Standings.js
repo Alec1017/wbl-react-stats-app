@@ -4,68 +4,29 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { ActivityIndicator, DataTable } from 'react-native-paper';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
-
 import Container from '../components/Container';
-import { db } from '../Firebase';
 
 
 export default function Standings(props) {
-  const [games, setGames] = useState([]);
-  const [users, setUsers] = useState([]);
   const [standings, setStandings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect(() => {
-    getUsers();
-    getGames();
-  }, []);
-
-  if (games.length != 0 && users.length != 0 && isLoading) {
     calculateStandings();
-  }
-
-  async function getUsers() {
-    const users = await db.collection('users').get()
-      .then(snapshot => {
-        let users = [];
-
-        snapshot.forEach(doc => { 
-          let user = doc.data();
-          users.push(user);
-        });
-        return users;
-      });
-
-    setUsers(users);
-  }
-
-  async function getGames() {
-    const games = await db.collection('games').get()
-      .then(snapshot => {
-        let games = [];
-
-        snapshot.forEach(doc => { 
-          let game = doc.data();
-          games.push(game);
-        });
-        return games;
-      });
-
-    setGames(games)
-  }
+  }, []);
 
   function calculateStandings() {
     let standingsDict = {}
-    for (user of users) {
+    for (const user of props.route.params.users) {
       let fullName = `${user.firstName} ${user.lastName}`;
       let userDivision = user.division;
-      let userGames = games.filter(game => game.player == fullName)
+      let userGames = props.route.params.games.filter(game => game.player == fullName)
 
       let gamesWon = 0;
       let gamesLost = 0;
 
-      for (game of userGames) {
+      for (const game of userGames) {
         if (game.isCaptain && game.isGameWon) {
           gamesWon++;
         }

@@ -4,13 +4,11 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { ActivityIndicator } from 'react-native-paper';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
-
 import Container from '../components/Container';
 import AnalyticsChart from '../components/AnalyticsChart';
-import { db } from '../Firebase';
 
 
-export default function Analytics({ route }) {
+export default function Analytics(props) {
   const [battingAverages, setBattingAverages] = useState([]);
   const [ERAs, setERAs] = useState([]);
 
@@ -25,21 +23,10 @@ export default function Analytics({ route }) {
 
 
   useEffect(() => {
-    getGames();
+    buildAnalytics();
   }, []);
 
-  async function getGames() {
-    const games = await db.collection('games').get()
-      .then(snapshot => {
-        let games = [];
-
-        snapshot.forEach(doc => { 
-          let game = doc.data();
-          games.push(game);
-        });
-        return games;
-      });
-
+  async function buildAnalytics() {
     let cumulation = [];
     let cumulationERA = [];
     let total = {
@@ -53,13 +40,13 @@ export default function Analytics({ route }) {
       leagueInningsPitched: 0
     };
 
-    for (const game of games) {
+    for (const game of props.route.params.games) {
       const hits = game.singles + game.doubles + game.triples + game.homeRuns;
       const atBats = hits + game.outs + game.strikeouts;
       const earnedRuns = game.earnedRuns;
       const inningsPitched = game.inningsPitched;
 
-      if (game.uid == route.params.uid) {
+      if (game.uid == props.route.params.userData.uid) {
         total.hits += hits;
         total.atBats += atBats;
         total.earnedRuns += earnedRuns;

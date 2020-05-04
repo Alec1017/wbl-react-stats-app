@@ -76,8 +76,40 @@ function TabNavigation(props) {
 
 function App() {
   const [initialRoute, setInitialRoute] = useState('Login');
-  const [userData, setUserData] = useState({})
+  const [userData, setUserData] = useState({});
+  const [games, setGames] = useState([]);
+  const [users, setUsers] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
+
+  async function getUsers() {
+    const users = await db.collection('users').get()
+      .then(snapshot => {
+        let users = [];
+
+        snapshot.forEach(doc => { 
+          let user = doc.data();
+          users.push(user);
+        });
+        return users;
+      });
+
+    setUsers(users);
+  }
+
+  async function getGames() {
+    const games = await db.collection('games').get()
+      .then(snapshot => {
+        let games = [];
+
+        snapshot.forEach(doc => { 
+          let game = doc.data();
+          games.push(game);
+        });
+        return games;
+      });
+
+    setGames(games)
+  }
 
   useEffect(() => {
     SplashScreen.preventAutoHide();
@@ -97,11 +129,14 @@ function App() {
         setInitialRoute('Login')
       }
 
+      getGames();
+      getUsers();
+
       setDataLoaded(true);
     })
   }, [])
 
-  if (dataLoaded) {
+  if (dataLoaded && games.length != 0 && users.length != 0) {
     setTimeout(() => {
       SplashScreen.hide();
     }, 250);
@@ -109,10 +144,10 @@ function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName={initialRoute} screenOptions={{headerShown: false, gestureEnabled: false}}>
-          <Stack.Screen name='Login' component={Login} initialParams={userData} />
+          <Stack.Screen name='Login' component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="PasswordReset" component={PasswordReset} />
-          <Stack.Screen name='Form' component={TabNavigation} initialParams={userData} />
+          <Stack.Screen name='Form' component={TabNavigation} initialParams={{userData, games, users}} />
         </Stack.Navigator>
         <FlashMessage position="center" />
       </NavigationContainer>
