@@ -88,7 +88,7 @@ export default function Analytics(props) {
 
   function renderContent() {
     if(!isLoading) {
-      if (battingAverages.length > gamesThreshold && currentBattingAverage !== '') {
+      if (battingAverages.length >= gamesThreshold && currentBattingAverage !== '') {
         return (
           <Container containerType='scroll'>
             <View style={{marginTop: 30}}>

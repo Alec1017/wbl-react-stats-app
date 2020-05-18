@@ -45,6 +45,7 @@ export default function Form(props) {
   const [loserScore, setLoserScore] = useState(0);
   const [selectedOpponent, setSelectedOpponent] = useState('');
   const [opponents, setOpponents] = useState([]);
+  const [totalInnings, setTotalInnings] = useState(3);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -92,8 +93,8 @@ export default function Form(props) {
       isGameWon,
       winnerScore,
       loserScore,
-      selectedOpponent,
-      isAggregated: false
+      selectedOpponent: (isCaptain ? selectedOpponent : null),
+      totalInnings
     });
 
 
@@ -166,6 +167,7 @@ export default function Form(props) {
     setWinnerScore(0);
     setLoserScore(0);
     setSelectedOpponent(opponents[0]);
+    setTotalInnings(3);
   }
 
   function renderNavBar() {
@@ -226,6 +228,9 @@ export default function Form(props) {
         }
         {isCaptain &&
           <StatRow title="Loss Score" state={loserScore} action={setLoserScore} />
+        }
+        {isCaptain &&
+          <StatRow title="Tot. Innings" state={totalInnings} action={setTotalInnings} />
         }
 
         <View style={{width: '90%'}}>
