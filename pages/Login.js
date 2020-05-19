@@ -27,8 +27,12 @@ export default function Login(props) {
           .get()
 
         setIsLoading(false);
+
+        if (Object.keys(user.data()).length === 0) {
+          throw "User doesn't exist"
+        }
   
-        props.navigation.navigate('Form', user.data());
+        props.navigation.navigate('Form', {userData: user.data()});
       }
       
     } catch (e) {
@@ -39,6 +43,7 @@ export default function Login(props) {
         errorMessage = errorMessage.split(" ");
         errorMessage.shift();
         errorMessage = errorMessage.join(' ');
+        errorMessage = "Username/Password is incorrect"
       }
 
       showMessage({

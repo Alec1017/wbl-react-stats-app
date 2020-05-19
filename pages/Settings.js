@@ -15,7 +15,7 @@ export default function Settings(props) {
   const [isEmailLoading, setIsEmailLoading] = useState(false);
   const [isStatsLoading, setIsStatsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(props.route.params.userData.isAdmin);
-  const [isSubscribed, setIsSubscribed] = useState(props.route.params.userData.isSubscribed);
+  const [isSubscribed, setIsSubscribed] = useState(props.route.params.userData.subscribed);
   const [subscribedText, setSubscribedText] = useState('Unsubscribe from emails')
 
   useEffect(() => {

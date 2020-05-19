@@ -52,7 +52,7 @@ export default function Form(props) {
   useEffect(() => {
     let opponents = [];
     props.route.params.users.forEach(user => {
-      if (user.uid != props.route.params.userData.uid) {
+      if (user.uid != uid) {
         opponents.push(user.firstName + ' ' + user.lastName);
       }
     })

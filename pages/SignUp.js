@@ -15,7 +15,7 @@ export default function SignUp(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [division, setDivision] = useState(0)
+  const [division, setDivision] = useState(null)
 
   async function handleSignUp() {
     setIsLoading(true);
@@ -55,7 +55,7 @@ export default function SignUp(props) {
           .doc(response.user.uid)
           .set(user)
         
-        props.navigation.navigate('Form', user);
+        props.navigation.navigate('Form', {userData: user});
       }
     } catch (e) {
       setIsLoading(false);
