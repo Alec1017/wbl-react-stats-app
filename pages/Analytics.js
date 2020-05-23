@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ActivityIndicator } from 'react-native-paper';
-import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
-import Container from '../components/Container';
+import Header from '../components/Header';
 import AnalyticsChart from '../components/AnalyticsChart';
 
 
@@ -90,7 +89,7 @@ export default function Analytics(props) {
     if(!isLoading) {
       if (battingAverages.length >= gamesThreshold && currentBattingAverage !== '') {
         return (
-          <Container containerType='scroll'>
+          <View>
             <View style={{marginTop: 30}}>
               <Text style={{fontSize: 20, fontWeight: 'bold' }}>Batting AVG: {currentBattingAverage}</Text>
               <AnalyticsChart averages={battingAverages} leagueAverage={leagueBattingAverage} gameFrequency={5} setMax={1} />
@@ -100,62 +99,38 @@ export default function Analytics(props) {
               <Text style={{fontSize: 20, fontWeight: 'bold' }}>ERA: {currentERA}</Text>
               <AnalyticsChart averages={ERAs} leagueAverage={leagueERA} gameFrequency={5} setMax={calcStatMax(2, leagueERA, Math.max(...ERAs))} />
             </View>
-          </Container>
+          </View>
         );
       } else {
         return (
-          <Container>
-            <View style={{height: hp('80%')}}>
-              <Image
-                style={{
-                  marginTop: 30,
-                  height: hp('30%'),
-                  width: wp('80%')
-                }}
-                resizeMode="contain"
-                source={require('../assets/chart.png')}
-              />
-              <View style={{width: wp('80%')}}>
-                <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Play at least {gamesThreshold} games to see analytics</Text>
-              </View>
+          <View style={{height: hp('80%'), paddingTop: wp('18%')}}>
+            <Image
+              style={{
+                marginTop: 30,
+                height: hp('30%'),
+                width: wp('80%')
+              }}
+              resizeMode="contain"
+              source={require('../assets/chart.png')}
+            />
+            <View style={{width: wp('80%')}}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Play at least {gamesThreshold} games to see analytics</Text>
             </View>
-          </Container>
+          </View>
         );
       }
     } else {
       return (
-        <Container>
           <View style={{height: hp('80%')}}>
             <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
           </View>
-        </Container>
       );
     }
   }
 
-  const headerTitle = (
-    <View>
-      <Text style={styles.title}>Analytics</Text>
-    </View>
-  );
-
   return (
-    <ReactNativeParallaxHeader
-      title={headerTitle}
-      headerMaxHeight={hp('23%')}
-      headerMinHeight={hp('10%')}
-      alwaysShowTitle={true}
-      alwaysShowNavBar={false}
-      renderContent={renderContent}
-    /> 
+    <Header title="Analytics"> 
+      {renderContent()}
+    </Header>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    color: '#ffffff',
-    fontSize: 30,
-    textAlign: 'left',
-    fontWeight: 'bold'
-  }
-});

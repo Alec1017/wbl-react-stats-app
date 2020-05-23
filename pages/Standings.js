@@ -1,20 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, } from 'react-native';
+import { View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ActivityIndicator, DataTable } from 'react-native-paper';
-import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
-import Container from '../components/Container';
+import Header from '../components/Header';
 
 
 export default function Standings(props) {
   const [standings, setStandings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-
   useEffect(() => {
     calculateStandings();
   }, []);
+
+  // const onRefresh = useCallback(async () => {
+  //   setRefreshing(true);
+ 
+  //     try {
+  //       let response = await fetch(
+  //         'http://www.mocky.io/v2/5e3315753200008abe94d3d8?mocky-delay=2000ms',
+  //       );
+  //       let responseJson = await response.json();
+  //       console.log(responseJson);
+  //       setRefreshing(false)
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  
+  // }, [refreshing]);
 
   function calculateStandings() {
     let standingsDict = {}
@@ -56,9 +70,8 @@ export default function Standings(props) {
   function renderContent() {
     if(!isLoading && standings.length != 0) {
       return (
-        <Container containerType='scroll'>
+        <View>
           {standings.map(([division, row], i) => {
-
             row.sort(function(a, b){ return b[1] - a[1]});
 
             return (
@@ -81,42 +94,20 @@ export default function Standings(props) {
               </DataTable>
             );
           })}
-        </Container>
+        </View>
       );
     } else {
       return (
-        <Container>
-          <View style={{height: hp('80%')}}>
-            <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
-          </View>
-        </Container>
+        <View style={{height: hp('80%')}}>
+          <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
+        </View>
       );
     }
   }
 
-  const headerTitle = (
-    <View>
-      <Text style={styles.title}>Standings</Text>
-    </View>
-  );
-
   return (
-    <ReactNativeParallaxHeader
-      title={headerTitle}
-      headerMaxHeight={hp('23%')}
-      headerMinHeight={hp('10%')}
-      alwaysShowTitle={true}
-      alwaysShowNavBar={false}
-      renderContent={renderContent}
-    /> 
+    <Header title="Standings">
+      {renderContent()}
+    </Header>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    color: '#ffffff',
-    fontSize: 30,
-    textAlign: 'left',
-    fontWeight: 'bold'
-  }
-});

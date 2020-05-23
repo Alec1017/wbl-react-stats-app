@@ -5,7 +5,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 export default function Container(props) {
   let container;
   if (props.containerType == 'scroll') {
-    container = <ScrollView contentContainerStyle={styles.scrollContainer}>{props.children}</ScrollView>;
+    container = <ScrollView {...props} contentContainerStyle={styles.scrollContainer}>{props.children}</ScrollView>;
   } else {
     container = <View style={styles.container}>{props.children}</View>
   }

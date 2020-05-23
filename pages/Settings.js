@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as Haptics from 'expo-haptics';
-import { StyleSheet, Text, View, ActionSheetIOS } from 'react-native';
+import { StyleSheet, View, ActionSheetIOS } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-paper';
-import ReactNativeParallaxHeader from 'react-native-parallax-header';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-import Container from '../components/Container';
+import Header from '../components/Header';
 import { auth, db } from '../Firebase';
 import { BACKEND_API } from 'react-native-dotenv';
 
@@ -112,75 +111,66 @@ export default function Settings(props) {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   }
 
-  function renderContent() {
-    return (
-      <Container>
-        <View style={{ width:'80%' }}>
-          <Button
-            mode='contained'
-            color='#ff4444'
-            onPress={() => logoutConfirmation()}
-            style={{ marginTop: 30 }}
-            contentStyle={{ height: 50 }}
-            labelStyle={{ fontWeight: 'bold'}}
-          >
-            Log Out
-          </Button>
-
-          <Button
-            mode='contained'
-            color='#007bff'
-            loading={isEmailLoading}
-            onPress={() => toggleEmailSubscription()}
-            style={{ marginTop: 20 }}
-            contentStyle={{ height: 50 }}
-            labelStyle={{ fontWeight: 'bold'}}
-          >
-            {isEmailLoading ? '' : subscribedText}
-          </Button>
-
-          {isAdmin &&
-            <Button
-              mode='contained'
-              color='#00C851'
-              loading={isStatsLoading}
-              onPress={() => updateStats()}
-              style={{ marginTop: 20 }}
-              contentStyle={{ height: 50 }}
-              labelStyle={{ fontWeight: 'bold'}}
-            >
-              {isStatsLoading ? 'Loading' : 'Update Stat Sheet'}
-            </Button>
-          }
-        </View>
-      </Container>
-    );
-  }
-
-  const headerTitle = (
-    <View>
-      <Text style={styles.title}>Settings</Text>
-    </View>
-  );
-
   return (
-    <ReactNativeParallaxHeader
-      title={headerTitle}
-      headerMaxHeight={hp('23%')}
-      headerMinHeight={hp('10%')}
-      alwaysShowTitle={true}
-      alwaysShowNavBar={false}
-      renderContent={renderContent}
-    /> 
+    <Header title="Settings" disableScroll={true}> 
+      <View style={styles.container}>
+        <Button
+          mode='contained'
+          color='#ff4444'
+          onPress={() => logoutConfirmation()}
+          style={styles.button}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
+        >
+          Log Out
+        </Button>
+
+        <Button
+          mode='contained'
+          color='#007bff'
+          loading={isEmailLoading}
+          onPress={() => toggleEmailSubscription()}
+          style={styles.button}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
+        >
+          {isEmailLoading ? '' : subscribedText}
+        </Button>
+
+        {isAdmin &&
+          <Button
+            mode='contained'
+            color='#00C851'
+            loading={isStatsLoading}
+            onPress={() => updateStats()}
+            style={styles.button}
+            contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonLabel}
+          >
+            {isStatsLoading ? 'Loading' : 'Update Stat Sheet'}
+          </Button>
+        }
+      </View>
+    </Header>
   );
 }
 
 
 const styles = StyleSheet.create({
-  title: {
-    color: '#ffffff',
-    fontSize: 30,
-    textAlign: 'left',
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    width: wp('80%')
+  },
+  button: {
+    alignSelf: 'stretch',
+    marginTop: 20
+  },
+  buttonContent: {
+    height: 50
+  },
+  buttonLabel: {
     fontWeight: 'bold'
   }
 });

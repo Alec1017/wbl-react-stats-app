@@ -4,10 +4,9 @@ import { StyleSheet, Text, View, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import ReactNativeParallaxHeader from 'react-native-parallax-header';
 import LottieView from 'lottie-react-native';
 
-import Container from '../components/Container';
+import Header from '../components/Header';
 import StatRow from '../components/StatRow';
 import { db } from '../Firebase';
 
@@ -170,17 +169,9 @@ export default function Form(props) {
     setTotalInnings(3);
   }
 
-  function renderNavBar() {
-    return (
-      <View style={{marginTop: hp('4.5%'), alignSelf: 'center'}}>
-          <Text style={{fontWeight: 'bold', color: '#ffffff', fontSize: 21}}>Enter your stats</Text>
-      </View>
-    )
-  }
-
   function renderContent() {
     return (
-      <Container containerType="scroll">
+      <View style={styles.container}>
         <Text style={styles.categoryText}>Hitting</Text>
         
         <StatRow title="1B" state={singles} action={setSingles} />
@@ -246,7 +237,7 @@ export default function Form(props) {
             {isLoading ? 'Loading' : 'Submit'}
           </Button>
         </View>
-    </Container>
+    </View>
     );
   }
 
@@ -258,15 +249,9 @@ export default function Form(props) {
   );
 
   return (
-    <ReactNativeParallaxHeader
-      title={headerTitle}
-      headerMaxHeight={hp('23%')}
-      headerMinHeight={hp('10%')}
-      alwaysShowTitle={false}
-      alwaysShowNavBar={false}
-      renderNavBar={renderNavBar}
-      renderContent={renderContent}
-    /> 
+    <Header title="Enter your stats"> 
+      {renderContent()}
+    </Header>
   );
 }
 
@@ -290,5 +275,11 @@ const styles = StyleSheet.create({
     width:'90%', 
     marginTop: 40, 
     marginBottom: 20
-  }
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    width: wp('95%')
+  },
 });
