@@ -3,8 +3,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://cz-b82.anonymous.wbl-react-stats-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.cz-b82.anonymous.wbl-react-stats-app.exp.direct",
+  "ngrokPid": 67022,
   "webpackServerPort": null
 }

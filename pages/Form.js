@@ -169,8 +169,8 @@ export default function Form(props) {
     setTotalInnings(3);
   }
 
-  function renderContent() {
-    return (
+  return (
+    <Header title="Enter your stats" disableRefresh={true}> 
       <View style={styles.container}>
         <Text style={styles.categoryText}>Hitting</Text>
         
@@ -237,20 +237,7 @@ export default function Form(props) {
             {isLoading ? 'Loading' : 'Submit'}
           </Button>
         </View>
-    </View>
-    );
-  }
-
-  const headerTitle = (
-    <View>
-      <Text style={styles.title}>Hey {props.route.params.userData.firstName},</Text>
-      <Text style={styles.title}>Enter your stats</Text>
-    </View>
-  );
-
-  return (
-    <Header title="Enter your stats"> 
-      {renderContent()}
+      </View>
     </Header>
   );
 }

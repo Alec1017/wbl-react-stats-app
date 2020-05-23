@@ -112,7 +112,7 @@ export default function Settings(props) {
   }
 
   return (
-    <Header title="Settings" disableScroll={true}> 
+    <Header title="Settings" disableScroll={true} disableRefresh={true}> 
       <View style={styles.container}>
         <Button
           mode='contained'

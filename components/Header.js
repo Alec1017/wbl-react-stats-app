@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View, RefreshControl } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const HEADER_MAX_HEIGHT = Math.round(hp('23%'));
 const HEADER_MIN_HEIGHT = Math.round(hp('10%'));
@@ -43,6 +43,16 @@ export default class Header extends Component {
         extrapolate: 'clamp',
     });
 
+    const refreshControlComponent = (
+        <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={() => {
+                this.setState({ refreshing: true });
+                setTimeout(() => this.setState({ refreshing: false }), 1000);
+            }}
+        />
+    )
+
     return (
       <View style={styles.fill}>
         <Animated.ScrollView
@@ -54,15 +64,7 @@ export default class Header extends Component {
                 [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
                 { useNativeDriver: true },
             )}
-            refreshControl={
-                <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={() => {
-                    this.setState({ refreshing: true });
-                    setTimeout(() => this.setState({ refreshing: false }), 1000);
-                }}
-                />
-            }
+            refreshControl={this.props.disableRefresh ? false : refreshControlComponent}
           contentInset={{ top: HEADER_MAX_HEIGHT }}
           contentOffset={{ y: -HEADER_MAX_HEIGHT }}
         >
