@@ -4,13 +4,14 @@ import { StyleSheet, View, ActionSheetIOS } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { Button } from 'react-native-paper';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { connect } from 'react-redux'
 
 import Header from '../components/Header';
 import { auth, db } from '../Firebase';
 import { BACKEND_API } from 'react-native-dotenv';
 
 
-export default function Settings(props) {
+const Settings = (props) => {
   const [isEmailLoading, setIsEmailLoading] = useState(false);
   const [isStatsLoading, setIsStatsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(props.route.params.userData.isAdmin);
@@ -174,3 +175,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 });
+
+const mapStateToProps = state => ({
+  loading: (state.games.loading || state.users.loading),
+  games: state.games.games,
+  users: state.users.users,
+  hasErrors: (state.games.hasErrors || state.users.hasErrors),
+})
+
+export default connect(mapStateToProps)(Settings)

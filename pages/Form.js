@@ -5,13 +5,14 @@ import { Button } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
+import { connect } from 'react-redux'
 
 import Header from '../components/Header';
 import StatRow from '../components/StatRow';
 import { db } from '../Firebase';
 
 
-export default function Form(props) {
+const Form = (props) => {
   const [singles, setSingles] = useState(0);
   const [doubles, setDoubles] = useState(0);
   const [triples, setTriples] = useState(0);
@@ -50,7 +51,7 @@ export default function Form(props) {
 
   useEffect(() => {
     let opponents = [];
-    props.route.params.users.forEach(user => {
+    props.users.forEach(user => {
       if (user.uid != uid) {
         opponents.push(user.firstName + ' ' + user.lastName);
       }
@@ -270,3 +271,12 @@ const styles = StyleSheet.create({
     width: wp('95%')
   },
 });
+
+const mapStateToProps = state => ({
+  loading: (state.games.loading || state.users.loading),
+  games: state.games.games,
+  users: state.users.users,
+  hasErrors: (state.games.hasErrors || state.users.hasErrors),
+})
+
+export default connect(mapStateToProps)(Form)

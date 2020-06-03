@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Image } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ActivityIndicator } from 'react-native-paper';
+import { connect } from 'react-redux'
 
 import Header from '../components/Header';
 import AnalyticsChart from '../components/AnalyticsChart';
 
 
-export default function Analytics(props) {
+const Analytics = (props) => {
   const [battingAverages, setBattingAverages] = useState([]);
   const [ERAs, setERAs] = useState([]);
 
@@ -18,7 +19,6 @@ export default function Analytics(props) {
   const [leagueERA, setLeagueERA] = useState(0);
 
   const [gamesThreshold, setGamesThreshold] = useState(5);
-  const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Analytics(props) {
       leagueInningsPitched: 0
     };
 
-    for (const game of props.route.params.games) {
+    for (const game of props.games) {
       const hits = game.singles + game.doubles + game.triples + game.homeRuns;
       const atBats = hits + game.outs + game.strikeouts;
       const earnedRuns = game.earnedRuns;
@@ -78,7 +78,6 @@ export default function Analytics(props) {
     setERAs(cumulationERA);
     setCurrentBattingAverage(Number(cumulation[cumulation.length - 1]).toFixed(3));
     setCurrentERA(Number(cumulationERA[cumulationERA.length - 1]).toFixed(2));
-    setIsLoading(false);
   }
 
   function calcStatMax(addition, leagueValue, highestUserValue) {
@@ -86,7 +85,7 @@ export default function Analytics(props) {
   }
 
   function renderContent() {
-    if(!isLoading) {
+    if(!props.loading) {
       if (battingAverages.length >= gamesThreshold && currentBattingAverage !== '') {
         return (
           <View>
@@ -134,3 +133,12 @@ export default function Analytics(props) {
     </Header>
   );
 }
+
+const mapStateToProps = state => ({
+  loading: (state.games.loading || state.users.loading),
+  games: state.games.games,
+  users: state.users.users,
+  hasErrors: (state.games.hasErrors || state.users.hasErrors),
+})
+
+export default connect(mapStateToProps)(Analytics)

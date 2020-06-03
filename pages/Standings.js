@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ActivityIndicator, DataTable } from 'react-native-paper';
+import { connect } from 'react-redux'
 
 import Header from '../components/Header';
 
 
-export default function Standings(props) {
+const Standings = (props) => {
   const [standings, setStandings] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     calculateStandings();
@@ -32,10 +32,10 @@ export default function Standings(props) {
 
   function calculateStandings() {
     let standingsDict = {}
-    for (const user of props.route.params.users) {
+    for (const user of props.users) {
       let fullName = `${user.firstName} ${user.lastName}`;
       let userDivision = user.division;
-      let userGames = props.route.params.games.filter(game => game.player == fullName)
+      let userGames = props.games.filter(game => game.player == fullName)
 
       let gamesWon = 0;
       let gamesLost = 0;
@@ -64,11 +64,10 @@ export default function Standings(props) {
     
     standingsTuple.sort(function(a, b){ return a[0] - b[0]});
     setStandings(standingsTuple);
-    setIsLoading(false);
   }
 
   function renderContent() {
-    if(!isLoading && standings.length != 0) {
+    if(!props.loading && standings.length != 0) {
       return (
         <View>
           {standings.map(([division, row], i) => {
@@ -111,3 +110,12 @@ export default function Standings(props) {
     </Header>
   );
 }
+
+const mapStateToProps = state => ({
+  loading: (state.games.loading || state.users.loading),
+  games: state.games.games,
+  users: state.users.users,
+  hasErrors: (state.games.hasErrors || state.users.hasErrors),
+})
+
+export default connect(mapStateToProps)(Standings)
