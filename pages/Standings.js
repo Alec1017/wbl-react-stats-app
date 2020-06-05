@@ -14,22 +14,6 @@ const Standings = (props) => {
     calculateStandings();
   }, []);
 
-  // const onRefresh = useCallback(async () => {
-  //   setRefreshing(true);
- 
-  //     try {
-  //       let response = await fetch(
-  //         'http://www.mocky.io/v2/5e3315753200008abe94d3d8?mocky-delay=2000ms',
-  //       );
-  //       let responseJson = await response.json();
-  //       console.log(responseJson);
-  //       setRefreshing(false)
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  
-  // }, [refreshing]);
-
   function calculateStandings() {
     let standingsDict = {}
     for (const user of props.users) {
@@ -105,7 +89,7 @@ const Standings = (props) => {
   }
 
   return (
-    <Header title="Standings">
+    <Header title="Standings" disableRefresh={true}>
       {renderContent()}
     </Header>
   );

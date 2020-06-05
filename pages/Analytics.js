@@ -128,7 +128,7 @@ const Analytics = (props) => {
   }
 
   return (
-    <Header title="Analytics"> 
+    <Header title="Analytics" disableRefresh={true}> 
       {renderContent()}
     </Header>
   );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View, RefreshControl } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const HEADER_MAX_HEIGHT = Math.round(hp('23%'));
 const HEADER_MIN_HEIGHT = Math.round(hp('10%'));
