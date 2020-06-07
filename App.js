@@ -5,42 +5,34 @@ import { createStackNavigator } from '@react-navigation/stack'
 import FlashMessage from 'react-native-flash-message'
 import { Provider, connect } from 'react-redux'
 
-import { db, auth } from './Firebase'
 import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import PasswordReset from './pages/PasswordReset'
 import TabNavigation from './components/TabNavigation'
-import store from './store';
+
 import { fetchGames } from './actions/gamesActions'
 import { fetchUsers } from './actions/usersActions'
+import { loginCurrentUser } from './actions/currentUserActions'
+import { store, persistor } from './store'
+import { PersistGate } from 'redux-persist/integration/react'
+
 
 const Stack = createStackNavigator()
 
-const App = (props) => {
+const App = props => {
   const [initialRoute, setInitialRoute] = useState('Login')
-  const [userData, setUserData] = useState({})
 
   useEffect(() => {
     SplashScreen.preventAutoHide()
 
-    auth.onAuthStateChanged(async user => {
-      if (user) {
-        const currentUser = await db
-          .collection('users')
-          .doc(user.uid)
-          .get()
-        
-        if (currentUser != null) {
-          setInitialRoute('Form')
-          setUserData(currentUser.data())
-        } 
-      } else {
-        setInitialRoute('Login')
-      }
+    if (Object.keys(props.currentUser).length !== 0) {
+      setInitialRoute('Form')
+    } else {
+      setInitialRoute('Login')
+    }
 
-      props.fetchGames()
-      props.fetchUsers()
-    })
+    props.fetchGames()
+    props.fetchUsers()
   }, [])
 
   if (!props.loading) {
@@ -54,7 +46,7 @@ const App = (props) => {
           <Stack.Screen name='Login' component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="PasswordReset" component={PasswordReset} />
-          <Stack.Screen name='Form' component={TabNavigation} initialParams={{userData}} />
+          <Stack.Screen name='Form' component={TabNavigation} />
         </Stack.Navigator>
         <FlashMessage position="center" />
       </NavigationContainer>
@@ -65,22 +57,26 @@ const App = (props) => {
 };
 
 const mapStateToProps = state => ({
+  currentUser: state.currentUser.currentUser,
   loading: (state.games.loading || state.users.loading),
   games: state.games.games,
   users: state.users.users,
   hasErrors: (state.games.hasErrors || state.users.hasErrors),
 })
 
-const mapDispatchToProps = {
-  fetchGames,
-  fetchUsers
-}
+const mapDispatchToProps = dispatch => ({
+  fetchGames: () => dispatch(fetchGames()),
+  fetchUsers: () => dispatch(fetchUsers()),
+  loginCurrentUser: userData => dispatch(loginCurrentUser(userData))
+})
 
 AppConnect = connect(mapStateToProps, mapDispatchToProps)(App)
 
 const AppWithStore = () => (
   <Provider store={store}>
-    <AppConnect />
+    <PersistGate loading={null} persistor={persistor}>
+      <AppConnect />
+    </PersistGate>
   </Provider>
 )
 

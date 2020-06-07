@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import { TextInput, Button } from 'react-native-paper';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import React, { useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { showMessage } from 'react-native-flash-message'
+import { TextInput, Button } from 'react-native-paper'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { connect } from 'react-redux'
 
 import Container from '../components/Container'
-import { db, auth } from '../Firebase';
+import { db, auth } from '../Firebase'
+import { loginCurrentUser } from '../actions/currentUserActions'
 
 
-export default function Login(props) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
+const Login = props => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   async function handleLogin() {
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
-      const response = await auth.signInWithEmailAndPassword(email, password);
+      const response = await auth.signInWithEmailAndPassword(email, password)
       
       if (response.user.uid) {
         const user = await db
@@ -26,23 +27,24 @@ export default function Login(props) {
           .doc(response.user.uid)
           .get()
 
-        setIsLoading(false);
+        setIsLoading(false)
 
         if (Object.keys(user.data()).length === 0) {
           throw "User doesn't exist"
         }
-  
-        props.navigation.navigate('Form', {userData: user.data()});
+
+        props.loginCurrentUser(user.data())
+        props.navigation.navigate('Form')
       }
       
     } catch (e) {
-      setIsLoading(false);
+      setIsLoading(false)
 
-      let errorMessage = e.toString();
+      let errorMessage = e.toString()
       if (errorMessage.split(" ")[0] == 'Error:') {
-        errorMessage = errorMessage.split(" ");
-        errorMessage.shift();
-        errorMessage = errorMessage.join(' ');
+        errorMessage = errorMessage.split(" ")
+        errorMessage.shift()
+        errorMessage = errorMessage.join(' ')
         errorMessage = "Username/Password is incorrect"
       }
 
@@ -54,7 +56,7 @@ export default function Login(props) {
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
         textStyle: {textAlign: 'center'},
         duration: 2000
-      });
+      })
     }
   }
 
@@ -130,4 +132,14 @@ const styles = StyleSheet.create({
     height: 100,
     width: '80%'
   }
-});
+})
+
+const mapStateToProps = state => ({
+  currentUser: state.currentUser.currentUser
+})
+
+const mapDispatchToProps = dispatch => ({
+  loginCurrentUser: userData => dispatch(loginCurrentUser(userData))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { ActivityIndicator, DataTable } from 'react-native-paper';
+import React, { useState, useEffect } from 'react'
+import { View } from 'react-native'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { ActivityIndicator, DataTable } from 'react-native-paper'
 import { connect } from 'react-redux'
 
-import Header from '../components/Header';
+import Header from '../components/Header'
 
 
 const Standings = (props) => {
-  const [standings, setStandings] = useState([]);
+  const [standings, setStandings] = useState([])
 
   useEffect(() => {
-    calculateStandings();
-  }, []);
+    calculateStandings()
+  }, [])
 
   function calculateStandings() {
     let standingsDict = {}
     for (const user of props.users) {
-      let fullName = `${user.firstName} ${user.lastName}`;
-      let userDivision = user.division;
+      let fullName = `${user.firstName} ${user.lastName}`
+      let userDivision = user.division
       let userGames = props.games.filter(game => game.player == fullName)
 
-      let gamesWon = 0;
-      let gamesLost = 0;
+      let gamesWon = 0
+      let gamesLost = 0
 
       for (const game of userGames) {
         if (game.isCaptain && game.isGameWon) {
-          gamesWon++;
+          gamesWon++
         }
 
         if (game.isCaptain && !game.isGameWon) {
-          gamesLost++;
+          gamesLost++
         }
       }
 
@@ -41,13 +41,13 @@ const Standings = (props) => {
       }
     }
 
-    let standingsTuple = [];
+    let standingsTuple = []
     for ([div, row] of Object.entries(standingsDict)) {
-      standingsTuple.push([div, row]);
+      standingsTuple.push([div, row])
     }
     
     standingsTuple.sort(function(a, b){ return a[0] - b[0]});
-    setStandings(standingsTuple);
+    setStandings(standingsTuple)
   }
 
   function renderContent() {
@@ -55,7 +55,7 @@ const Standings = (props) => {
       return (
         <View>
           {standings.map(([division, row], i) => {
-            row.sort(function(a, b){ return b[1] - a[1]});
+            row.sort(function(a, b){ return b[1] - a[1]})
 
             return (
               <DataTable key={i} style={{marginTop: 30, width: wp('90%')}}>
@@ -75,7 +75,7 @@ const Standings = (props) => {
                   );
                 })}
               </DataTable>
-            );
+            )
           })}
         </View>
       );
@@ -84,7 +84,7 @@ const Standings = (props) => {
         <View style={{height: hp('80%')}}>
           <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
         </View>
-      );
+      )
     }
   }
 
@@ -92,10 +92,11 @@ const Standings = (props) => {
     <Header title="Standings" disableRefresh={true}>
       {renderContent()}
     </Header>
-  );
+  )
 }
 
 const mapStateToProps = state => ({
+  currentUser: state.currentUser.currentUser,
   loading: (state.games.loading || state.users.loading),
   games: state.games.games,
   users: state.users.users,

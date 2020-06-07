@@ -1,5 +1,5 @@
 // Import all actions
-import * as actions from '../actions/gamesActions';
+import * as actions from '../actions/gamesActions'
 
 export const initialState = {
     games: [],

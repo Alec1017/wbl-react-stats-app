@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import * as Haptics from 'expo-haptics';
-import { StyleSheet, Text, View } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { TextInput, IconButton, Button } from 'react-native-paper';
+import React, { useState } from 'react'
+import * as Haptics from 'expo-haptics'
+import { StyleSheet, Text, View } from 'react-native'
+import { showMessage } from 'react-native-flash-message'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { TextInput, IconButton, Button } from 'react-native-paper'
 
-import Container from '../components/Container';
-import { auth } from '../Firebase';
+import Container from '../components/Container'
+import { auth } from '../Firebase'
 
 
 export default function PasswordReset(props) {
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   async function handlePasswordReset() {
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
-      const response = await auth.sendPasswordResetEmail(email);
+      const response = await auth.sendPasswordResetEmail(email)
 
-      setIsLoading(false);
+      setIsLoading(false)
 
       showMessage({
         message: "\nReset email sent!",
@@ -29,12 +29,12 @@ export default function PasswordReset(props) {
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
         textStyle: {textAlign: 'center'},
         duration: 2000
-      });
+      })
 
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      props.navigation.navigate('Login');
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+      props.navigation.navigate('Login')
     } catch (e) {
-      setIsLoading(false);
+      setIsLoading(false)
       
       showMessage({
         message: "\nError",
@@ -44,7 +44,7 @@ export default function PasswordReset(props) {
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
         textStyle: {textAlign: 'center'},
         duration: 2000
-      });
+      })
     }
   }
   
@@ -81,9 +81,8 @@ export default function PasswordReset(props) {
         </Button>
       </View>
     </Container>
-  );
+  )
 }
-
 
 const styles = StyleSheet.create({
   title: {
@@ -92,4 +91,4 @@ const styles = StyleSheet.create({
     marginTop: hp('12%'),
     fontWeight: 'bold'
   }
-});
+})

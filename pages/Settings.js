@@ -1,51 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import * as Haptics from 'expo-haptics';
-import { StyleSheet, View, ActionSheetIOS } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import { Button } from 'react-native-paper';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import React, { useState, useEffect } from 'react'
+import * as Haptics from 'expo-haptics'
+import { StyleSheet, View, ActionSheetIOS } from 'react-native'
+import { showMessage } from 'react-native-flash-message'
+import { Button } from 'react-native-paper'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { connect } from 'react-redux'
 
-import Header from '../components/Header';
-import { auth, db } from '../Firebase';
-import { BACKEND_API } from 'react-native-dotenv';
+import Header from '../components/Header'
+import { db } from '../Firebase'
+import { BACKEND_API } from 'react-native-dotenv'
+import { logoutCurrentUser } from '../actions/currentUserActions'
 
 
-const Settings = (props) => {
-  const [isEmailLoading, setIsEmailLoading] = useState(false);
-  const [isStatsLoading, setIsStatsLoading] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(props.route.params.userData.isAdmin);
-  const [isSubscribed, setIsSubscribed] = useState(props.route.params.userData.subscribed);
+const Settings = props => {
+  const [isEmailLoading, setIsEmailLoading] = useState(false)
+  const [isStatsLoading, setIsStatsLoading] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(props.currentUser.isAdmin)
+  const [isSubscribed, setIsSubscribed] = useState(props.currentUser.subscribed)
   const [subscribedText, setSubscribedText] = useState('Unsubscribe from emails')
 
   useEffect(() => {
     if (!isSubscribed) {
-      setSubscribedText('Subscribe to emails');
+      setSubscribedText('Subscribe to emails')
     } else {
-      setSubscribedText('Unsubscribe from emails');
+      setSubscribedText('Unsubscribe from emails')
     }
   })
 
   async function toggleEmailSubscription() {
     setIsEmailLoading(true);
-    await db.collection('users').doc(props.route.params.userData.uid).update({
+    await db.collection('users').doc(props.currentUser.uid).update({
       subscribed: !isSubscribed
-    });
-    setIsSubscribed(!isSubscribed);
-    setIsEmailLoading(false);
+    })
+    setIsSubscribed(!isSubscribed)
+    setIsEmailLoading(false)
   }
 
   async function updateStats() {
-    setIsStatsLoading(true);
+    setIsStatsLoading(true)
 
     try {
-      let response = await fetch(BACKEND_API + `/${props.route.params.userData.uid}`);
-      let data = await response.json();
+      let response = await fetch(BACKEND_API + `/${props.currentUser.uid}`)
+      let data = await response.json()
       
-      let messageType = data.completed ? 'success' : 'danger';
+      let messageType = data.completed ? 'success' : 'danger'
       let messageTitle = data.completed ? 'Success!' : 'Error'
       let messageContent = data.completed ? 'Stat sheet updated' : 'Something went wrong. Try again later'
-      let feedbackType = data.completed ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error;
+      let feedbackType = data.completed ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error
 
       showMessage({
         message: `\n${messageTitle}`,
@@ -55,7 +56,7 @@ const Settings = (props) => {
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
         textStyle: {textAlign: 'center'},
         duration: 2000
-      });
+      })
 
       Haptics.notificationAsync(feedbackType);
     } catch (error) {
@@ -67,10 +68,10 @@ const Settings = (props) => {
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
         textStyle: {textAlign: 'center'},
         duration: 2000
-      });
+      })
     }
     
-    setIsStatsLoading(false);
+    setIsStatsLoading(false)
   }
 
   function logoutConfirmation() {
@@ -84,20 +85,21 @@ const Settings = (props) => {
       },
       (buttonIndex) => {
         if (buttonIndex === 1) {
-          handleLogout();
+          handleLogout()
         }
       },
     )
   }
 
   function handleLogout() {
-    auth.signOut();
-    props.navigation.reset({
-      index: 0,
-      routes: [
-        { name: 'Login'}
-      ]
-    });
+    props.logoutCurrentUser().then(() => {
+      props.navigation.reset({
+        index: 0,
+        routes: [
+          { name: 'Login'}
+        ]
+      })
+    })
 
     showMessage({
       message: "\nLog out success",
@@ -174,13 +176,14 @@ const styles = StyleSheet.create({
   buttonLabel: {
     fontWeight: 'bold'
   }
-});
-
-const mapStateToProps = state => ({
-  loading: (state.games.loading || state.users.loading),
-  games: state.games.games,
-  users: state.users.users,
-  hasErrors: (state.games.hasErrors || state.users.hasErrors),
 })
 
-export default connect(mapStateToProps)(Settings)
+const mapStateToProps = state => ({
+  currentUser: state.currentUser.currentUser,
+})
+
+const mapDispatchToProps = dispatch => ({
+  logoutCurrentUser: () => dispatch(logoutCurrentUser())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)

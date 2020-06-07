@@ -1,68 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import * as Haptics from 'expo-haptics';
-import { StyleSheet, Text, View, Alert } from 'react-native';
-import { Button } from 'react-native-paper';
-import { showMessage } from 'react-native-flash-message';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import LottieView from 'lottie-react-native';
+import React, { useState, useEffect } from 'react'
+import * as Haptics from 'expo-haptics'
+import { StyleSheet, Text, View, Alert } from 'react-native'
+import { Button } from 'react-native-paper'
+import { showMessage } from 'react-native-flash-message'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import LottieView from 'lottie-react-native'
 import { connect } from 'react-redux'
 
-import Header from '../components/Header';
-import StatRow from '../components/StatRow';
-import { db } from '../Firebase';
+import Header from '../components/Header'
+import StatRow from '../components/StatRow'
+import { db } from '../Firebase'
 
 
-const Form = (props) => {
-  const [singles, setSingles] = useState(0);
-  const [doubles, setDoubles] = useState(0);
-  const [triples, setTriples] = useState(0);
-  const [homeRuns, setHomeRuns] = useState(0);
-  const [hitByPitch, setHitByPitch] = useState(0);
-  const [baseOnBalls, setBaseOnBalls] = useState(0);
-  const [runsBattedIn, setRunsBattedIn] = useState(0);
-  const [strikeouts, setStrikeouts] = useState(0);
-  const [stolenBases, setStolenBases] = useState(0);
-  const [caughtStealing, setCaughtStealing] = useState(0);
-  const [outs, setOuts] = useState(0);
+const Form = props => {
+  const [singles, setSingles] = useState(0)
+  const [doubles, setDoubles] = useState(0)
+  const [triples, setTriples] = useState(0)
+  const [homeRuns, setHomeRuns] = useState(0)
+  const [hitByPitch, setHitByPitch] = useState(0)
+  const [baseOnBalls, setBaseOnBalls] = useState(0)
+  const [runsBattedIn, setRunsBattedIn] = useState(0)
+  const [strikeouts, setStrikeouts] = useState(0)
+  const [stolenBases, setStolenBases] = useState(0)
+  const [caughtStealing, setCaughtStealing] = useState(0)
+  const [outs, setOuts] = useState(0)
 
-  const [inningsPitched, setInningsPitched] = useState(0);
-  const [earnedRuns, setEarnedRuns] = useState(0);
-  const [runs, setRuns] = useState(0);
-  const [pitchingStrikeouts, setPitchingStrikeouts] = useState(0);
-  const [pitchingBaseOnBalls, setPitchingBaseOnBalls] = useState(0);
-  const [saves, setSaves] = useState(0);
-  const [blownSaves, setBlownSaves] = useState(0);
-  const [win, setWin] = useState(0);
-  const [loss, setLoss] = useState(0);
+  const [inningsPitched, setInningsPitched] = useState(0)
+  const [earnedRuns, setEarnedRuns] = useState(0)
+  const [runs, setRuns] = useState(0)
+  const [pitchingStrikeouts, setPitchingStrikeouts] = useState(0)
+  const [pitchingBaseOnBalls, setPitchingBaseOnBalls] = useState(0)
+  const [saves, setSaves] = useState(0)
+  const [blownSaves, setBlownSaves] = useState(0)
+  const [win, setWin] = useState(0)
+  const [loss, setLoss] = useState(0)
 
-  const [error, setError] = useState(0);
+  const [error, setError] = useState(0)
 
-  const [player, setPlayer] = useState(props.route.params.userData.firstName + ' ' + props.route.params.userData.lastName);
-  const [uid, setUID] = useState(props.route.params.userData.uid);
-  const [isCaptain, setIsCaptain] = useState(false);
-  const [isGameWon, setIsGameWon] = useState(false);
-  const [winnerScore, setWinnerScore] = useState(0);
-  const [loserScore, setLoserScore] = useState(0);
-  const [selectedOpponent, setSelectedOpponent] = useState('');
-  const [opponents, setOpponents] = useState([]);
-  const [totalInnings, setTotalInnings] = useState(3);
+  const [player, setPlayer] = useState(props.currentUser.firstName + ' ' + props.currentUser.lastName)
+  const [uid, setUID] = useState(props.currentUser.uid)
+  const [isCaptain, setIsCaptain] = useState(false)
+  const [isGameWon, setIsGameWon] = useState(false)
+  const [winnerScore, setWinnerScore] = useState(0)
+  const [loserScore, setLoserScore] = useState(0)
+  const [selectedOpponent, setSelectedOpponent] = useState('')
+  const [opponents, setOpponents] = useState([])
+  const [totalInnings, setTotalInnings] = useState(3)
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    let opponents = [];
+    let opponents = []
     props.users.forEach(user => {
       if (user.uid != uid) {
-        opponents.push(user.firstName + ' ' + user.lastName);
+        opponents.push(user.firstName + ' ' + user.lastName)
       }
     })
 
-    setSelectedOpponent(opponents[0]);
-    setOpponents(opponents);
-  }, []);
+    setSelectedOpponent(opponents[0])
+    setOpponents(opponents)
+  }, [])
 
   async function addGame() {
-    setIsLoading(true);
+    setIsLoading(true)
     
     await db.collection('games').add({
       player,
@@ -95,11 +95,10 @@ const Form = (props) => {
       loserScore,
       selectedOpponent: (isCaptain ? selectedOpponent : null),
       totalInnings
-    });
+    })
 
-
-    setIsLoading(false);
-    resetState();
+    setIsLoading(false)
+    resetState()
 
     const animation = (
       <LottieView
@@ -111,7 +110,7 @@ const Form = (props) => {
         }}
         source={require('../assets/checkmark.json')}
       />
-    );
+    )
 
     showMessage({
       message: "\nStats submitted",
@@ -121,9 +120,9 @@ const Form = (props) => {
       titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
       textStyle: {alignSelf: 'center', justifyContent: 'center'},
       duration: 2000
-    });
+    })
 
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
   }
 
   function submitConfirmation() {
@@ -138,36 +137,36 @@ const Form = (props) => {
   }
 
   function resetState() {
-    setSingles(0);
-    setDoubles(0);
-    setTriples(0);
-    setHomeRuns(0);
-    setHitByPitch(0);
-    setBaseOnBalls(0);
-    setRunsBattedIn(0);
-    setStrikeouts(0);
-    setStolenBases(0);
-    setCaughtStealing(0);
-    setOuts(0);
+    setSingles(0)
+    setDoubles(0)
+    setTriples(0)
+    setHomeRuns(0)
+    setHitByPitch(0)
+    setBaseOnBalls(0)
+    setRunsBattedIn(0)
+    setStrikeouts(0)
+    setStolenBases(0)
+    setCaughtStealing(0)
+    setOuts(0)
 
-    setInningsPitched(0);
-    setEarnedRuns(0);
-    setRuns(0);
-    setPitchingStrikeouts(0);
-    setPitchingBaseOnBalls(0);
-    setSaves(0);
-    setBlownSaves(0);
-    setWin(0);
-    setLoss(0);
+    setInningsPitched(0)
+    setEarnedRuns(0)
+    setRuns(0)
+    setPitchingStrikeouts(0)
+    setPitchingBaseOnBalls(0)
+    setSaves(0)
+    setBlownSaves(0)
+    setWin(0)
+    setLoss(0)
 
-    setError(0);
+    setError(0)
     
-    setIsCaptain(false);
-    setIsGameWon(false);
-    setWinnerScore(0);
-    setLoserScore(0);
-    setSelectedOpponent(opponents[0]);
-    setTotalInnings(3);
+    setIsCaptain(false)
+    setIsGameWon(false)
+    setWinnerScore(0)
+    setLoserScore(0)
+    setSelectedOpponent(opponents[0])
+    setTotalInnings(3)
   }
 
   return (
@@ -240,9 +239,8 @@ const Form = (props) => {
         </View>
       </View>
     </Header>
-  );
+  )
 }
-
 
 const styles = StyleSheet.create({
   title: {
@@ -270,9 +268,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
     width: wp('95%')
   },
-});
+})
 
 const mapStateToProps = state => ({
+  currentUser: state.currentUser.currentUser,
   loading: (state.games.loading || state.users.loading),
   games: state.games.games,
   users: state.users.users,

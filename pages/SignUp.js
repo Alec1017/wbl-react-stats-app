@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { TextInput, IconButton, Button, ToggleButton } from 'react-native-paper';
+import React, { useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { showMessage } from 'react-native-flash-message'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { TextInput, IconButton, Button, ToggleButton } from 'react-native-paper'
+import { connect } from 'react-redux'
 
-import Container from '../components/Container';
-import { db, auth } from '../Firebase';
+import Container from '../components/Container'
+import { db, auth } from '../Firebase'
+import { loginCurrentUser } from '../actions/currentUserActions'
 
 
-export default function SignUp(props) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+const SignUp = props => {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [division, setDivision] = useState(null)
 
   async function handleSignUp() {
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
       if (firstName == '') {
@@ -35,7 +37,7 @@ export default function SignUp(props) {
 
       let response = null;
       if(firstName != '' && lastName != '') {
-        response = await auth.createUserWithEmailAndPassword(email, password);
+        response = await auth.createUserWithEmailAndPassword(email, password)
       }
 
       if (response && response.user.uid) {
@@ -49,22 +51,23 @@ export default function SignUp(props) {
           division: division
         }
 
-        setIsLoading(false);
+        setIsLoading(false)
   
         db.collection('users')
           .doc(response.user.uid)
           .set(user)
         
-        props.navigation.navigate('Form', {userData: user});
+        props.loginCurrentUser(user)
+        props.navigation.navigate('Form')
       }
     } catch (e) {
       setIsLoading(false);
 
-      let errorMessage = e.toString();
+      let errorMessage = e.toString()
       if (errorMessage.split(" ")[0] == 'Error:') {
-        errorMessage = errorMessage.split(" ");
-        errorMessage.shift();
-        errorMessage = errorMessage.join(' ');
+        errorMessage = errorMessage.split(" ")
+        errorMessage.shift()
+        errorMessage = errorMessage.join(' ')
       }
 
       showMessage({
@@ -75,7 +78,7 @@ export default function SignUp(props) {
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
         textStyle: {textAlign: 'center'},
         duration: 2000
-      });
+      })
     }
   }
   
@@ -167,7 +170,6 @@ export default function SignUp(props) {
   );
 }
 
-
 const styles = StyleSheet.create({
   title: {
     fontSize: 30,
@@ -179,4 +181,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'center',
   },
-});
+})
+
+const mapStateToProps = state => ({
+  currentUser: state.currentUser.currentUser
+})
+
+const mapDispatchToProps = dispatch => ({
+  loginCurrentUser: userData => dispatch(loginCurrentUser(userData))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

@@ -1,5 +1,5 @@
-import * as Firebase from 'firebase';
-import 'firebase/firestore';
+import * as Firebase from 'firebase'
+import 'firebase/firestore'
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -9,7 +9,7 @@ import {
   MESSAGING_SENDER_ID,
   APP_ID,
   MEASUREMENT_ID
-} from 'react-native-dotenv';
+} from 'react-native-dotenv'
 
 
 const firebaseConfig = {
@@ -23,6 +23,6 @@ const firebaseConfig = {
   measurementId: MEASUREMENT_ID
 }
 
-const firebaseInstance = Firebase.initializeApp(firebaseConfig);
-export const db = firebaseInstance.firestore();
-export const auth = firebaseInstance.auth();
+const firebaseInstance = Firebase.initializeApp(firebaseConfig)
+export const db = firebaseInstance.firestore()
+export const auth = firebaseInstance.auth()
