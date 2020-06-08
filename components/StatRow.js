@@ -1,10 +1,12 @@
-import React from 'react';
-import { StyleSheet, Text, View, Switch, Picker } from 'react-native';
-import { Button } from 'react-native-paper';
+import React from 'react'
+import { StyleSheet, Text, View, Switch, Picker } from 'react-native'
+import { Button } from 'react-native-paper'
+
+import { colors } from '../theme/colors'
 
 
 export default function StatRow(props) {
-  let statComponent;
+  let statComponent
   if (props.type == 'switch') {
     statComponent = (
       <View style={styles.statRow}>
@@ -42,18 +44,18 @@ export default function StatRow(props) {
       </View>
     )
   } else {
-    let numberTicker;
+    let numberTicker
     if (props.numberType == 'fractions') {
-      let numberValue = props.state;
-      let remainder = '';
-      let fraction = '';
+      let numberValue = props.state
+      let remainder = ''
+      let fraction = ''
       if (props.state % 3 != 0) {
         numberValue = Math.floor(props.state / 3);
-        numberValue = numberValue == 0 ? '' : numberValue;
-        remainder = props.state % 3;
+        numberValue = numberValue == 0 ? '' : numberValue
+        remainder = props.state % 3
         fraction = `${remainder}/3`
       } else {
-        numberValue = props.state / 3;
+        numberValue = props.state / 3
       }
 
       numberTicker = (
@@ -80,7 +82,7 @@ export default function StatRow(props) {
         <View style={styles.statButtons}>
           <Button 
             mode="contained"
-            color="#007bff"
+            color={colors.buttonMinus}
             contentStyle={styles.buttonLeft} 
             labelStyle={{ fontWeight: 'bold', fontSize: 30 }}
             onPress={() => { if (props.state > 0) props.action(props.state - 1) }}
@@ -90,7 +92,7 @@ export default function StatRow(props) {
           {numberTicker}
           <Button 
             mode="contained"
-            color="rgb(6, 53, 132)"
+            color={colors.buttonPlus}
             contentStyle={styles.buttonRight}
             labelStyle={{ fontWeight: 'bold', fontSize: 30 }}
             onPress={() => props.action(props.state + 1)}
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingVertical: 10,
     justifyContent: 'space-between',
-    borderBottomColor: 'rgb(212, 212, 212)',
+    borderBottomColor: colors.rowDivider,
     borderBottomWidth: 1
   },
   statTitle: {
@@ -162,4 +164,4 @@ const styles = StyleSheet.create({
   pickerItem: {
     height: 60
   }
-});
+})

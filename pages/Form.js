@@ -9,7 +9,9 @@ import { connect } from 'react-redux'
 
 import Header from '../components/Header'
 import StatRow from '../components/StatRow'
+
 import { db } from '../Firebase'
+import { colors } from '../theme/colors'
 
 
 const Form = props => {
@@ -228,7 +230,7 @@ const Form = props => {
           <Button
             loading={isLoading}
             mode='contained'
-            color='#007bff'
+            color={colors.submitButton}
             onPress={() => submitConfirmation()}
             style={{ marginTop: 40, marginBottom: 20 }}
             contentStyle={{ height: 50 }}
@@ -243,12 +245,6 @@ const Form = props => {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    color: '#ffffff',
-    fontSize: 30,
-    textAlign: 'left',
-    fontWeight: 'bold'
-  },
   categoryText: {
     textTransform: 'uppercase',
     fontWeight: 'bold',
@@ -265,7 +261,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: colors.background,
     width: wp('95%')
   },
 })

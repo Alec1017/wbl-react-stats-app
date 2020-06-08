@@ -1,6 +1,8 @@
-import React from 'react';
-import { LineChart } from 'react-native-chart-kit';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import React from 'react'
+import { LineChart } from 'react-native-chart-kit'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+
+import { colors } from '../theme/colors'
 
 
 export default function AnalyticsChart(props) {
@@ -29,9 +31,9 @@ export default function AnalyticsChart(props) {
       fromZero={true}
       setMax={props.setMax}
       chartConfig={{
-        backgroundColor: "#007bff",
-        backgroundGradientFrom: "#007bff",
-        backgroundGradientTo: "#007bff",
+        backgroundColor: colors.analyticsBackground,
+        backgroundGradientFrom: colors.analyticsBackground,
+        backgroundGradientTo: colors.analyticsBackground,
         decimalPlaces: 3, // optional, defaults to 2dp
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Animated, StyleSheet, View, RefreshControl } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
+import { colors } from '../theme/colors'
+
 const HEADER_MAX_HEIGHT = Math.round(hp('23%'));
 const HEADER_MIN_HEIGHT = Math.round(hp('10%'));
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
@@ -102,14 +104,14 @@ const styles = StyleSheet.create({
   fill: {
     flexGrow: 1,
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: colors.background,
   },
   header: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#303F9F',
+    backgroundColor: colors.headerMax,
     overflow: 'hidden',
     height: HEADER_MAX_HEIGHT,
   },
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#3498db',
+    backgroundColor: colors.headerMin,
     overflow: 'hidden',
     height: HEADER_MAX_HEIGHT,
   },
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
     height: HEADER_MAX_HEIGHT
   },
   title: {
-    color: '#ffffff',
+    color: colors.headerText,
     fontSize: 30,
     fontWeight: 'bold',
     justifyContent: 'center'

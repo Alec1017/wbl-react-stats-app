@@ -7,6 +7,7 @@ import { TextInput, IconButton, Button } from 'react-native-paper'
 
 import Container from '../components/Container'
 import { auth } from '../Firebase'
+import { colors } from '../theme/colors'
 
 
 export default function PasswordReset(props) {
@@ -51,7 +52,7 @@ export default function PasswordReset(props) {
   return (
     <Container>
       <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%'), position: 'absolute', top: 0}}>
-        <IconButton icon="arrow-left" color="#007bff" size={35} onPress={() => props.navigation.goBack()} />
+        <IconButton icon="arrow-left" color={colors.iconButton} size={35} onPress={() => props.navigation.goBack()} />
       </View>
 
       <Text style={styles.title}>Password</Text>
@@ -62,16 +63,16 @@ export default function PasswordReset(props) {
           placeholder='email@address.com'
           onChangeText={email => setEmail(email)}
           keyboardType='email-address'
-          selectionColor='rgb(6, 53, 132)'
-          underlineColor='#7CA1B4'
+          selectionColor={colors.formSelection}
+          underlineColor={colors.formDetail}
           style={{ marginTop: 30 }}
-          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+          theme={{ colors: { primary: colors.formSelection } }}
         />
 
         <Button
           loading={isLoading}
           mode='contained'
-          color='#007bff'
+          color={colors.submitButton}
           onPress={() => handlePasswordReset()}
           style={{ marginTop: 20 }}
           contentStyle={{ height: 50 }}

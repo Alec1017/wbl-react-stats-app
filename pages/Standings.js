@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 
 import Header from '../components/Header'
 
+import { colors } from '../theme/colors'
+
 
 const Standings = (props) => {
   const [standings, setStandings] = useState([])
@@ -82,7 +84,7 @@ const Standings = (props) => {
     } else {
       return (
         <View style={{height: hp('80%')}}>
-          <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
+          <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color={colors.activityIndicator} />
         </View>
       )
     }

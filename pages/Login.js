@@ -6,8 +6,10 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { connect } from 'react-redux'
 
 import Container from '../components/Container'
+
 import { db, auth } from '../Firebase'
 import { loginCurrentUser } from '../actions/currentUserActions'
+import { colors } from '../theme/colors'
 
 
 const Login = props => {
@@ -70,10 +72,10 @@ const Login = props => {
           placeholder='email@address.com'
           onChangeText={email => setEmail(email)}
           keyboardType='email-address'
-          selectionColor='rgb(6, 53, 132)'
-          underlineColor='#7CA1B4'
+          selectionColor={colors.formSelection}
+          underlineColor={colors.formDetail}
           style={{ marginTop: 30 }}
-          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+          theme={{ colors: { primary: colors.formSelection } }}
         />
 
         <TextInput 
@@ -81,16 +83,16 @@ const Login = props => {
           placeholder='password'
           onChangeText={password => setPassword(password)}
           secureTextEntry={true}
-          selectionColor='rgb(6, 53, 132)'
-          underlineColor='#7CA1B4'
+          selectionColor={colors.formSelection}
+          underlineColor={colors.formDetail}
           style={{ marginTop: 20 }}
-          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+          theme={{ colors: { primary: colors.formSelection } }}
         />
 
         <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
           <Button 
             uppercase={false} 
-            color='#007bff'
+            color={colors.submitButton}
             labelStyle={{ marginRight: 0}}
             onPress={() => props.navigation.navigate('PasswordReset')}>Forgot password?</Button>
         </View>
@@ -98,7 +100,7 @@ const Login = props => {
         <Button
           loading={isLoading}
           mode='contained'
-          color='#007bff'
+          color={colors.submitButton}
           onPress={() => handleLogin()}
           style={{ marginTop: 15 }}
           contentStyle={{ height: 50 }}
@@ -109,7 +111,7 @@ const Login = props => {
 
         <Button 
           uppercase={false} 
-          color='#007bff' 
+          color={colors.submitButton}
           style={{ marginTop: 10 }}
           onPress={() => props.navigation.navigate('SignUp')}
         >

@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import Container from '../components/Container'
 import { db, auth } from '../Firebase'
 import { loginCurrentUser } from '../actions/currentUserActions'
+import { colors } from '../theme/colors'
 
 
 const SignUp = props => {
@@ -85,7 +86,7 @@ const SignUp = props => {
   return (
     <Container>
       <View style={{alignSelf: 'flex-start', marginLeft: 20, marginTop: hp('4%'), position: 'absolute', top: 0}}>
-        <IconButton icon="arrow-left" color="#007bff" size={35} onPress={() => props.navigation.goBack()} />
+        <IconButton icon="arrow-left" color={colors.iconButton} size={35} onPress={() => props.navigation.goBack()} />
       </View>
       
       <Text style={styles.title}>Sign Up</Text>
@@ -95,20 +96,20 @@ const SignUp = props => {
           label='First Name'
           placeholder='John'
           onChangeText={firstName => setFirstName(firstName)}
-          selectionColor='rgb(6, 53, 132)'
-          underlineColor='#7CA1B4'
+          selectionColor={colors.formSelection}
+          underlineColor={colors.formDetail}
           style={{ marginTop: 30 }}
-          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+          theme={{ colors: { primary: colors.formSelection } }}
         />
 
         <TextInput 
           label='Last Name'
           placeholder='Smith'
           onChangeText={lastName => setLastName(lastName)}
-          selectionColor='rgb(6, 53, 132)'
-          underlineColor='#7CA1B4'
+          selectionColor={colors.formSelection}
+          underlineColor={colors.formDetail}
           style={{ marginTop: 20 }}
-          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+          theme={{ colors: { primary: colors.formSelection } }}
         />
 
         <TextInput 
@@ -116,10 +117,10 @@ const SignUp = props => {
           placeholder='email@address.com'
           onChangeText={email => setEmail(email)}
           keyboardType='email-address'
-          selectionColor='rgb(6, 53, 132)'
-          underlineColor='#7CA1B4'
+          selectionColor={colors.formSelection}
+          underlineColor={colors.formDetail}
           style={{ marginTop: 20 }}
-          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+          theme={{ colors: { primary: colors.formSelection } }}
         />
 
         <TextInput 
@@ -127,10 +128,10 @@ const SignUp = props => {
           placeholder='password'
           onChangeText={password => setPassword(password)}
           secureTextEntry={true}
-          selectionColor='rgb(6, 53, 132)'
-          underlineColor='#7CA1B4'
+          selectionColor={colors.formSelection}
+          underlineColor={colors.formDetail}
           style={{ marginTop: 20 }}
-          theme={{ colors: { primary: 'rgb(6, 53, 132)' } }}
+          theme={{ colors: { primary: colors.formSelection } }}
         />
 
         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20}}>
@@ -156,7 +157,7 @@ const SignUp = props => {
         <Button
           loading={isLoading}
           mode='contained'
-          color='#007bff'
+          color={colors.submitButton}
           onPress={() => handleSignUp()}
           style={{ marginTop: 20 }}
           contentStyle={{ height: 50 }}

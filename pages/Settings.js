@@ -7,9 +7,11 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { connect } from 'react-redux'
 
 import Header from '../components/Header'
+
 import { db } from '../Firebase'
 import { BACKEND_API } from 'react-native-dotenv'
 import { logoutCurrentUser } from '../actions/currentUserActions'
+import { colors } from '../theme/colors'
 
 
 const Settings = props => {
@@ -119,7 +121,7 @@ const Settings = props => {
       <View style={styles.container}>
         <Button
           mode='contained'
-          color='#ff4444'
+          color={colors.logoutButton}
           onPress={() => logoutConfirmation()}
           style={styles.button}
           contentStyle={styles.buttonContent}
@@ -130,7 +132,7 @@ const Settings = props => {
 
         <Button
           mode='contained'
-          color='#007bff'
+          color={colors.submitButton}
           loading={isEmailLoading}
           onPress={() => toggleEmailSubscription()}
           style={styles.button}
@@ -143,7 +145,7 @@ const Settings = props => {
         {isAdmin &&
           <Button
             mode='contained'
-            color='#00C851'
+            color={colors.updateButton}
             loading={isStatsLoading}
             onPress={() => updateStats()}
             style={styles.button}
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: colors.background,
     width: wp('80%')
   },
   button: {

@@ -7,6 +7,8 @@ import { connect } from 'react-redux'
 import Header from '../components/Header'
 import AnalyticsChart from '../components/AnalyticsChart'
 
+import { colors } from '../theme/colors'
+
 
 const Analytics = props => {
   const [battingAverages, setBattingAverages] = useState([])
@@ -121,7 +123,7 @@ const Analytics = props => {
     } else {
       return (
           <View style={{height: hp('80%')}}>
-            <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color="#007bff" />
+            <ActivityIndicator style={{marginTop: hp('20%')}} animating={true} size="large" color={colors.activityIndicator} />
           </View>
       )
     }

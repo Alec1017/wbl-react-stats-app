@@ -20,6 +20,7 @@
     "assetBundlePatterns": [
       "assets/*"
     ],
+    "orientation": "portrait",
     "splash": {
       "image": "./assets/wbl-logo.png",
       "resizeMode": "contain",
