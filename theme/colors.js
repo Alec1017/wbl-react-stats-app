@@ -6,7 +6,9 @@ const palette = {
     boulder: '#828282',
     catalina: '#063484',
     sapphire: '#303F9F',
+    cerulean: '#245CB5',
     azure: '#007BFF',
+    malibu: '#6BA4FF',
     boston: '#3498DB',
     alto: '#D4D4D4',
     foam: '#F5FCFF',
@@ -15,7 +17,7 @@ const palette = {
 
 export const colors = {
     background: palette.foam,
-    headerMax: palette.sapphire,
+    headerMax: palette.cerulean,
     headerMin: palette.boston,
     headerText: palette.white,
     buttonMinus: palette.azure, 
@@ -23,7 +25,7 @@ export const colors = {
     tabActive: palette.azure,
     tabInactive: palette.boulder,
     rowDivider: palette.alto,
-    analyticsBackground: palette.azure,
+    analyticsBackground: palette.malibu,
     activityIndicator: palette.azure,
     submitButton: palette.azure,
     formDetail: palette.bali,

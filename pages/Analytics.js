@@ -20,7 +20,7 @@ const Analytics = props => {
   const [leagueBattingAverage, setLeagueBattingAverage] = useState(0)
   const [leagueERA, setLeagueERA] = useState(0)
 
-  const [gamesThreshold, setGamesThreshold] = useState(5)
+  const [gamesThreshold, setGamesThreshold] = useState(3)
 
 
   useEffect(() => {
@@ -93,12 +93,12 @@ const Analytics = props => {
           <View>
             <View style={{marginTop: 30}}>
               <Text style={{fontSize: 20, fontWeight: 'bold' }}>Batting AVG: {currentBattingAverage}</Text>
-              <AnalyticsChart averages={battingAverages} leagueAverage={leagueBattingAverage} gameFrequency={5} setMax={1} />
+              <AnalyticsChart averages={battingAverages} leagueAverage={leagueBattingAverage} gameFrequency={10} setMax={0.5} />
             </View>
   
             <View style={{marginTop: 30}}>
               <Text style={{fontSize: 20, fontWeight: 'bold' }}>ERA: {currentERA}</Text>
-              <AnalyticsChart averages={ERAs} leagueAverage={leagueERA} gameFrequency={5} setMax={calcStatMax(2, leagueERA, Math.max(...ERAs))} />
+              <AnalyticsChart averages={ERAs} leagueAverage={leagueERA} gameFrequency={5} setMax={calcStatMax(1, leagueERA, Math.max(...ERAs))} />
             </View>
           </View>
         );
