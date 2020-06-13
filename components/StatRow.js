@@ -85,6 +85,7 @@ export default function StatRow(props) {
           <Button 
             mode="contained"
             color={colors.buttonMinus}
+            style={{ borderRadius: 17}}
             contentStyle={styles.buttonLeft} 
             labelStyle={{ fontSize: 30 }}
             onPress={() => { if (props.state > 0) props.action(props.state - 1) }}
@@ -95,6 +96,7 @@ export default function StatRow(props) {
           <Button 
             mode="contained"
             color={colors.buttonPlus}
+            style={{ borderRadius: 17}}
             contentStyle={styles.buttonRight}
             labelStyle={{ fontSize: 30 }}
             onPress={() => props.action(props.state + 1)}
