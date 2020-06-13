@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { connect } from 'react-redux'
 
 import Container from '../components/Container'
+import FontText from '../utils/FontText'
 
 import { db, auth } from '../Firebase'
 import { loginCurrentUser } from '../actions/currentUserActions'
@@ -64,7 +65,7 @@ const Login = props => {
 
   return (
     <Container>
-      <Text style={styles.title}>Sign In</Text>
+      <FontText bold style={styles.title}>Sign In</FontText>
 
       <View style={{ width: '80%' }}>
         <TextInput 
@@ -74,7 +75,7 @@ const Login = props => {
           keyboardType='email-address'
           selectionColor={colors.formSelection}
           underlineColor={colors.formDetail}
-          style={{ marginTop: 30 }}
+          style={{ marginTop: 30, height: hp('8%') }}
           theme={{ colors: { primary: colors.formSelection } }}
         />
 
@@ -85,7 +86,7 @@ const Login = props => {
           secureTextEntry={true}
           selectionColor={colors.formSelection}
           underlineColor={colors.formDetail}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 20, height: hp('8%') }}
           theme={{ colors: { primary: colors.formSelection } }}
         />
 
@@ -94,7 +95,10 @@ const Login = props => {
             uppercase={false} 
             color={colors.submitButton}
             labelStyle={{ marginRight: 0}}
-            onPress={() => props.navigation.navigate('PasswordReset')}>Forgot password?</Button>
+            onPress={() => props.navigation.navigate('PasswordReset')}
+          >
+              <FontText>Forgot password?</FontText>
+          </Button>
         </View>
 
         <Button
@@ -102,11 +106,10 @@ const Login = props => {
           mode='contained'
           color={colors.submitButton}
           onPress={() => handleLogin()}
-          style={{ marginTop: 15 }}
+          style={{ marginTop: 15, borderRadius: 25 }}
           contentStyle={{ height: 50 }}
-          labelStyle={{ fontWeight: 'bold'}}
         >
-          {isLoading ? 'Loading' : 'Login'}
+          <FontText bold>{isLoading ? 'Loading' : 'Login'}</FontText>
         </Button>
 
         <Button 
@@ -115,7 +118,7 @@ const Login = props => {
           style={{ marginTop: 10 }}
           onPress={() => props.navigation.navigate('SignUp')}
         >
-          No account yet? Sign Up
+          <FontText>No account yet? Sign Up</FontText>
         </Button>
    
       </View>
@@ -128,11 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     marginTop: hp('12%'),
-    fontWeight: 'bold'
-  },
-  picker: {
-    height: 100,
-    width: '80%'
   }
 })
 

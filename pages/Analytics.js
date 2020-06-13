@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { ActivityIndicator } from 'react-native-paper'
 import { connect } from 'react-redux'
 
 import Header from '../components/Header'
 import AnalyticsChart from '../components/AnalyticsChart'
+import FontText from '../utils/FontText'
 
 import { colors } from '../theme/colors'
 
@@ -20,7 +21,7 @@ const Analytics = props => {
   const [leagueBattingAverage, setLeagueBattingAverage] = useState(0)
   const [leagueERA, setLeagueERA] = useState(0)
 
-  const [gamesThreshold, setGamesThreshold] = useState(3)
+  const [gamesThreshold, setGamesThreshold] = useState(5)
 
 
   useEffect(() => {
@@ -92,12 +93,12 @@ const Analytics = props => {
         return (
           <View>
             <View style={{marginTop: 30}}>
-              <Text style={{fontSize: 20, fontWeight: 'bold' }}>Batting AVG: {currentBattingAverage}</Text>
+              <FontText bold style={{fontSize: 20 }}>Batting AVG: {currentBattingAverage}</FontText>
               <AnalyticsChart averages={battingAverages} leagueAverage={leagueBattingAverage} gameFrequency={10} setMax={0.5} />
             </View>
   
             <View style={{marginTop: 30}}>
-              <Text style={{fontSize: 20, fontWeight: 'bold' }}>ERA: {currentERA}</Text>
+              <FontText bold style={{fontSize: 20 }}>ERA: {currentERA}</FontText>
               <AnalyticsChart averages={ERAs} leagueAverage={leagueERA} gameFrequency={5} setMax={calcStatMax(1, leagueERA, Math.max(...ERAs))} />
             </View>
           </View>
@@ -115,7 +116,7 @@ const Analytics = props => {
               source={require('../assets/chart.png')}
             />
             <View style={{width: wp('80%')}}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Play at least {gamesThreshold} games to see analytics</Text>
+              <FontText bold style={{ fontSize: 20, textAlign: 'center'}}>Play at least {gamesThreshold} games to see analytics</FontText>
             </View>
           </View>
         )
@@ -130,7 +131,7 @@ const Analytics = props => {
   }
 
   return (
-    <Header title="Analytics" disableRefresh={true}> 
+    <Header title="Analytics" disableRefresh> 
       {renderContent()}
     </Header>
   )

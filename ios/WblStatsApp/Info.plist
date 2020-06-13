@@ -78,5 +78,7 @@
 	<string>Give WblStatsApp periences permission to access your photos</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>Allow WblStatsApp to access your reminders</string>
+	<string>Roboto-Regular.ttf</string>
+	<string>Roboto-Bold.ttf</string>
 </dict>
 </plist>

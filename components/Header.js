@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   title: {
     color: colors.headerText,
     fontSize: 30,
-    fontWeight: 'bold',
+    fontFamily: 'RobotoBold',
     justifyContent: 'center'
   }
 });

@@ -1,10 +1,9 @@
 {
-  "devToolsPort": 19002,
   "expoServerPort": null,
+  "expoServerNgrokUrl": "https://c6-skr.afed1017.wbl-react-stats-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.c6-skr.afed1017.wbl-react-stats-app.exp.direct",
+  "ngrokPid": 50552,
+  "devToolsPort": 19002,
   "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
-  "webpackServerPort": null
+  "packagerPid": null
 }

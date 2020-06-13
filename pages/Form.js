@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import * as Haptics from 'expo-haptics'
-import { StyleSheet, Text, View, Alert } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
 import { Button } from 'react-native-paper'
 import { showMessage } from 'react-native-flash-message'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 
 import Header from '../components/Header'
 import StatRow from '../components/StatRow'
+import FontText from '../utils/FontText'
 
 import { db } from '../Firebase'
 import { colors } from '../theme/colors'
@@ -174,7 +175,7 @@ const Form = props => {
   return (
     <Header title="Enter your stats" disableRefresh={true}> 
       <View style={styles.container}>
-        <Text style={styles.categoryText}>Hitting</Text>
+        <FontText bold style={styles.categoryText}>Hitting</FontText>
         
         <StatRow title="1B" state={singles} action={setSingles} />
         <StatRow title="2B" state={doubles} action={setDoubles} />
@@ -188,7 +189,7 @@ const Form = props => {
         <StatRow title="SB" state={stolenBases} action={setStolenBases} />
         <StatRow title="CS" state={caughtStealing} action={setCaughtStealing} />
 
-        <Text style={styles.categoryText}>Pitching</Text>
+        <FontText bold style={styles.categoryText}>Pitching</FontText>
 
         <StatRow title="IP" numberType="fractions" state={inningsPitched} action={setInningsPitched} />
         <StatRow title="ER" state={earnedRuns} action={setEarnedRuns} />
@@ -200,12 +201,12 @@ const Form = props => {
         <StatRow title="W" state={win} action={setWin} />
         <StatRow title="L" state={loss} action={setLoss} />
 
-        <Text style={styles.categoryText}>Fielding</Text>
+        <FontText bold style={styles.categoryText}>Fielding</FontText>
 
         <StatRow title="Error" state={error} action={setError} />
 
 
-        <Text style={styles.categoryText}>Game Info</Text>
+        <FontText bold style={styles.categoryText}>Game Info</FontText>
     
         <StatRow title="Captain?" type="switch" state={isCaptain} action={setIsCaptain} />
         {isCaptain &&
@@ -232,11 +233,10 @@ const Form = props => {
             mode='contained'
             color={colors.submitButton}
             onPress={() => submitConfirmation()}
-            style={{ marginTop: 40, marginBottom: 20 }}
+            style={{ marginTop: 40, marginBottom: 20, borderRadius: 25 }}
             contentStyle={{ height: 50 }}
-            labelStyle={{ fontWeight: 'bold'}}
           >
-            {isLoading ? 'Loading' : 'Submit'}
+            <FontText bold>{isLoading ? 'Loading' : 'Submit'}</FontText>
           </Button>
         </View>
       </View>

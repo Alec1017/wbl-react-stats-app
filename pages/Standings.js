@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { ActivityIndicator, DataTable } from 'react-native-paper'
 import { connect } from 'react-redux'
 
 import Header from '../components/Header'
+import FontText from '../utils/FontText'
 
 import { colors } from '../theme/colors'
 
 
-const Standings = (props) => {
+const Standings = props => {
   const [standings, setStandings] = useState([])
 
   useEffect(() => {
@@ -62,17 +63,29 @@ const Standings = (props) => {
             return (
               <DataTable key={i} style={{marginTop: 30, width: wp('90%')}}>
                 <DataTable.Header>
-                  <DataTable.Title>Division {division[0]}</DataTable.Title>
-                  <DataTable.Title numeric>W</DataTable.Title>
-                  <DataTable.Title numeric>L</DataTable.Title>
+                  <DataTable.Title style={{minWidth: wp('30%')}}>
+                    <FontText style={styles.standingsText}>Division {division[0]}</FontText>
+                  </DataTable.Title>
+                  <DataTable.Title numeric>
+                    <FontText style={styles.standingsText}>W</FontText>
+                  </DataTable.Title>
+                  <DataTable.Title numeric>
+                    <FontText style={styles.standingsText}>L</FontText>
+                  </DataTable.Title>
                 </DataTable.Header>
 
                 {row.map((row, i) => {
                   return (
                     <DataTable.Row key={i}>
-                      <DataTable.Cell>{row[0]}</DataTable.Cell>
-                      <DataTable.Cell numeric>{row[1]}</DataTable.Cell>
-                      <DataTable.Cell numeric>{row[2]}</DataTable.Cell>
+                      <DataTable.Cell style={{minWidth: wp('30%')}}>
+                        <FontText style={styles.standingsText}>{row[0]}</FontText>
+                      </DataTable.Cell>
+                      <DataTable.Cell numeric>
+                        <FontText style={styles.standingsText}>{row[1]}</FontText>
+                      </DataTable.Cell>
+                      <DataTable.Cell numeric>
+                        <FontText style={styles.standingsText}>{row[2]}</FontText>
+                      </DataTable.Cell>
                     </DataTable.Row>
                   );
                 })}
@@ -96,6 +109,12 @@ const Standings = (props) => {
     </Header>
   )
 }
+
+const styles = StyleSheet.create({
+  standingsText: {
+    fontSize: 17
+  }
+})
 
 const mapStateToProps = state => ({
   currentUser: state.currentUser.currentUser,

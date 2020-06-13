@@ -7,6 +7,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { connect } from 'react-redux'
 
 import Header from '../components/Header'
+import FontText from '../utils/FontText'
 
 import { db } from '../Firebase'
 import { BACKEND_API } from 'react-native-dotenv'
@@ -125,9 +126,8 @@ const Settings = props => {
           onPress={() => logoutConfirmation()}
           style={styles.button}
           contentStyle={styles.buttonContent}
-          labelStyle={styles.buttonLabel}
         >
-          Log Out
+          <FontText bold>Log Out</FontText>
         </Button>
 
         <Button
@@ -137,9 +137,8 @@ const Settings = props => {
           onPress={() => toggleEmailSubscription()}
           style={styles.button}
           contentStyle={styles.buttonContent}
-          labelStyle={styles.buttonLabel}
         >
-          {isEmailLoading ? '' : subscribedText}
+          <FontText bold>{isEmailLoading ? '' : subscribedText}</FontText>
         </Button>
 
         {isAdmin &&
@@ -150,9 +149,8 @@ const Settings = props => {
             onPress={() => updateStats()}
             style={styles.button}
             contentStyle={styles.buttonContent}
-            labelStyle={styles.buttonLabel}
           >
-            {isStatsLoading ? 'Loading' : 'Update Stat Sheet'}
+            <FontText bold>{isStatsLoading ? 'Loading' : 'Update Stat Sheet'}</FontText>
           </Button>
         }
       </View>
@@ -170,13 +168,11 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: 'stretch',
-    marginTop: 20
+    marginTop: 20,
+    borderRadius: 25
   },
   buttonContent: {
     height: 50
-  },
-  buttonLabel: {
-    fontWeight: 'bold'
   }
 })
 

@@ -7,6 +7,7 @@ import { TextInput, IconButton, Button, ToggleButton } from 'react-native-paper'
 import { connect } from 'react-redux'
 
 import Container from '../components/Container'
+import FontText from '../utils/FontText'
 import { db, auth } from '../Firebase'
 import { loginCurrentUser } from '../actions/currentUserActions'
 import { colors } from '../theme/colors'
@@ -89,7 +90,7 @@ const SignUp = props => {
         <IconButton icon="arrow-left" color={colors.iconButton} size={35} onPress={() => props.navigation.goBack()} />
       </View>
       
-      <Text style={styles.title}>Sign Up</Text>
+      <FontText bold style={styles.title}>Sign Up</FontText>
 
       <KeyboardAwareScrollView style={{ width: '80%'}}>
         <TextInput 
@@ -98,7 +99,7 @@ const SignUp = props => {
           onChangeText={firstName => setFirstName(firstName)}
           selectionColor={colors.formSelection}
           underlineColor={colors.formDetail}
-          style={{ marginTop: 30 }}
+          style={{ marginTop: 30, height: hp('8%') }}
           theme={{ colors: { primary: colors.formSelection } }}
         />
 
@@ -108,7 +109,7 @@ const SignUp = props => {
           onChangeText={lastName => setLastName(lastName)}
           selectionColor={colors.formSelection}
           underlineColor={colors.formDetail}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 20, height: hp('8%') }}
           theme={{ colors: { primary: colors.formSelection } }}
         />
 
@@ -119,7 +120,7 @@ const SignUp = props => {
           keyboardType='email-address'
           selectionColor={colors.formSelection}
           underlineColor={colors.formDetail}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 20, height: hp('8%') }}
           theme={{ colors: { primary: colors.formSelection } }}
         />
 
@@ -130,12 +131,12 @@ const SignUp = props => {
           secureTextEntry={true}
           selectionColor={colors.formSelection}
           underlineColor={colors.formDetail}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 20, height: hp('8%') }}
           theme={{ colors: { primary: colors.formSelection } }}
         />
 
         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20}}>
-          <Text style={styles.divisionText}>Your Division</Text>
+          <FontText style={styles.divisionText}>Your Division</FontText>
 
           <ToggleButton.Row
             onValueChange={value => setDivision(value)}
@@ -159,11 +160,11 @@ const SignUp = props => {
           mode='contained'
           color={colors.submitButton}
           onPress={() => handleSignUp()}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 20, borderRadius: 25 }}
           contentStyle={{ height: 50 }}
           labelStyle={{ fontWeight: 'bold'}}
         >
-          {isLoading ? 'Loading' : 'Sign Up'}
+          <FontText bold>{isLoading ? 'Loading' : 'Sign Up'}</FontText>
         </Button>
  
       </KeyboardAwareScrollView>
@@ -176,7 +177,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     marginTop: hp('12%'),
-    fontWeight: 'bold'
   },
   divisionText: {
     fontSize: 20,

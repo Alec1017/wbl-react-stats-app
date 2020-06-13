@@ -1,8 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View, Switch, Picker } from 'react-native'
+import { StyleSheet, View, Switch, Picker } from 'react-native'
 import { Button } from 'react-native-paper'
 
 import { colors } from '../theme/colors'
+import FontText from '../utils/FontText'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 
 export default function StatRow(props) {
@@ -11,7 +13,7 @@ export default function StatRow(props) {
     statComponent = (
       <View style={styles.statRow}>
         <View style={styles.statTitle}>
-          <Text style={styles.statTitleText}>{props.title}</Text>
+          <FontText style={styles.statTitleText}>{props.title}</FontText>
         </View>
         <View style={styles.statButtons}>
           <View style={styles.switchContainer}>
@@ -27,7 +29,7 @@ export default function StatRow(props) {
     statComponent = (
       <View style={styles.statRow}>
         <View style={styles.statTitle}>
-          <Text style={styles.statTitleText}>{props.title}</Text>
+          <FontText style={styles.statTitleText}>{props.title}</FontText>
         </View>
         <View style={styles.statButtons}>
           <Picker 
@@ -61,15 +63,15 @@ export default function StatRow(props) {
       numberTicker = (
         <View style={styles.statValueContainer}>
           {numberValue !== '' && 
-          <Text style={styles.statValue}>{numberValue}</Text>}
+          <FontText bold style={styles.statValue}>{numberValue}</FontText>}
           {fraction !== '' &&
-          <Text style={styles.statFraction}>{fraction}</Text>}
+          <FontText bold style={styles.statFraction}>{fraction}</FontText>}
         </View>
       );
     } else {
       numberTicker = (
         <View style={styles.statValueContainer}>
-          <Text style={styles.statValue}>{props.state}</Text>
+          <FontText bold style={styles.statValue}>{props.state}</FontText>
         </View>
       );
     }
@@ -77,27 +79,27 @@ export default function StatRow(props) {
     statComponent = (
       <View style={styles.statRow}>
         <View style={styles.statTitle}>
-          <Text style={styles.statTitleText}>{props.title}</Text>
+          <FontText style={styles.statTitleText}>{props.title}</FontText>
         </View>
         <View style={styles.statButtons}>
           <Button 
             mode="contained"
             color={colors.buttonMinus}
             contentStyle={styles.buttonLeft} 
-            labelStyle={{ fontWeight: 'bold', fontSize: 30 }}
+            labelStyle={{ fontSize: 30 }}
             onPress={() => { if (props.state > 0) props.action(props.state - 1) }}
           >
-            -
+            <FontText bold>-</FontText>
           </Button>
           {numberTicker}
           <Button 
             mode="contained"
             color={colors.buttonPlus}
             contentStyle={styles.buttonRight}
-            labelStyle={{ fontWeight: 'bold', fontSize: 30 }}
+            labelStyle={{ fontSize: 30 }}
             onPress={() => props.action(props.state + 1)}
           >
-            +
+            <FontText bold>+</FontText>
           </Button>
         </View>
       </View>
@@ -111,7 +113,7 @@ export default function StatRow(props) {
 const styles = StyleSheet.create({
   statRow: {
     flexDirection: 'row',
-    width: '90%',
+    width: '95%',
     paddingLeft: 15,
     paddingVertical: 10,
     justifyContent: 'space-between',
@@ -139,13 +141,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   statValueContainer: {
-    paddingHorizontal: 20,
-    minWidth: 80,
+    minWidth: wp('15%'),
     alignItems: 'center',
     justifyContent: 'center'
   },
   statValue: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 'bold'
   },
   statFraction: {
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
   picker: {
     height: 60,
     width: '80%',
-    paddingRight: 20
+    paddingRight: wp('5%')
   },
   pickerItem: {
     height: 60

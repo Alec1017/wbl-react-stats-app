@@ -19,7 +19,7 @@ export default function TabNavigation() {
         initialRouteName='Form' 
         activeColor={colors.tabActive}
         inactiveColor={colors.tabInactive} 
-        barStyle={{ backgroundColor: '#F5FCFF', borderTopWidth: 1, borderTopColor: 'rgb(212, 212, 212)', height: hp('8%') }}
+        barStyle={{ backgroundColor: colors.background, borderTopWidth: 1, borderTopColor: 'rgb(212, 212, 212)', height: hp('8%') }}
       >
         <Tab.Screen 
           name='Analytics' 

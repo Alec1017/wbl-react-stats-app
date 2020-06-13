@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { SplashScreen } from 'expo'
+import * as Font from 'expo-font'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import FlashMessage from 'react-native-flash-message'
 import { Provider, connect } from 'react-redux'
+import { useFonts } from '@use-expo/font'
 
 import SignUp from './pages/SignUp'
 import Login from './pages/Login'
@@ -21,6 +23,12 @@ const Stack = createStackNavigator()
 
 const App = props => {
   const [initialRoute, setInitialRoute] = useState('Login')
+  // const [fontsLoaded, setFontsLoaded] = useState(false)
+
+  let [fontsLoaded] = useFonts({
+    'Roboto': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+    'RobotoBold': require('./assets/fonts/Roboto/Roboto-Bold.ttf')
+  })
 
   useEffect(() => {
     SplashScreen.preventAutoHide()
@@ -31,11 +39,20 @@ const App = props => {
       setInitialRoute('Login')
     }
 
+    // (async () => {
+    //   await Font.loadAsync({
+    //     'Roboto': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+    //     'RobotoBold': require('./assets/fonts/Roboto/Roboto-Bold.ttf')
+    //   })
+
+    //   setFontsLoaded(true)
+    // })()
+
     props.fetchGames()
     props.fetchUsers()
   }, [])
 
-  if (!props.loading) {
+  if (!props.loading && fontsLoaded) {
     setTimeout(() => {
       SplashScreen.hide()
     }, 250)

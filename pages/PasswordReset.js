@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { TextInput, IconButton, Button } from 'react-native-paper'
 
 import Container from '../components/Container'
+import FontText from '../utils/FontText'
 import { auth } from '../Firebase'
 import { colors } from '../theme/colors'
 
@@ -55,7 +56,7 @@ export default function PasswordReset(props) {
         <IconButton icon="arrow-left" color={colors.iconButton} size={35} onPress={() => props.navigation.goBack()} />
       </View>
 
-      <Text style={styles.title}>Password</Text>
+      <FontText bold style={styles.title}>Password Reset</FontText>
       
       <View style={{width: '80%'}}>
         <TextInput 
@@ -65,7 +66,7 @@ export default function PasswordReset(props) {
           keyboardType='email-address'
           selectionColor={colors.formSelection}
           underlineColor={colors.formDetail}
-          style={{ marginTop: 30 }}
+          style={{ marginTop: 30, height: hp('8%') }}
           theme={{ colors: { primary: colors.formSelection } }}
         />
 
@@ -74,11 +75,11 @@ export default function PasswordReset(props) {
           mode='contained'
           color={colors.submitButton}
           onPress={() => handlePasswordReset()}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 20, borderRadius: 25 }}
           contentStyle={{ height: 50 }}
           labelStyle={{ fontWeight: 'bold'}}
         >
-          {isLoading ? 'Loading' : 'Send Reset Email'}
+          <FontText bold>{isLoading ? 'Loading' : 'Send Reset Email'}</FontText>
         </Button>
       </View>
     </Container>
@@ -90,6 +91,5 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     marginTop: hp('12%'),
-    fontWeight: 'bold'
   }
 })
