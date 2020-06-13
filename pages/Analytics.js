@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 
 import Header from '../components/Header'
 import AnalyticsChart from '../components/AnalyticsChart'
+import LeagueLeader from '../components/LeagueLeader'
 import FontText from '../utils/FontText'
 
 import { colors } from '../theme/colors'
@@ -93,13 +94,28 @@ const Analytics = props => {
         return (
           <View>
             <View style={{marginTop: 30}}>
-              <FontText bold style={{fontSize: 20 }}>Batting AVG: {currentBattingAverage}</FontText>
+              <FontText bold style={{fontSize: 20 }}>Your Batting AVG: {currentBattingAverage}</FontText>
               <AnalyticsChart averages={battingAverages} leagueAverage={leagueBattingAverage} gameFrequency={10} setMax={0.5} />
             </View>
   
             <View style={{marginTop: 30}}>
-              <FontText bold style={{fontSize: 20 }}>ERA: {currentERA}</FontText>
+              <FontText bold style={{fontSize: 20 }}>Your ERA: {currentERA}</FontText>
               <AnalyticsChart averages={ERAs} leagueAverage={leagueERA} gameFrequency={5} setMax={calcStatMax(1, leagueERA, Math.max(...ERAs))} />
+            </View>
+
+            <View style={{marginTop: 30}}>
+              <FontText bold style={{fontSize: 20 }}>Home Run Leaders</FontText>
+              <LeagueLeader stat={'homeRuns'}></LeagueLeader>
+            </View>
+
+            <View style={{marginTop: 30}}>
+              <FontText bold style={{fontSize: 20 }}>Stolen Bases Leaders</FontText>
+              <LeagueLeader stat={'stolenBases'}></LeagueLeader>
+            </View>
+
+            <View style={{marginTop: 30}}>
+              <FontText bold style={{fontSize: 20 }}>Errors Leaders</FontText>
+              <LeagueLeader stat={'error'}></LeagueLeader>
             </View>
           </View>
         );

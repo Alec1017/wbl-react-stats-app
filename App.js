@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { SplashScreen } from 'expo'
-import * as Font from 'expo-font'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import FlashMessage from 'react-native-flash-message'
@@ -38,15 +37,6 @@ const App = props => {
     } else {
       setInitialRoute('Login')
     }
-
-    // (async () => {
-    //   await Font.loadAsync({
-    //     'Roboto': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
-    //     'RobotoBold': require('./assets/fonts/Roboto/Roboto-Bold.ttf')
-    //   })
-
-    //   setFontsLoaded(true)
-    // })()
 
     props.fetchGames()
     props.fetchUsers()
