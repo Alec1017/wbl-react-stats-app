@@ -22,7 +22,7 @@ const Analytics = props => {
   const [leagueBattingAverage, setLeagueBattingAverage] = useState(0)
   const [leagueERA, setLeagueERA] = useState(0)
 
-  const [gamesThreshold, setGamesThreshold] = useState(5)
+  const [gamesThreshold, setGamesThreshold] = useState(3)
 
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Analytics = props => {
         }
 
         if (inningsPitched > 0) {
-          cumulationERA.push((total.earnedRuns * 3) / total.inningsPitched)
+          cumulationERA.push((total.earnedRuns * 3) / (total.inningsPitched / 3))
         }
       }
 

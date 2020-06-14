@@ -97,7 +97,8 @@ const Form = props => {
       winnerScore,
       loserScore,
       selectedOpponent: (isCaptain ? selectedOpponent : null),
-      totalInnings
+      totalInnings,
+      timestamp: Math.floor(Date.now() / 1000)
     })
 
     setIsLoading(false)
