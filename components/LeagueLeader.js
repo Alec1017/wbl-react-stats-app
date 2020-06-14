@@ -3,12 +3,14 @@ import { StyleSheet, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { ActivityIndicator, DataTable } from 'react-native-paper'
 import { connect } from 'react-redux'
+import Emoji from 'react-native-emoji'
 
 import FontText from '../utils/FontText'
 import { colors } from '../theme/colors'
 
 const LeagueLeader = props => {
     const [leagueLeaders, setLeagueLeaders] = useState([])
+    const [leaderName, setLeaderName] = useState('')
     
     const maxLeaders = 5
 
@@ -46,6 +48,10 @@ const LeagueLeader = props => {
         topValues = topValues.slice(0, maxLeaders)
 
         for (let value of topValues) {
+            if (value == Math.max(...topValues) && leaders[value].length == 1) {
+                setLeaderName(leaders[value])
+            }
+
             condensedLeaders.push([leaders[value].join(', '), value])
         }
 
@@ -59,7 +65,9 @@ const LeagueLeader = props => {
                     return (
                     <DataTable.Row key={i}>
                         <DataTable.Cell style={{minWidth: wp('50%')}}>
-                            <FontText style={styles.standingsText}>{leader}</FontText>
+                            <FontText style={styles.standingsText}>{leader} </FontText>
+                            {leaderName == leader &&
+                                <Emoji name={props.leaderEmoji} style={{fontSize: 17}} />}
                         </DataTable.Cell>
                         <DataTable.Cell numeric>
                             <FontText style={styles.standingsText}>{value}</FontText>

@@ -105,17 +105,17 @@ const Analytics = props => {
 
             <View style={{marginTop: 30}}>
               <FontText bold style={{fontSize: 20 }}>Home Run Leaders</FontText>
-              <LeagueLeader stat={'homeRuns'}></LeagueLeader>
+              <LeagueLeader stat={'homeRuns'} leaderEmoji={'fire'}></LeagueLeader>
             </View>
 
             <View style={{marginTop: 30}}>
               <FontText bold style={{fontSize: 20 }}>Stolen Bases Leaders</FontText>
-              <LeagueLeader stat={'stolenBases'}></LeagueLeader>
+              <LeagueLeader stat={'stolenBases'} leaderEmoji={'dash'}></LeagueLeader>
             </View>
 
             <View style={{marginTop: 30}}>
               <FontText bold style={{fontSize: 20 }}>Errors Leaders</FontText>
-              <LeagueLeader stat={'error'}></LeagueLeader>
+              <LeagueLeader stat={'error'} leaderEmoji={'hankey'}></LeagueLeader>
             </View>
           </View>
         );
