@@ -43,7 +43,7 @@ const Settings = props => {
     setIsStatsLoading(true)
 
     try {
-      let response = await fetch(BACKEND_API + `/${props.currentUser.uid}`)
+      let response = await fetch(BACKEND_API + `/update_sheet/${props.currentUser.uid}`)
       let data = await response.json()
       
       let messageType = data.completed ? 'success' : 'danger'

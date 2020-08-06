@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 
 import Header from '../components/Header'
 import FontText from '../utils/FontText'
+import { BACKEND_API } from 'react-native-dotenv'
 
 import { colors } from '../theme/colors'
 
@@ -14,43 +15,32 @@ const Standings = props => {
   const [standings, setStandings] = useState([])
 
   useEffect(() => {
-    calculateStandings()
-  }, [])
 
-  function calculateStandings() {
-    let standingsDict = {}
-    for (const user of props.users) {
-      let fullName = `${user.firstName} ${user.lastName}`
-      let userDivision = user.division
-      let userGames = props.games.filter(game => game.player == fullName)
+    async function fetchStandings() {
+      try {
+        let response = await fetch(BACKEND_API + '/api/standings')
+        let data = await response.json()
 
-      let gamesWon = 0
-      let gamesLost = 0
+        let processedStandings = processStandings(data)
 
-      for (const game of userGames) {
-        if (game.isCaptain && game.isGameWon) {
-          gamesWon++
-        }
-
-        if (game.isCaptain && !game.isGameWon) {
-          gamesLost++
-        }
-      }
-
-      if (standingsDict[userDivision]) {
-        standingsDict[userDivision].push([fullName, gamesWon, gamesLost])
-      } else {
-        standingsDict[userDivision] = [[fullName, gamesWon, gamesLost]]
+        setStandings(processedStandings)
+      } catch(error) {
+        console.log(error)
       }
     }
 
+    fetchStandings()
+  }, [])
+
+  function processStandings(data) {
     let standingsTuple = []
-    for ([div, row] of Object.entries(standingsDict)) {
+    for ([div, row] of Object.entries(data)) {
       standingsTuple.push([div, row])
     }
     
     standingsTuple.sort(function(a, b){ return a[0] - b[0]});
-    setStandings(standingsTuple)
+
+    return standingsTuple
   }
 
   function renderContent() {

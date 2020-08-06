@@ -8,9 +8,9 @@ import { connect } from 'react-redux'
 
 import Container from '../components/Container'
 import FontText from '../utils/FontText'
-import { db, auth } from '../Firebase'
 import { loginCurrentUser } from '../actions/currentUserActions'
 import { colors } from '../theme/colors'
+import { BACKEND_API } from 'react-native-dotenv'
 
 
 const SignUp = props => {
@@ -38,27 +38,48 @@ const SignUp = props => {
       }
 
       let response = null;
+      let token = null;
       if(firstName != '' && lastName != '') {
-        response = await auth.createUserWithEmailAndPassword(email, password)
+
+        // Register new user
+        const rawResponse = await fetch(BACKEND_API + '/auth/signup', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({email: email, 
+                                password: password,
+                                first_name: firstName,
+                                last_name: lastName,
+                                division: division
+                              })
+        });
+        const content = await rawResponse.json();
+        token = content.token
+
+        // Use authentication token to access user data
+        const userDataResponse = await fetch(BACKEND_API + '/auth/user_status', {
+          headers: {
+            'Authorization': `Basic ${token}`
+          }
+        });
+        response = await userDataResponse.json()
       }
 
-      if (response && response.user.uid) {
+      if (response && response.data.player_id) {
         const user = {
-          uid: response.user.uid,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          isAdmin: false,
-          subscribed: true,
-          division: division
+          uid: response.data.player_id,
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
+          email: response.data.email,
+          isAdmin: response.data.admin,
+          subscribed: response.data.subscribed,
+          division: response.data.division,
+          token: token
         }
 
         setIsLoading(false)
-  
-        db.collection('users')
-          .doc(response.user.uid)
-          .set(user)
-        
         props.loginCurrentUser(user)
         props.navigation.navigate('Form')
       }
