@@ -8,9 +8,9 @@ import { connect } from 'react-redux'
 import Container from '../components/Container'
 import FontText from '../utils/FontText'
 
-import { db, auth } from '../Firebase'
 import { loginCurrentUser } from '../actions/currentUserActions'
 import { colors } from '../theme/colors'
+import { BACKEND_API } from 'react-native-dotenv'
 
 
 const Login = props => {
@@ -22,22 +22,46 @@ const Login = props => {
     setIsLoading(true)
 
     try {
-      const response = await auth.signInWithEmailAndPassword(email, password)
-      
-      if (response.user.uid) {
-        const user = await db
-          .collection('users')
-          .doc(response.user.uid)
-          .get()
+      const loginResponse = await fetch(BACKEND_API + '/auth/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email, password: password})
+      });
+      const loginData = await loginResponse.json();
 
+      if (!loginData.success) {
+        throw loginData.message
+      }
+
+      // Use authentication token to access user data
+      const userDataResponse = await fetch(BACKEND_API + '/auth/user_status', {
+        headers: {
+          'Authorization': `Basic ${loginData.token}`
+        }
+      });
+      const userData = await userDataResponse.json()
+      
+      if (userData.success) {
         setIsLoading(false)
 
-        if (Object.keys(user.data()).length === 0) {
-          throw "User doesn't exist"
+        const user = {
+          uid: userData.data.player_id,
+          firstName: userData.data.first_name,
+          lastName: userData.data.last_name,
+          email: userData.data.email,
+          isAdmin: userData.data.admin,
+          subscribed: userData.data.subscribed,
+          division: userData.data.division,
+          token: loginData.token
         }
 
-        props.loginCurrentUser(user.data())
+        props.loginCurrentUser(user)
         props.navigation.navigate('Form')
+      } else {
+        throw "Login failed, please try again"
       }
       
     } catch (e) {

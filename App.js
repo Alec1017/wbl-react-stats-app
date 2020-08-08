@@ -11,8 +11,6 @@ import Login from './pages/Login'
 import PasswordReset from './pages/PasswordReset'
 import TabNavigation from './components/TabNavigation'
 
-import { fetchGames } from './actions/gamesActions'
-import { fetchUsers } from './actions/usersActions'
 import { loginCurrentUser } from './actions/currentUserActions'
 import { store, persistor } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -22,7 +20,6 @@ const Stack = createStackNavigator()
 
 const App = props => {
   const [initialRoute, setInitialRoute] = useState('Login')
-  // const [fontsLoaded, setFontsLoaded] = useState(false)
 
   let [fontsLoaded] = useFonts({
     'Roboto': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
@@ -37,12 +34,9 @@ const App = props => {
     } else {
       setInitialRoute('Login')
     }
-
-    props.fetchGames()
-    props.fetchUsers()
   }, [])
 
-  if (!props.loading && fontsLoaded) {
+  if (fontsLoaded) {
     setTimeout(() => {
       SplashScreen.hide()
     }, 250)
@@ -65,15 +59,9 @@ const App = props => {
 
 const mapStateToProps = state => ({
   currentUser: state.currentUser.currentUser,
-  loading: (state.games.loading || state.users.loading),
-  games: state.games.games,
-  users: state.users.users,
-  hasErrors: (state.games.hasErrors || state.users.hasErrors),
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchGames: () => dispatch(fetchGames()),
-  fetchUsers: () => dispatch(fetchUsers()),
   loginCurrentUser: userData => dispatch(loginCurrentUser(userData))
 })
 

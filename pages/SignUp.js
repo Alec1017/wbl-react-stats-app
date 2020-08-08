@@ -37,52 +37,53 @@ const SignUp = props => {
         throw "Please select a division"
       }
 
-      let response = null;
-      let token = null;
-      if(firstName != '' && lastName != '') {
+      // Register new user
+      const registerResponse = await fetch(BACKEND_API + '/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email, 
+                              password: password,
+                              first_name: firstName,
+                              last_name: lastName,
+                              division: division
+                            })
+      });
+      const registerData = await registerResponse.json();
 
-        // Register new user
-        const rawResponse = await fetch(BACKEND_API + '/auth/signup', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({email: email, 
-                                password: password,
-                                first_name: firstName,
-                                last_name: lastName,
-                                division: division
-                              })
-        });
-        const content = await rawResponse.json();
-        token = content.token
-
-        // Use authentication token to access user data
-        const userDataResponse = await fetch(BACKEND_API + '/auth/user_status', {
-          headers: {
-            'Authorization': `Basic ${token}`
-          }
-        });
-        response = await userDataResponse.json()
+      if (!registerData.success) {
+        throw registerData.message
       }
 
-      if (response && response.data.player_id) {
+      // Use authentication token to access user data
+      const userDataResponse = await fetch(BACKEND_API + '/auth/user_status', {
+        headers: {
+          'Authorization': `Basic ${registerData.token}`
+        }
+      });
+      const userData = await userDataResponse.json()
+
+      if (userData.success) {
         const user = {
-          uid: response.data.player_id,
-          firstName: response.data.first_name,
-          lastName: response.data.last_name,
-          email: response.data.email,
-          isAdmin: response.data.admin,
-          subscribed: response.data.subscribed,
-          division: response.data.division,
-          token: token
+          uid: userData.data.player_id,
+          firstName: userData.data.first_name,
+          lastName: userData.data.last_name,
+          email: userData.data.email,
+          isAdmin: userData.data.admin,
+          subscribed: userData.data.subscribed,
+          division: userData.data.division,
+          token: registerData.token
         }
 
         setIsLoading(false)
         props.loginCurrentUser(user)
         props.navigation.navigate('Form')
+      } else {
+        throw "Sign up failed, please try again"
       }
+
     } catch (e) {
       setIsLoading(false);
 
