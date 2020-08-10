@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import Header from '../components/Header'
 import StatRow from '../components/StatRow'
 import FontText from '../utils/FontText'
+import { BACKEND_API } from 'react-native-dotenv'
 
 import { db } from '../Firebase'
 import { colors } from '../theme/colors'
@@ -53,15 +54,19 @@ const Form = props => {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    let opponents = []
-    props.users.forEach(user => {
-      if (user.uid != uid) {
-        opponents.push(user.firstName + ' ' + user.lastName)
-      }
-    })
+    async function fetchOpponents() {
+      const opponentResponse = await fetch(BACKEND_API + '/api/opponents', {
+        headers: {
+          'Authorization': `Basic ${props.currentUser.token}`
+        }
+      });
+      const opponentData = await opponentResponse.json()
 
-    setSelectedOpponent(opponents[0])
-    setOpponents(opponents)
+      setSelectedOpponent(opponentData ? opponentData[0] : '')
+      setOpponents(opponentData)
+    }
+
+    fetchOpponents()
   }, [])
 
   async function addGame() {

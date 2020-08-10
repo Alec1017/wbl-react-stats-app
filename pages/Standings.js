@@ -15,13 +15,16 @@ const Standings = props => {
   const [standings, setStandings] = useState([])
 
   useEffect(() => {
-
     async function fetchStandings() {
       try {
-        let response = await fetch(BACKEND_API + '/api/standings')
-        let data = await response.json()
+        const standingsResponse = await fetch(BACKEND_API + '/api/standings', {
+          headers: {
+            'Authorization': `Basic ${props.currentUser.token}`
+          }
+        });
+        let standingsData = await standingsResponse.json()
 
-        let processedStandings = processStandings(data)
+        let processedStandings = processStandings(standingsData)
 
         setStandings(processedStandings)
       } catch(error) {
@@ -44,7 +47,7 @@ const Standings = props => {
   }
 
   function renderContent() {
-    if(!props.loading && standings.length != 0) {
+    if(standings.length != 0) {
       return (
         <View>
           {standings.map(([division, row], i) => {

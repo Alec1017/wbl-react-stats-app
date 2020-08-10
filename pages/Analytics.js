@@ -8,6 +8,7 @@ import Header from '../components/Header'
 import AnalyticsChart from '../components/AnalyticsChart'
 import LeagueLeader from '../components/LeagueLeader'
 import FontText from '../utils/FontText'
+import { BACKEND_API } from 'react-native-dotenv'
 
 import { colors } from '../theme/colors'
 
@@ -24,64 +25,38 @@ const Analytics = props => {
 
   const [gamesThreshold, setGamesThreshold] = useState(3)
 
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     buildAnalytics()
   }, [])
 
   async function buildAnalytics() {
-    let cumulation = []
-    let cumulationERA = []
-    let total = {
-      hits: 0,
-      leagueHits: 0,
-      atBats: 0,
-      leagueAtBats: 0,
-      earnedRuns: 0,
-      leagueEarnedRuns: 0,
-      inningsPitched: 0,
-      leagueInningsPitched: 0
-    }
-
-    for (const game of props.games) {
-      const hits = game.singles + game.doubles + game.triples + game.homeRuns
-      const atBats = hits + game.outs + game.strikeouts
-      const earnedRuns = game.earnedRuns
-      const inningsPitched = game.inningsPitched
-
-      if (game.uid == props.currentUser.uid) {
-        total.hits += hits
-        total.atBats += atBats
-        total.earnedRuns += earnedRuns
-        total.inningsPitched += inningsPitched
-
-        if (atBats > 0) {
-          cumulation.push(total.hits / total.atBats)
-        }
-
-        if (inningsPitched > 0) {
-          cumulationERA.push((total.earnedRuns * 3) / (total.inningsPitched / 3))
-        }
+    const battingAverageResponse = await fetch(BACKEND_API + '/api/analytics/batting_average', {
+      headers: {
+        'Authorization': `Basic ${props.currentUser.token}`
       }
+    });
+    let battingAverageData = await battingAverageResponse.json()
 
-      total.leagueHits += hits
-      total.leagueAtBats += atBats
-      total.leagueEarnedRuns += earnedRuns
-      total.leagueInningsPitched += inningsPitched
-    }
+    setCurrentBattingAverage(battingAverageData.player_avg.toFixed(3))
+    setLeagueBattingAverage(battingAverageData.league_avg)
+    setBattingAverages(battingAverageData.rolling_batting_averages)
 
-    if (total.leagueAtBats > 0) {
-      setLeagueBattingAverage(total.leagueHits / total.leagueAtBats)
-    }
 
-    if (total.leagueInningsPitched > 0) {
-      setLeagueERA((total.leagueEarnedRuns * 3) / total.leagueInningsPitched)
-    }
+    const earnedRunAverageResponse = await fetch(BACKEND_API + '/api/analytics/earned_run_average', {
+      headers: {
+        'Authorization': `Basic ${props.currentUser.token}`
+      }
+    });
+    let earnedRunAverageData = await earnedRunAverageResponse.json()
 
-    setBattingAverages(cumulation)
-    setERAs(cumulationERA)
-    setCurrentBattingAverage(Number(cumulation[cumulation.length - 1]).toFixed(3))
-    setCurrentERA(Number(cumulationERA[cumulationERA.length - 1]).toFixed(2))
+    setCurrentERA(earnedRunAverageData.player_avg.toFixed(2))
+    setLeagueERA(earnedRunAverageData.league_avg)
+    setERAs(earnedRunAverageData.rolling_earned_run_averages)
+
+    setLoading(false);
   }
 
   function calcStatMax(addition, leagueValue, highestUserValue) {
@@ -89,7 +64,7 @@ const Analytics = props => {
   }
 
   function renderContent() {
-    if(!props.loading) {
+    if(!loading) {
       if (battingAverages.length >= gamesThreshold && currentBattingAverage !== '') {
         return (
           <View>
