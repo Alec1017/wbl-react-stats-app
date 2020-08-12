@@ -7,8 +7,8 @@ import { TextInput, IconButton, Button } from 'react-native-paper'
 
 import Container from '../components/Container'
 import FontText from '../utils/FontText'
-import { auth } from '../Firebase'
 import { colors } from '../theme/colors'
+import { BACKEND_API } from 'react-native-dotenv'
 
 
 export default function PasswordReset(props) {
@@ -19,7 +19,19 @@ export default function PasswordReset(props) {
     setIsLoading(true)
 
     try {
-      const response = await auth.sendPasswordResetEmail(email)
+      const resetResponse = await fetch(BACKEND_API + '/auth/password_reset_request', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+      });
+      const resetData = await resetResponse.json();
+
+      if (!resetData.success) {
+        throw 'Something went wrong. please try again.'
+      }
 
       setIsLoading(false)
 

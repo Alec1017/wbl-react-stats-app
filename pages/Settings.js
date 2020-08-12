@@ -52,7 +52,7 @@ const Settings = props => {
     } catch(error) {
       showMessage({
         message: "\nError",
-        description: error,
+        description: error.toString(),
         type: "danger",
         style: {height: '20%', width: '70%'},
         titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
