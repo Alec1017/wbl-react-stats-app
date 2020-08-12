@@ -39,7 +39,7 @@ export default function StatRow(props) {
             onValueChange={value => props.action(value)}
           >
             {props.opponents.map((value, index) => {
-              return <Picker.Item key={index} label={value.toString()} value={value} />
+              return <Picker.Item key={index} label={value[1].toString()} value={value[0]} />
             })}
           </Picker>
         </View>

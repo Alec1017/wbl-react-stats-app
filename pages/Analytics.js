@@ -80,12 +80,22 @@ const Analytics = props => {
 
             <View style={{marginTop: 30}}>
               <FontText bold style={{fontSize: 20 }}>Home Run Leaders</FontText>
-              <LeagueLeader stat={'homeRuns'} leaderEmoji={'fire'}></LeagueLeader>
+              <LeagueLeader stat={'home_runs'} leaderEmoji={'fire'}></LeagueLeader>
+            </View>
+
+            <View style={{marginTop: 30}}>
+              <FontText bold style={{fontSize: 20 }}>RBI Leaders</FontText>
+              <LeagueLeader stat={'runs_batted_in'} leaderEmoji={'bat'}></LeagueLeader>
+            </View>
+
+            <View style={{marginTop: 30}}>
+              <FontText bold style={{fontSize: 20 }}>Pitching Strikeout Leaders</FontText>
+              <LeagueLeader stat={'pitching_strikeouts'} leaderEmoji={'spades'}></LeagueLeader>
             </View>
 
             <View style={{marginTop: 30}}>
               <FontText bold style={{fontSize: 20 }}>Stolen Bases Leaders</FontText>
-              <LeagueLeader stat={'stolenBases'} leaderEmoji={'dash'}></LeagueLeader>
+              <LeagueLeader stat={'stolen_bases'} leaderEmoji={'dash'}></LeagueLeader>
             </View>
 
             <View style={{marginTop: 30}}>
@@ -130,10 +140,6 @@ const Analytics = props => {
 
 const mapStateToProps = state => ({
   currentUser: state.currentUser.currentUser,
-  loading: (state.games.loading || state.users.loading),
-  games: state.games.games,
-  users: state.users.users,
-  hasErrors: (state.games.hasErrors || state.users.hasErrors),
 })
 
 export default connect(mapStateToProps)(Analytics)

@@ -111,10 +111,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   currentUser: state.currentUser.currentUser,
-  loading: (state.games.loading || state.users.loading),
-  games: state.games.games,
-  users: state.users.users,
-  hasErrors: (state.games.hasErrors || state.users.hasErrors),
 })
 
 export default connect(mapStateToProps)(Standings)

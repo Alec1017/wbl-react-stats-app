@@ -12,7 +12,6 @@ import StatRow from '../components/StatRow'
 import FontText from '../utils/FontText'
 import { BACKEND_API } from 'react-native-dotenv'
 
-import { db } from '../Firebase'
 import { colors } from '../theme/colors'
 
 
@@ -55,15 +54,19 @@ const Form = props => {
 
   useEffect(() => {
     async function fetchOpponents() {
-      const opponentResponse = await fetch(BACKEND_API + '/api/opponents', {
-        headers: {
-          'Authorization': `Basic ${props.currentUser.token}`
-        }
-      });
-      const opponentData = await opponentResponse.json()
-
-      setSelectedOpponent(opponentData ? opponentData[0] : '')
-      setOpponents(opponentData)
+      try {
+        const opponentResponse = await fetch(BACKEND_API + '/api/opponents', {
+          headers: {
+            'Authorization': `Basic ${props.currentUser.token}`
+          }
+        });
+        const opponentData = await opponentResponse.json()
+  
+        setSelectedOpponent(opponentData ? opponentData[0][0] : '')
+        setOpponents(opponentData)
+      } catch(error) {
+        console.log(error)
+      }
     }
 
     fetchOpponents()
@@ -71,43 +74,37 @@ const Form = props => {
 
   async function addGame() {
     setIsLoading(true)
-    
-    await db.collection('games').add({
-      player,
-      uid,
-      date: new Date().toDateString(),
-      singles,
-      doubles,
-      triples,
-      homeRuns,
-      hitByPitch,
-      baseOnBalls,
-      runsBattedIn,
-      strikeouts,
-      stolenBases,
-      caughtStealing,
-      outs,
-      inningsPitched,
-      earnedRuns,
-      runs,
-      pitchingStrikeouts,
-      pitchingBaseOnBalls,
-      saves,
-      blownSaves,
-      win,
-      loss,
-      error,
-      isCaptain,
-      isGameWon,
-      winnerScore,
-      loserScore,
-      selectedOpponent: (isCaptain ? selectedOpponent : null),
-      totalInnings,
-      timestamp: Math.floor(Date.now() / 1000)
-    })
 
-    setIsLoading(false)
-    resetState()
+    const gameData = {
+      player_id: props.currentUser.uid,
+      singles: singles,
+      doubles: doubles,
+      triples: triples,
+      home_runs: homeRuns,
+      strikeouts: strikeouts,
+      outs: outs,
+      base_on_balls: baseOnBalls,
+      hit_by_pitch: hitByPitch,
+      runs_batted_in: runsBattedIn,
+      error: error,
+      stolen_bases: stolenBases,
+      caught_stealing: caughtStealing,
+      innings_pitched: inningsPitched,
+      earned_runs: earnedRuns,
+      runs: runs,
+      pitching_strikeouts: pitchingStrikeouts,
+      pitching_base_on_balls: pitchingBaseOnBalls,
+      saves: saves,
+      blown_saves: blownSaves,
+      win: win,
+      loss: loss,
+      opponent_id: (isCaptain ? selectedOpponent : null),
+      captain: isCaptain,
+      game_won: isGameWon,
+      winner_score: winnerScore,
+      loser_score: loserScore,
+      total_innings: totalInnings
+    }
 
     const animation = (
       <LottieView
@@ -121,16 +118,46 @@ const Form = props => {
       />
     )
 
-    showMessage({
-      message: "\nStats submitted",
-      description: animation,
-      type: "success",
-      style: {height: '20%', width: '70%'},
-      titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
-      textStyle: {alignSelf: 'center', justifyContent: 'center'},
-      duration: 2000
-    })
+    try {
+      const addGameResponse = await fetch(BACKEND_API + '/api/add_game', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Basic ${props.currentUser.token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(gameData)
+      });
+      const addGameData = await addGameResponse.json();
 
+      if (!addGameData.success) {
+        throw addGameData.message
+      }
+
+      showMessage({
+        message: "\nStats submitted",
+        description: animation,
+        type: "success",
+        style: {height: '20%', width: '70%'},
+        titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
+        textStyle: {alignSelf: 'center', justifyContent: 'center'},
+        duration: 2000
+      })
+
+      resetState()
+    } catch (error) {
+      showMessage({
+        message: "\nStats not submitted",
+        description: error,
+        type: "danger",
+        style: {height: '20%', width: '70%'},
+        titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
+        textStyle: {alignSelf: 'center', justifyContent: 'center'},
+        duration: 2000
+      })
+    }
+
+    setIsLoading(false)
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
   }
 
@@ -274,10 +301,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   currentUser: state.currentUser.currentUser,
-  loading: (state.games.loading || state.users.loading),
-  games: state.games.games,
-  users: state.users.users,
-  hasErrors: (state.games.hasErrors || state.users.hasErrors),
 })
 
 export default connect(mapStateToProps)(Form)

@@ -9,9 +9,8 @@ import { connect } from 'react-redux'
 import Header from '../components/Header'
 import FontText from '../utils/FontText'
 
-import { db } from '../Firebase'
 import { BACKEND_API } from 'react-native-dotenv'
-import { logoutCurrentUser } from '../actions/currentUserActions'
+import { loginCurrentUser, logoutCurrentUser } from '../actions/currentUserActions'
 import { colors } from '../theme/colors'
 
 
@@ -32,10 +31,36 @@ const Settings = props => {
 
   async function toggleEmailSubscription() {
     setIsEmailLoading(true);
-    await db.collection('users').doc(props.currentUser.uid).update({
-      subscribed: !isSubscribed
-    })
-    setIsSubscribed(!isSubscribed)
+
+    try {
+      const subscriptionResponse = await fetch(BACKEND_API + '/api/toggle_email', {
+        headers: {
+          'Authorization': `Basic ${props.currentUser.token}`
+        }
+      });
+      let subscriptionData = await subscriptionResponse.json()
+
+      if (!subscriptionData.success) {
+        throw 'Something went wrong. Please try again.'
+      }
+
+      // Update local persistent storage data
+      let currentUser = props.currentUser
+      currentUser.subscribed = subscriptionData.data
+      props.loginCurrentUser(currentUser)
+      setIsSubscribed(subscriptionData.data)
+    } catch(error) {
+      showMessage({
+        message: "\nError",
+        description: error,
+        type: "danger",
+        style: {height: '20%', width: '70%'},
+        titleStyle: {textAlign: 'center', fontSize: 20, fontWeight: 'bold'},
+        textStyle: {textAlign: 'center'},
+        duration: 2000
+      })
+    }
+
     setIsEmailLoading(false)
   }
 
@@ -43,13 +68,17 @@ const Settings = props => {
     setIsStatsLoading(true)
 
     try {
-      let response = await fetch(BACKEND_API + `/update_sheet/${props.currentUser.uid}`)
-      let data = await response.json()
+      const sheetResponse = await fetch(BACKEND_API + '/api/update_sheet', {
+        headers: {
+          'Authorization': `Basic ${props.currentUser.token}`
+        }
+      });
+      let sheetData = await sheetResponse.json()
       
-      let messageType = data.completed ? 'success' : 'danger'
-      let messageTitle = data.completed ? 'Success!' : 'Error'
-      let messageContent = data.completed ? 'Stat sheet updated' : 'Something went wrong. Try again later'
-      let feedbackType = data.completed ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error
+      let messageType = sheetData.success ? 'success' : 'danger'
+      let messageTitle = sheetData.success ? 'Success!' : 'Error'
+      let messageContent = sheetData.success ? 'Stat sheet updated' : 'Something went wrong. Try again later'
+      let feedbackType = sheetData.success ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error
 
       showMessage({
         message: `\n${messageTitle}`,
@@ -181,6 +210,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  loginCurrentUser: userData => dispatch(loginCurrentUser(userData)),
   logoutCurrentUser: () => dispatch(logoutCurrentUser())
 })
 

@@ -7,6 +7,7 @@ import Emoji from 'react-native-emoji'
 
 import FontText from '../utils/FontText'
 import { colors } from '../theme/colors'
+import { BACKEND_API } from 'react-native-dotenv'
 
 const LeagueLeader = props => {
     const [leagueLeaders, setLeagueLeaders] = useState([])
@@ -15,47 +16,48 @@ const LeagueLeader = props => {
     const maxLeaders = 5
 
     useEffect(() => {
-        buildLeagueLeaders()
+      buildLeagueLeaders()
     }, [])
 
-    const buildLeagueLeaders = () => {
-        let leaders = {}
-        let condensedLeaders = []
+    async function buildLeagueLeaders() {
+      const leaderboardResponse = await fetch(BACKEND_API + `/api/analytics/leaderboard/${props.stat}`, {
+        headers: {
+          'Authorization': `Basic ${props.currentUser.token}`
+        }
+      });
+      let leaderboardData = await leaderboardResponse.json()
 
-        for (const user of props.users) {
-            let partialName = `${user.firstName} ${user.lastName[0]}`
-            let userGames = props.games.filter(game => game.uid == user.uid)
+      let leaders = {}
+      let condensedLeaders = []
 
-            let accumulatedValue = 0
-      
-            for (const game of userGames) {
-              accumulatedValue += (game[props.stat] ? game[props.stat] : 0)
-            }
+      for (const player of leaderboardData) {
+        let partialName = `${player.first_name} ${player.last_name[0]}`
 
-            if (leaders[accumulatedValue]) {
-                leaders[accumulatedValue].push(partialName)
-            } else {
-                leaders[accumulatedValue] = [partialName]
-            }
+        if (leaders[player.data]) {
+          leaders[player.data].push(partialName)
+        } else {
+          leaders[player.data] = [partialName]
         }
 
-        if (leaders[0]) {
-            delete leaders[0]
+      }
+
+      if (leaders[0]) {
+        delete leaders[0]
+      }
+
+      let topValues = Object.keys(leaders)
+      topValues.sort(function(a, b){ return b - a})
+      topValues = topValues.slice(0, maxLeaders)
+
+      for (let value of topValues) {
+        if (value == Math.max(...topValues) && leaders[value].length == 1) {
+          setLeaderName(leaders[value])
         }
 
-        let topValues = Object.keys(leaders)
-        topValues.sort(function(a, b){ return b - a})
-        topValues = topValues.slice(0, maxLeaders)
+        condensedLeaders.push([leaders[value].join(', '), value])
+      }
 
-        for (let value of topValues) {
-            if (value == Math.max(...topValues) && leaders[value].length == 1) {
-                setLeaderName(leaders[value])
-            }
-
-            condensedLeaders.push([leaders[value].join(', '), value])
-        }
-
-        setLeagueLeaders(condensedLeaders)
+      setLeagueLeaders(condensedLeaders)
     }
 
     if (leagueLeaders.length !== 0) {
@@ -93,8 +95,7 @@ const styles = StyleSheet.create({
   })
 
 const mapStateToProps = state => ({
-    games: state.games.games,
-    users: state.users.users,
+    currentUser: state.currentUser.currentUser,
   })
   
 export default connect(mapStateToProps)(LeagueLeader)
