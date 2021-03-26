@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TextInput, IconButton, Button, ToggleButton } from 'react-native-paper'
+import { TextInput, IconButton, Button, Drawer } from 'react-native-paper'
+import { ActivityIndicator } from 'react-native-paper'
 import { connect } from 'react-redux'
 
 import Container from '../components/Container'
@@ -19,7 +20,25 @@ const SignUp = props => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [division, setDivision] = useState(null)
+  const [team, setTeam] = useState(null)
+  const [allTeams, setAllTeams] = useState([])
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTeams() {
+      try {
+        const teamsResponse = await fetch(BACKEND_API + '/api/teams');
+        let teamsData = await teamsResponse.json()
+    
+        setAllTeams(teamsData)
+        setLoading(false);
+      } catch(error) {
+        console.log(error)
+      }
+    }
+
+    fetchTeams()
+  }, [])
 
   async function handleSignUp() {
     setIsLoading(true)
@@ -33,8 +52,8 @@ const SignUp = props => {
         throw "Last name can't be emtpy"
       }
 
-      if (typeof division !== 'number') {
-        throw "Please select a division"
+      if (typeof team !== 'number') {
+        throw "Please select a team"
       }
 
       // Register new user
@@ -48,7 +67,7 @@ const SignUp = props => {
                               password: password,
                               first_name: firstName,
                               last_name: lastName,
-                              division: division
+                              team: team
                             })
       });
       const registerData = await registerResponse.json();
@@ -73,7 +92,7 @@ const SignUp = props => {
           email: userData.data.email,
           isAdmin: userData.data.admin,
           subscribed: userData.data.subscribed,
-          division: userData.data.division,
+          team: userData.data.team,
           token: registerData.token
         }
 
@@ -86,6 +105,7 @@ const SignUp = props => {
 
     } catch (e) {
       setIsLoading(false);
+      console.log(e)
 
       let errorMessage = e.toString()
       if (errorMessage.split(" ")[0] == 'Error:') {
@@ -114,7 +134,7 @@ const SignUp = props => {
       
       <FontText bold style={styles.title}>Sign Up</FontText>
 
-      <KeyboardAwareScrollView style={{ width: '80%'}}>
+      <KeyboardAwareScrollView style={{ width: '80%'}} showsVerticalScrollIndicator={false}>
         <TextInput 
           label='First Name'
           placeholder='John'
@@ -157,24 +177,26 @@ const SignUp = props => {
           theme={{ colors: { primary: colors.formSelection } }}
         />
 
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20}}>
-          <FontText style={styles.divisionText}>Your Division</FontText>
+        <View style={{marginTop: 20}}>
+          <FontText style={styles.teamText}>Select Your Team</FontText>
 
-          <ToggleButton.Row
-            onValueChange={value => setDivision(value)}
-          >
-            <ToggleButton
-              icon="numeric-1-circle-outline"
-              status={1 == division ? 'checked' : 'unchecked'}
-              value={1}
-            />
+          <Drawer.Section style={{marginTop: 20}}>
+            {!loading && allTeams.map((t, i) => {
+              return(
+                <Drawer.Item
+                  key={i}
+                  label={t.name}
+                  active={team === t.id}
+                  onPress={() => setTeam(t.id)}
+                  theme= {{colors : {primary: colors.activityIndicator}}}
+                />
+              )
+            })}
 
-            <ToggleButton
-              icon="numeric-2-circle-outline"
-              status={2 == division ? 'checked' : 'unchecked'}
-              value={2}
-            />
-          </ToggleButton.Row>
+            {loading &&
+              <ActivityIndicator  animating={true} size="small" color={colors.activityIndicator} />
+            }
+          </Drawer.Section>
         </View>
 
         <Button
@@ -182,7 +204,7 @@ const SignUp = props => {
           mode='contained'
           color={colors.submitButton}
           onPress={() => handleSignUp()}
-          style={{ marginTop: 20, borderRadius: 25 }}
+          style={{ marginTop: 20, borderRadius: 25, marginBottom: 20}}
           contentStyle={{ height: 50 }}
           labelStyle={{ fontWeight: 'bold'}}
         >
@@ -200,7 +222,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: hp('12%'),
   },
-  divisionText: {
+  teamText: {
     fontSize: 20,
     alignSelf: 'center',
   },
