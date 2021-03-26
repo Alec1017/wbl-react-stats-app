@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { TextInput, IconButton, Button, Drawer } from 'react-native-paper'
+import { TextInput, IconButton, Button, Drawer, Checkbox } from 'react-native-paper'
 import { ActivityIndicator } from 'react-native-paper'
 import { connect } from 'react-redux'
 
@@ -21,8 +21,9 @@ const SignUp = props => {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [team, setTeam] = useState(null)
+  const [captain, setCaptain] = useState(false)
   const [allTeams, setAllTeams] = useState([])
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchTeams() {
@@ -67,7 +68,8 @@ const SignUp = props => {
                               password: password,
                               first_name: firstName,
                               last_name: lastName,
-                              team: team
+                              team: team,
+                              captain: captain
                             })
       });
       const registerData = await registerResponse.json();
@@ -93,7 +95,8 @@ const SignUp = props => {
           isAdmin: userData.data.admin,
           subscribed: userData.data.subscribed,
           team: userData.data.team,
-          token: registerData.token
+          token: registerData.token,
+          captain: registerData.captain
         }
 
         setIsLoading(false)
@@ -197,6 +200,26 @@ const SignUp = props => {
               <ActivityIndicator  animating={true} size="small" color={colors.activityIndicator} />
             }
           </Drawer.Section>
+
+          <Drawer.Section style={{marginTop: 20}}>
+            <FontText style={styles.captainText}>Are you a captain?</FontText>
+
+            <Drawer.Item
+              key={1}
+              label='Yes'
+              active={captain === true}
+              onPress={() => setCaptain(true)}
+              theme= {{colors : {primary: colors.activityIndicator}}}
+            />
+
+            <Drawer.Item
+              key={2}
+              label='No'
+              active={captain === false}
+              onPress={() => setCaptain(false)}
+              theme= {{colors : {primary: colors.activityIndicator}}}
+            />
+          </Drawer.Section>
         </View>
 
         <Button
@@ -225,6 +248,11 @@ const styles = StyleSheet.create({
   teamText: {
     fontSize: 20,
     alignSelf: 'center',
+  },
+  captainText: {
+    fontSize: 20,
+    alignSelf: 'center',
+    marginBottom: 20
   },
 })
 
