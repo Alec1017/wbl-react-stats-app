@@ -108,7 +108,6 @@ const SignUp = props => {
 
     } catch (e) {
       setIsLoading(false);
-      console.log(e)
 
       let errorMessage = e.toString()
       if (errorMessage.split(" ")[0] == 'Error:') {
